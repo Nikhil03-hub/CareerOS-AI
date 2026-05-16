@@ -1928,6 +1928,14 @@ h4,
   box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.08);
 }
 
+.chatbot-input input,
+.chatbot-input input:focus {
+  min-height: 50px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 .option-card {
   min-height: 190px;
   padding: 28px;
