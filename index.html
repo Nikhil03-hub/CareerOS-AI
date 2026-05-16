@@ -715,21 +715,40 @@
             border: 0;
             outline: none;
             border-radius: 14px;
-            background: #1a1a1a;
-            color: #fff;
+            appearance: none;
+            -webkit-appearance: none;
+            background: #141414 !important;
+            color: #fff !important;
+            color-scheme: dark;
             padding: 0 16px;
             font: inherit;
-            transition: box-shadow 0.2s ease, background 0.2s ease;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            transition: box-shadow 0.2s ease, background 0.2s ease, transform 0.2s ease;
         }
 
         .aurora-input::placeholder {
             color: rgba(255, 255, 255, 0.2);
         }
 
+        .aurora-select option {
+            background: #141414;
+            color: #fff;
+        }
+
         .aurora-input:focus,
         .aurora-select:focus {
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
-            background: #202020;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.24), inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+            background: #1f1f1f !important;
+            transform: translateY(-1px);
+        }
+
+        .aurora-input:-webkit-autofill,
+        .aurora-input:-webkit-autofill:hover,
+        .aurora-input:-webkit-autofill:focus {
+            -webkit-text-fill-color: #fff;
+            caret-color: #fff;
+            box-shadow: 0 0 0 1000px #141414 inset, 0 0 0 2px rgba(255, 255, 255, 0.18);
+            transition: background-color 9999s ease-in-out 0s;
         }
 
         .aurora-password-wrap {
@@ -1332,22 +1351,22 @@
 </div>
 </main>
 <div class="aurora-auth-shell" id="aurora-auth-modal" aria-hidden="true">
-<main class="aurora-auth-main" aria-label="Aurora Sign Up">
+<main class="aurora-auth-main" aria-label="CareerOS AI Sign Up">
 <button class="aurora-auth-close" id="aurora-auth-close" aria-label="Close registration">
 <i data-lucide="x"></i>
 </button>
-<section class="aurora-hero-panel" aria-label="Aurora onboarding story">
+<section class="aurora-hero-panel" aria-label="CareerOS AI onboarding story">
 <video autoplay="" muted="" loop="" playsinline="">
 <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260506_081238_406ed0e3-5d83-436e-a512-0bbff7ec5b95.mp4" type="video/mp4"/>
 </video>
 <div class="aurora-hero-content">
 <div class="aurora-brand aurora-reveal">
 <i data-lucide="circle"></i>
-<span>Aurora</span>
+<span>CareerOS AI</span>
 </div>
 <div class="aurora-copy aurora-reveal">
-<h2>Join Aurora</h2>
-<p>Follow these 3 quick phases to activate your space.</p>
+<h2>Join CareerOS AI</h2>
+<p>Follow these 3 quick phases to activate your career space.</p>
 </div>
 <div class="aurora-steps aurora-reveal">
 <div class="aurora-step active" data-aurora-step="1">
@@ -1356,7 +1375,7 @@
 </div>
 <div class="aurora-step" data-aurora-step="2">
 <span class="aurora-step-number">2</span>
-<span>Configure your studio</span>
+<span>Personalize your roadmap</span>
 </div>
 <div class="aurora-step" data-aurora-step="3">
 <span class="aurora-step-number">3</span>
@@ -1416,7 +1435,7 @@
 <div class="aurora-auth-stage" id="aurora-stage-profile">
 <div class="aurora-panel-header">
 <h2>Shape Your CareerOS Space</h2>
-<p>Tell us where you are now so Aurora can personalize the first roadmap.</p>
+<p>Tell us where you are now so CareerOS AI can personalize the first roadmap.</p>
 </div>
 <div class="aurora-profile-card" id="aurora-profile-card"></div>
 <form id="aurora-profile-form" class="aurora-auth-stage active">
@@ -1427,7 +1446,7 @@
 </div>
 <div class="aurora-input-group">
 <label for="aurora-profile-city">City</label>
-<input class="aurora-input" id="aurora-profile-city" placeholder="Hyderabad" type="text"/>
+<input class="aurora-input" id="aurora-profile-city" placeholder="Hyderabad" type="text" autocomplete="address-level2" required/>
 </div>
 </div>
 <div class="aurora-input-group">
@@ -1480,7 +1499,7 @@
 <div class="aurora-auth-stage" id="aurora-stage-success">
 <div class="aurora-success-orbit">
 <div>
-<h3>Your Aurora profile is live.</h3>
+<h3>Your CareerOS AI profile is live.</h3>
 <p id="aurora-success-copy">CareerOS AI is ready to shape your first roadmap.</p>
 </div>
 </div>
@@ -1885,7 +1904,7 @@
                 ${avatar}
                 <div>
                     <div class="font-bold">${user.displayName}</div>
-                    <div class="text-sm text-white/40">${user.email || "Aurora local profile"}</div>
+                    <div class="text-sm text-white/40">${user.email || "CareerOS AI local profile"}</div>
                 </div>
             `;
 
