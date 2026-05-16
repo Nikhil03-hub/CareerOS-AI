@@ -570,17 +570,18 @@ function Wizard({ step, profile, updateProfile, goNext, goBack }) {
   ][step];
 
   return (
-    <div className="wizard-wrap reveal">
-      <HeroIntro profile={profile} />
+    <div className="wizard-wrap aura-wizard reveal">
       <div className="panel step-shell">
         <aside className="step-rail">
+          <div className="phase-label">Phase {step + 1} of {STEP_LABELS.length}</div>
           <h4>Assessment flow</h4>
           {STEP_LABELS.map((label, index) => (
-            <div key={label} className={`step-item ${index === step ? "active" : ""}`}>
+            <div key={label} className={`step-item ${index === step ? "active" : ""} ${index < step ? "complete" : ""}`}>
               <span className="step-num">{index + 1}</span>
               <span>{label}</span>
             </div>
           ))}
+          <button className="save-progress" type="button">Save Progress</button>
         </aside>
         <section>
           <QuestionHeader step={step} />
@@ -594,7 +595,7 @@ function Wizard({ step, profile, updateProfile, goNext, goBack }) {
               <Icon name="arrow-left" /> Back
             </button>
             <button className="btn btn-primary" onClick={goNext} disabled={!canNext}>
-              {step === STEP_LABELS.length - 1 ? "Generate Analysis" : "Continue"}
+              {step === STEP_LABELS.length - 1 ? "Generate Analysis" : `Continue to ${STEP_LABELS[step + 1]}`}
               <Icon name="arrow-right" />
             </button>
           </div>

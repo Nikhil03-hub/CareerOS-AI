@@ -95,7 +95,7 @@ a {
   gap: 10px;
   min-width: max-content;
   font-weight: 800;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
   font-size: 20px;
 }
 
@@ -226,7 +226,7 @@ a {
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0;
 }
 
 .eyebrow svg {
@@ -239,7 +239,7 @@ a {
   max-width: 760px;
   font-size: clamp(42px, 7vw, 86px);
   line-height: 0.94;
-  letter-spacing: -0.075em;
+  letter-spacing: 0;
 }
 
 .hero-title span {
@@ -271,7 +271,7 @@ a {
 .metric strong {
   display: block;
   font-size: 24px;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .metric span {
@@ -340,7 +340,7 @@ a {
 .hero-card h3 {
   margin: 22px 0 8px;
   font-size: 28px;
-  letter-spacing: -0.055em;
+  letter-spacing: 0;
 }
 
 .hero-card p {
@@ -449,7 +449,7 @@ a {
   margin: 0;
   font-size: clamp(30px, 4vw, 48px);
   line-height: 1;
-  letter-spacing: -0.07em;
+  letter-spacing: 0;
 }
 
 .question-head p {
@@ -547,7 +547,7 @@ a {
 .option-card h3 {
   margin: 0 0 6px;
   font-size: 16px;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .option-card p {
@@ -626,7 +626,7 @@ a {
   color: var(--blue);
   font-size: 30px;
   font-weight: 300;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
 }
 
 .range-top small {
@@ -785,7 +785,7 @@ input[type="range"] {
   margin: 0;
   font-size: clamp(30px, 4vw, 54px);
   line-height: 1;
-  letter-spacing: -0.07em;
+  letter-spacing: 0;
 }
 
 .recommend-card h1 span {
@@ -821,7 +821,7 @@ input[type="range"] {
 .summary-score strong {
   font-size: 54px;
   line-height: 0.9;
-  letter-spacing: -0.08em;
+  letter-spacing: 0;
 }
 
 .summary-score span {
@@ -918,7 +918,7 @@ input[type="range"] {
 .section-title h2 {
   margin: 0;
   font-size: 28px;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
 }
 
 .section-title p {
@@ -972,7 +972,7 @@ input[type="range"] {
 .result-card h3 {
   margin: 2px 0 6px;
   font-size: 19px;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
 }
 
 .result-card p {
@@ -1013,7 +1013,7 @@ input[type="range"] {
 .score-pill strong {
   display: block;
   font-size: 28px;
-  letter-spacing: -0.06em;
+  letter-spacing: 0;
 }
 
 .score-pill span {
@@ -1086,7 +1086,7 @@ input[type="range"] {
 .college-card h3 {
   margin: 0 0 6px;
   font-size: 18px;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
 }
 
 .college-meta {
@@ -1132,7 +1132,7 @@ input[type="range"] {
   margin: 10px 0;
   font-size: clamp(32px, 5vw, 60px);
   line-height: 0.98;
-  letter-spacing: -0.075em;
+  letter-spacing: 0;
 }
 
 .detail-hero p {
@@ -1290,7 +1290,7 @@ input[type="range"] {
 .path-card h3,
 .counsellor-card h3 {
   margin: 12px 0 8px;
-  letter-spacing: -0.035em;
+  letter-spacing: 0;
 }
 
 .course-card p,
@@ -1318,7 +1318,7 @@ input[type="range"] {
 .mini-stat strong {
   display: block;
   font-size: 28px;
-  letter-spacing: -0.06em;
+  letter-spacing: 0;
 }
 
 .mini-stat span {
@@ -1450,5 +1450,755 @@ input[type="range"] {
     background: rgba(255, 255, 255, 0.82);
     backdrop-filter: blur(18px);
     box-shadow: var(--shadow-soft);
+  }
+}
+
+/* Aura Precision: ultra-premium guidance skin */
+:root {
+  --bg: #f9f9fb;
+  --bg-soft: #f3f4f7;
+  --surface: rgba(255, 255, 255, 0.74);
+  --surface-solid: #ffffff;
+  --surface-2: #f4f5f7;
+  --ink: #1d1d1f;
+  --muted: #62666f;
+  --faint: #9a9da6;
+  --line: rgba(29, 29, 31, 0.08);
+  --line-strong: rgba(29, 29, 31, 0.14);
+  --blue: #2864ff;
+  --blue-2: #0071e3;
+  --violet: #54565f;
+  --green: #2f8061;
+  --mint: #7bced6;
+  --amber: #b9781f;
+  --orange: #9d5a2d;
+  --red: #a43b3b;
+  --navy: #1d1d1f;
+  --shadow: 0 28px 80px rgba(29, 29, 31, 0.08);
+  --shadow-soft: 0 14px 44px rgba(29, 29, 31, 0.045);
+  --radius: 24px;
+}
+
+body {
+  background:
+    radial-gradient(circle at 15% 6%, rgba(40, 100, 255, 0.09), transparent 32rem),
+    radial-gradient(circle at 86% 8%, rgba(199, 198, 203, 0.32), transparent 28rem),
+    radial-gradient(circle at 84% 92%, rgba(171, 199, 255, 0.2), transparent 30rem),
+    linear-gradient(180deg, #ffffff 0%, #f9f9fb 44%, #f1f2f5 100%);
+  color: var(--ink);
+  letter-spacing: 0;
+}
+
+.app-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(29, 29, 31, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 29, 31, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at 50% 18%, #000, transparent 72%);
+}
+
+h1,
+h2,
+h3,
+h4,
+.brand,
+.hero-title,
+.recommend-card h1,
+.detail-hero h1,
+.eyebrow,
+.phase-label,
+.metric strong,
+.hero-card h3,
+.question-head h2,
+.option-card h3,
+.range-top strong:last-child,
+.summary-score strong,
+.section-title h2,
+.result-card h3,
+.score-pill strong,
+.college-card h3,
+.course-card h3,
+.path-card h3,
+.counsellor-card h3,
+.mini-stat strong {
+  letter-spacing: 0;
+}
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  height: 80px;
+  border-bottom: 1px solid rgba(29, 29, 31, 0.08);
+  background: rgba(249, 249, 251, 0.78);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  box-shadow: 0 12px 40px rgba(29, 29, 31, 0.035);
+}
+
+.nav-glow {
+  display: none;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  height: 80px;
+  padding: 0 64px;
+  gap: 28px;
+}
+
+.brand {
+  gap: 12px;
+  color: var(--ink);
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(29, 29, 31, 0.08);
+  box-shadow: 0 12px 30px rgba(29, 29, 31, 0.08);
+}
+
+.brand-mark img {
+  width: 25px;
+  height: 25px;
+  filter: none;
+}
+
+.nav-links {
+  justify-content: center;
+  gap: 14px;
+}
+
+.nav-link {
+  min-height: 42px;
+  padding: 0 12px;
+  color: #565b66;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.84);
+  border-color: rgba(29, 29, 31, 0.08);
+  box-shadow: 0 10px 26px rgba(29, 29, 31, 0.05);
+  transform: translateY(-1px);
+}
+
+.profile-chip {
+  min-height: 42px;
+  padding: 5px 14px 5px 5px;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--ink);
+  border: 1px solid rgba(29, 29, 31, 0.08);
+  box-shadow: 0 12px 30px rgba(29, 29, 31, 0.05);
+  font-weight: 500;
+}
+
+.profile-avatar {
+  background: #1d1d1f;
+  color: #fff;
+}
+
+.main-wrap {
+  max-width: 1200px;
+  padding: 46px 64px 96px;
+}
+
+.wizard-wrap {
+  max-width: 1200px;
+}
+
+.panel,
+.recommend-card,
+.summary-card,
+.result-card,
+.college-card,
+.detail-card,
+.source-card,
+.info-block,
+.ask-box,
+.course-card,
+.counsellor-card,
+.path-card,
+.mini-stat,
+.range-card,
+.loader-card,
+.hero-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(29, 29, 31, 0.07);
+  box-shadow: 0 18px 54px rgba(29, 29, 31, 0.045);
+}
+
+.aura-wizard .panel {
+  overflow: hidden;
+}
+
+.step-shell {
+  min-height: calc(100vh - 210px);
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
+  border-radius: 28px;
+}
+
+.step-shell > section {
+  padding: 56px 64px;
+}
+
+.step-rail {
+  top: 104px;
+  min-height: calc(100vh - 210px);
+  padding: 46px 26px;
+  border-right: 1px solid rgba(29, 29, 31, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(247, 248, 250, 0.6));
+}
+
+.phase-label {
+  margin-bottom: 10px;
+  color: var(--faint);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.step-rail h4 {
+  margin: 0 0 28px;
+  color: var(--ink);
+  font-size: 23px;
+  font-weight: 500;
+}
+
+.step-item {
+  min-height: 56px;
+  margin-bottom: 8px;
+  padding: 12px 14px;
+  color: #6d717c;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.step-item.active {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(40, 100, 255, 0.18);
+  box-shadow: 0 12px 30px rgba(40, 100, 255, 0.08);
+  transform: translateX(4px);
+}
+
+.step-item.complete {
+  color: #3f444e;
+}
+
+.step-num {
+  width: 30px;
+  height: 30px;
+  color: #6d717c;
+  background: rgba(29, 29, 31, 0.05);
+  border: 1px solid rgba(29, 29, 31, 0.04);
+}
+
+.step-item.active .step-num {
+  color: #fff;
+  background: #1d1d1f;
+}
+
+.save-progress {
+  width: 100%;
+  margin-top: 34px;
+  padding: 14px 18px;
+  border-radius: 999px;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid rgba(29, 29, 31, 0.12);
+  font-weight: 600;
+}
+
+.save-progress:hover {
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.question-head {
+  margin-bottom: 48px;
+}
+
+.question-head h2,
+.recommend-card h1,
+.detail-hero h1 {
+  color: var(--ink);
+  font-size: 48px;
+  line-height: 1.08;
+  font-weight: 300;
+}
+
+.question-head p,
+.recommend-card p,
+.detail-hero p {
+  max-width: 700px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.progress-ring {
+  width: 74px;
+  height: 74px;
+  color: var(--ink);
+  background: conic-gradient(#1d1d1f var(--progress), rgba(29, 29, 31, 0.08) 0);
+}
+
+.progress-ring::before {
+  inset: 5px;
+  background: #fff;
+}
+
+.input-grid,
+.option-grid,
+.option-grid.three {
+  gap: 22px;
+}
+
+.field span,
+.section-title h2,
+.range-top strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.field input,
+.field select,
+.searchbox,
+.selectbox,
+.ask-input input {
+  min-height: 60px;
+  border-radius: 14px;
+  color: var(--ink);
+  background: rgba(246, 247, 249, 0.94);
+  border: 1px solid rgba(29, 29, 31, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.field input:focus,
+.field select:focus,
+.searchbox:focus,
+.selectbox:focus,
+.ask-input input:focus {
+  background: #fff;
+  border-color: rgba(0, 113, 227, 0.36);
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.08);
+}
+
+.option-card {
+  min-height: 190px;
+  padding: 28px;
+  border-radius: 18px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(29, 29, 31, 0.075);
+  box-shadow: 0 18px 54px rgba(29, 29, 31, 0.035);
+  transition: transform 0.28s ease, border-color 0.28s ease, background 0.28s ease, box-shadow 0.28s ease;
+}
+
+.option-card:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 113, 227, 0.32);
+  box-shadow: 0 22px 60px rgba(29, 29, 31, 0.07);
+  transform: translateY(-4px);
+}
+
+.option-card.selected {
+  background: #fff;
+  border-color: #1d1d1f;
+  box-shadow: 0 22px 70px rgba(29, 29, 31, 0.08), 0 0 0 4px rgba(40, 100, 255, 0.06);
+}
+
+.option-icon,
+.mini-icon,
+.stream-icon {
+  color: var(--ink);
+  background: rgba(29, 29, 31, 0.045);
+  border: 1px solid rgba(29, 29, 31, 0.05);
+}
+
+.option-card h3,
+.result-card h3,
+.college-card h3,
+.course-card h3,
+.counsellor-card h3,
+.path-card h3 {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.option-card p,
+.section-title p,
+.college-meta,
+.clean-list,
+.range-top span,
+.mini-stat span {
+  color: var(--muted);
+}
+
+.btn {
+  min-height: 52px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.btn-primary,
+.btn-dark {
+  color: #fff;
+  background: #1d1d1f;
+  border: 1px solid #1d1d1f;
+  box-shadow: 0 18px 40px rgba(29, 29, 31, 0.16);
+}
+
+.btn-primary:hover,
+.btn-dark:hover {
+  background: #000;
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  color: rgba(29, 29, 31, 0.32);
+  background: rgba(29, 29, 31, 0.07);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.btn-ghost {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.54);
+  border: 1px solid rgba(29, 29, 31, 0.1);
+}
+
+.wizard-actions {
+  margin-top: 58px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(29, 29, 31, 0.08);
+}
+
+.range-card {
+  padding: 26px;
+  border-radius: 18px;
+}
+
+.range-card input[type="range"] {
+  height: 3px;
+  accent-color: #1d1d1f;
+}
+
+.range-top strong:last-child,
+.summary-score strong,
+.score-pill strong,
+.mini-stat strong,
+.college-fee {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.result-head {
+  gap: 24px;
+}
+
+.recommend-card,
+.summary-card {
+  border-radius: 28px;
+  padding: 42px;
+}
+
+.recommend-card h1 span {
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.summary-card {
+  color: #fff;
+  background: linear-gradient(135deg, #1d1d1f, #35363a);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.summary-card h3,
+.summary-score span {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.summary-score strong {
+  color: #fff;
+}
+
+.mini-bar {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.mini-bar div,
+.score-track div {
+  background: linear-gradient(90deg, #1d1d1f, #2864ff);
+}
+
+.tabs {
+  gap: 10px;
+}
+
+.tab-btn {
+  border-radius: 999px;
+  color: #5f646e;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(29, 29, 31, 0.08);
+  box-shadow: none;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  color: #fff;
+  background: #1d1d1f;
+  border-color: #1d1d1f;
+}
+
+.cta-card,
+.cta-card.alt,
+.insight-strip {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(29, 29, 31, 0.08);
+  box-shadow: 0 18px 54px rgba(29, 29, 31, 0.04);
+}
+
+.cta-card span span {
+  color: var(--muted);
+}
+
+.result-card {
+  border-radius: 22px;
+  padding: 28px;
+}
+
+.result-card.best {
+  border-color: rgba(29, 29, 31, 0.22);
+  box-shadow: 0 22px 70px rgba(29, 29, 31, 0.08);
+}
+
+.result-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 113, 227, 0.28);
+}
+
+.score-pill {
+  color: var(--ink);
+  background: rgba(29, 29, 31, 0.045);
+}
+
+.score-pill span {
+  color: var(--muted);
+}
+
+.tag {
+  color: #535762;
+  background: rgba(29, 29, 31, 0.045);
+  border: 1px solid rgba(29, 29, 31, 0.04);
+}
+
+.breakdown-bars span {
+  background: rgba(29, 29, 31, 0.06);
+}
+
+.breakdown-bars b {
+  filter: saturate(0.72);
+}
+
+.college-card {
+  border-radius: 22px;
+  padding: 28px;
+}
+
+.college-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 113, 227, 0.22);
+}
+
+.detail-shell {
+  gap: 24px;
+}
+
+.detail-card {
+  border-radius: 28px;
+  padding: 42px;
+}
+
+.detail-grid,
+.college-grid,
+.course-grid,
+.path-grid,
+.counsellor-grid,
+.mini-stat-grid {
+  gap: 20px;
+}
+
+.score-row {
+  grid-template-columns: 120px 1fr 58px;
+}
+
+.score-track {
+  background: rgba(29, 29, 31, 0.06);
+}
+
+.source-card {
+  border-radius: 24px;
+}
+
+.clean-list li::before {
+  background: var(--blue);
+}
+
+.hero-panel {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(29, 29, 31, 0.07);
+  box-shadow: var(--shadow-soft);
+}
+
+.hero-panel::after {
+  opacity: 0.18;
+}
+
+.hero-title {
+  font-size: 64px;
+  line-height: 1.08;
+  font-weight: 300;
+}
+
+.hero-title span,
+.hero-copy,
+.metric span,
+.hero-card p {
+  color: var(--muted);
+}
+
+.pill {
+  color: var(--ink);
+  background: rgba(29, 29, 31, 0.045);
+}
+
+.live-dot {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(29, 29, 31, 0.08);
+}
+
+.loading-screen {
+  min-height: calc(100vh - 80px);
+}
+
+.loader-orbit {
+  border-color: rgba(29, 29, 31, 0.08);
+  border-top-color: #1d1d1f;
+}
+
+@media (max-width: 1040px) {
+  .nav-inner,
+  .main-wrap {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .step-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .step-shell > section {
+    padding: 36px 28px;
+  }
+
+  .step-rail {
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid rgba(29, 29, 31, 0.08);
+    padding: 28px;
+  }
+
+  .step-item {
+    display: inline-flex;
+    width: auto;
+    margin-right: 8px;
+  }
+
+  .save-progress {
+    display: none;
+  }
+
+  .nav-link span {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .top-nav {
+    height: 70px;
+  }
+
+  .nav-inner {
+    height: 70px;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .brand {
+    font-size: 20px;
+  }
+
+  .main-wrap {
+    padding: 22px 14px 64px;
+  }
+
+  .question-head {
+    align-items: flex-start;
+  }
+
+  .question-head h2,
+  .recommend-card h1,
+  .detail-hero h1 {
+    font-size: 34px;
+    line-height: 1.14;
+  }
+
+  .recommend-card,
+  .summary-card,
+  .detail-card {
+    padding: 26px;
+    border-radius: 24px;
+  }
+
+  .option-card {
+    min-height: 0;
+    padding: 22px;
+  }
+
+  .wizard-actions {
+    align-items: stretch;
+  }
+
+  .hero-title {
+    font-size: 40px;
   }
 }
