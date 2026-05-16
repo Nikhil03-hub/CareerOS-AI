@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CareerOS AI | Precision in Every Path</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@300;400;600;700&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- GSAP & ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "background": "#fdf7ff",
+                "surface-container-lowest": "#ffffff",
+                "inverse-on-surface": "#f5eff7",
+                "on-tertiary-fixed": "#241a00",
+                "outline-variant": "#cbc4d2",
+                "error": "#ba1a1a",
+                "surface-container-highest": "#e6e0e9",
+                "tertiary-fixed-dim": "#e7c365",
+                "tertiary-fixed": "#ffdf93",
+                "primary": "#4f378a",
+                "error-container": "#ffdad6",
+                "on-tertiary": "#ffffff",
+                "secondary-container": "#e1d4fd",
+                "surface": "#fdf7ff",
+                "secondary": "#63597c",
+                "on-secondary-fixed": "#1f1635",
+                "on-error-container": "#93000a",
+                "surface-container-high": "#ece6ee",
+                "on-secondary-fixed-variant": "#4b4263",
+                "on-primary-fixed-variant": "#4f378a",
+                "surface-bright": "#fdf7ff",
+                "secondary-fixed-dim": "#cdc0e9",
+                "on-primary-fixed": "#22005d",
+                "on-surface-variant": "#494551",
+                "surface-variant": "#e6e0e9",
+                "on-primary-container": "#e0d2ff",
+                "surface-container": "#f2ecf4",
+                "inverse-surface": "#322f35",
+                "inverse-primary": "#cfbcff",
+                "surface-tint": "#6750a4",
+                "tertiary-container": "#c9a74d",
+                "tertiary": "#765b00",
+                "on-background": "#1d1b20",
+                "on-tertiary-fixed-variant": "#594400",
+                "primary-fixed": "#e9ddff",
+                "on-secondary-container": "#645a7d",
+                "on-secondary": "#ffffff",
+                "primary-container": "#6750a4",
+                "on-primary": "#ffffff",
+                "on-tertiary-container": "#503d00",
+                "outline": "#7a7582",
+                "primary-fixed-dim": "#cfbcff",
+                "surface-container-low": "#f8f2fa",
+                "surface-dim": "#ded8e0",
+                "on-surface": "#1d1b20",
+                "secondary-fixed": "#e9ddff",
+                "on-error": "#ffffff",
+                "hero-navy": "#002a42"
+            },
+            "borderRadius": {
+                "DEFAULT": "1rem",
+                "lg": "2rem",
+                "xl": "3rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "section-padding": "120px",
+                "unit": "8px",
+                "card-padding": "32px",
+                "gutter": "32px",
+                "container-max": "1280px"
+            },
+            "fontFamily": {
+                "display-lg": ["Hanken Grotesk"],
+                "label-sm": ["Inter"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-lg": ["Hanken Grotesk"],
+                "headline-xl": ["Hanken Grotesk"],
+                "instrument": ["Instrument Serif", "serif"],
+                "inter": ["Inter", "sans-serif"]
+            },
+            "fontSize": {
+                "display-lg": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                "display-lg-mobile": ["40px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                "body-md": ["16px", { "lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400" }],
+                "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+                "headline-lg": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                "headline-xl": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "700" }]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background: #002a42;
+        }
+
+        body {
+            background-color: #002a42;
+            color: #1d1b20;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .luxury-shadow {
+            box-shadow: 0 20px 50px rgba(0,0,0,0.04);
+        }
+        
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .mesh-gradient {
+            background: radial-gradient(at 0% 0%, rgba(207, 188, 255, 0.15) 0px, transparent 50%),
+                        radial-gradient(at 100% 0%, rgba(201, 167, 77, 0.1) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, rgba(79, 55, 138, 0.05) 0px, transparent 50%),
+                        radial-gradient(at 0% 100%, rgba(231, 195, 101, 0.1) 0px, transparent 50%);
+        }
+
+        .grid-texture {
+            background-image: radial-gradient(circle, #000 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.03;
+        }
+
+        .animated-gradient-card {
+            background: conic-gradient(from var(--angle), #4f378a, #6750a4, #cfbcff, #6750a4, #4f378a);
+            animation: rotate-gradient 6s linear infinite;
+        }
+
+        @keyframes rotate-gradient {
+            to { --angle: 360deg; }
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 200px;
+            padding-bottom: 1.5rem;
+        }
+
+        .accordion-item.active .chevron {
+            transform: rotate(180deg);
+        }
+
+        .stars-container {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .hero-video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100svh;
+            z-index: 0;
+            overflow: hidden;
+            background: #002a42;
+            isolation: isolate;
+            transform-origin: 50% 50%;
+            will-change: transform, opacity, filter;
+        }
+
+        #video-bg {
+            width: 100vw;
+            height: 100svh;
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transform-origin: 50% 50%;
+            will-change: transform, filter, opacity;
+        }
+
+        .hero-video-container::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 12;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0) 0%, rgba(0,20,32,0.06) 42%, rgba(0,0,0,0.42) 100%),
+                linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,42,66,0.16) 52%, rgba(0,42,66,0.45) 100%);
+            mix-blend-mode: multiply;
+        }
+
+        #hero-section {
+            display: block;
+            min-height: 185vh;
+        }
+
+        #hero-section > div {
+            position: sticky;
+            top: 0;
+            min-height: 100svh;
+            display: flex;
+            justify-content: center;
+            padding-top: clamp(96px, 13vh, 132px);
+            padding-bottom: clamp(36px, 7vh, 72px);
+            box-sizing: border-box;
+        }
+
+        #hero-title,
+        #hero-desc {
+            will-change: transform, opacity, filter;
+        }
+
+        #hero-title {
+            font-size: clamp(4.75rem, 12vw, 10rem);
+            line-height: 0.86;
+            margin-bottom: clamp(2rem, 5vw, 3rem);
+        }
+
+        #main-nav .flex.items-center.justify-between {
+            gap: 18px;
+        }
+
+        #nav-logo,
+        .nav-link,
+        .nav-cta {
+            white-space: nowrap;
+        }
+
+        #sections-wrapper {
+            margin-top: -42vh;
+            border-top-left-radius: 48px;
+            border-top-right-radius: 48px;
+            box-shadow: 0 -30px 90px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            transform-origin: top center;
+            will-change: transform, border-radius;
+        }
+
+        /* Initial states for GSAP */
+        .fade-rise-init {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .section-reveal-init {
+            opacity: 0;
+            transform: translateY(60px);
+        }
+
+        #bg-lightener {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .word-clip {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: top;
+        }
+
+        .word-inner {
+            display: inline-block;
+            transform: translateY(0);
+            opacity: 1;
+            will-change: transform, opacity;
+        }
+
+        .reveal-copy {
+            opacity: 0;
+            transform: translateY(24px);
+            will-change: transform, opacity;
+        }
+
+        .motion-card {
+            transform-style: preserve-3d;
+            will-change: transform, opacity, filter;
+        }
+
+        #features .grid {
+            perspective: 1400px;
+            position: relative;
+        }
+
+        #features .grid > .section-reveal-init,
+        .accordion-item,
+        footer form {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #features .grid > .section-reveal-init {
+            z-index: 2;
+        }
+
+        .feature-flow-lines {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            overflow: visible;
+        }
+
+        .feature-flow-lines svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .feature-flow-path {
+            fill: none;
+            stroke: url(#feature-flow-gradient);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.82;
+            filter: drop-shadow(0 0 10px rgba(103, 80, 164, 0.28));
+        }
+
+        #features .grid > .section-reveal-init::before,
+        .accordion-item::before,
+        footer form::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.85) 44%, transparent 58%);
+            transform: translateX(-120%);
+        }
+
+        #features .grid > .section-reveal-init.is-lit::before,
+        .accordion-item.is-lit::before,
+        footer form.is-lit::before {
+            animation: card-sheen 1.15s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        }
+
+        @keyframes card-sheen {
+            0% { opacity: 0; transform: translateX(-120%); }
+            18% { opacity: 0.65; }
+            100% { opacity: 0; transform: translateX(120%); }
+        }
+
+        @media (max-width: 768px) {
+            #hero-section {
+                min-height: 170vh;
+            }
+
+            #sections-wrapper {
+                margin-top: -34vh;
+                border-top-left-radius: 32px;
+                border-top-right-radius: 32px;
+            }
+        }
+
+        @media (max-width: 980px) {
+            #main-nav .hidden.md\:flex {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            #main-nav {
+                top: 14px;
+                width: calc(100% - 28px);
+                padding: 12px 16px;
+            }
+
+            #nav-logo {
+                font-size: 1.35rem;
+                line-height: 1.1;
+            }
+
+            #main-nav button.nav-link {
+                display: none;
+            }
+
+            .nav-cta {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface antialiased">
+<div id="bg-lightener"></div>
+<!-- Fixed Cinematic Hero Background -->
+<div class="hero-video-container" id="hero-bg">
+<video autoplay="" class="absolute inset-0 w-full h-full object-cover z-0" id="video-bg" loop="" muted="" playsinline="" preload="auto">
+<source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4" type="video/mp4"/>
+</video>
+<div class="stars-container" id="stars-field"></div>
+<div class="absolute inset-0 bg-hero-navy/40 z-10" id="video-overlay"></div>
+</div>
+<!-- Adaptive Navbar -->
+<nav class="fixed top-6 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] max-w-container-max z-50 liquid-glass rounded-full px-8 py-4 transition-all duration-700" id="main-nav">
+<div class="flex items-center justify-between">
+<div class="font-headline-lg text-headline-lg font-bold text-white tracking-tighter" id="nav-logo">CareerOS AI</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="nav-link text-white/80 hover:text-white transition-colors font-body-md text-body-md" href="#">Pathways</a>
+<a class="nav-link text-white/80 hover:text-white transition-colors font-body-md text-body-md" href="#">Roadmap</a>
+<a class="nav-link text-white/80 hover:text-white transition-colors font-body-md text-body-md" href="#">Parents</a>
+<a class="nav-link text-white/80 hover:text-white transition-colors font-body-md text-body-md" href="#">Success Stories</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="nav-link px-6 py-2 text-white/80 font-medium hover:text-white transition-colors font-body-md">Login</button>
+<button class="nav-cta liquid-glass border-white/20 bg-white/10 px-6 py-2.5 text-white rounded-full font-semibold hover:scale-105 transition-all font-body-md">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="relative z-20">
+<!-- Hero Section -->
+<section class="relative min-h-screen w-full flex items-center justify-center pointer-events-none" id="hero-section">
+<div class="relative z-20 w-full max-w-container-max mx-auto px-gutter text-center flex flex-col items-center pointer-events-auto">
+<h1 class="font-instrument italic text-white text-8xl md:text-[160px] leading-[0.85] mb-12 tracking-tighter fade-rise-init" id="hero-title">
+                Dream.<br/>Prepare.<br/>Succeed.
+            </h1>
+<div class="max-w-3xl flex flex-col items-center gap-8 fade-rise-init" id="hero-desc">
+<p class="font-inter text-2xl md:text-3xl text-white font-light leading-relaxed">
+                    AI-powered career guidance for the next generation.
+                </p>
+<div class="flex flex-col sm:flex-row gap-6 mt-4 w-full justify-center">
+<button class="liquid-glass border-white/30 bg-white/10 px-12 py-6 rounded-full font-inter font-semibold text-white text-lg hover:scale-105 transition-all duration-500 flex items-center justify-center gap-3">
+                        Explore Your Career Path
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- White Content Wrapper -->
+<div class="bg-white relative z-30" id="sections-wrapper">
+<!-- AI Features Showcase -->
+<section class="py-section-padding bg-background overflow-hidden" id="features">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="text-center mb-32 max-w-3xl mx-auto section-reveal-init">
+<span class="text-label-sm font-label-sm text-primary uppercase tracking-widest block mb-6">Powerful Toolkit</span>
+<h2 class="font-headline-xl text-headline-xl mb-8 leading-tight">Engineered for Transformation</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Comprehensive AI tools designed to decode your potential and map it to the global job market.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+<!-- Feature Cards -->
+<div class="bg-surface-container-lowest p-card-padding rounded-lg luxury-shadow border border-outline-variant/10 hover:-translate-y-3 transition-all duration-700 section-reveal-init">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-10">
+<span class="material-symbols-outlined text-primary text-3xl">psychology_alt</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg mb-6">AI Career Quiz</h3>
+<p class="text-on-surface-variant mb-10 text-body-lg leading-relaxed">Go beyond aptitude. Our quiz analyzes psychometrics, interests, and future-readiness.</p>
+<div class="bg-surface-container p-6 rounded-xl">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
+<span class="text-label-sm font-bold">Analyzing Patterns...</span>
+</div>
+<div class="h-1.5 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3 transition-all duration-1000"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-card-padding rounded-lg luxury-shadow border border-outline-variant/10 hover:-translate-y-3 transition-all duration-700 section-reveal-init">
+<div class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mb-10">
+<span class="material-symbols-outlined text-secondary text-3xl">trending_up</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg mb-6">College Predictor</h3>
+<p class="text-on-surface-variant mb-10 text-body-lg leading-relaxed">Input your scores and preferences to see your high-probability institutional matches.</p>
+<div class="grid grid-cols-3 gap-3 items-end h-24">
+<div class="h-1/2 bg-secondary/15 rounded-t-lg"></div>
+<div class="h-full bg-secondary/30 rounded-t-lg"></div>
+<div class="h-3/4 bg-secondary/15 rounded-t-lg"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-card-padding rounded-lg luxury-shadow border border-outline-variant/10 hover:-translate-y-3 transition-all duration-700 section-reveal-init">
+<div class="w-16 h-16 bg-tertiary/10 rounded-full flex items-center justify-center mb-10">
+<span class="material-symbols-outlined text-tertiary text-3xl">description</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg mb-6">Resume Builder</h3>
+<p class="text-on-surface-variant mb-10 text-body-lg leading-relaxed">Smart optimization that tailors your resume for ATS systems and industry benchmarks.</p>
+<div class="flex flex-col gap-3">
+<div class="h-5 bg-tertiary-fixed rounded-full w-full"></div>
+<div class="h-5 bg-tertiary-fixed/40 rounded-full w-5/6"></div>
+<div class="h-5 bg-tertiary-fixed/20 rounded-full w-3/4"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-card-padding rounded-lg luxury-shadow border border-outline-variant/10 hover:-translate-y-3 transition-all duration-700 section-reveal-init">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-10">
+<span class="material-symbols-outlined text-primary text-3xl">record_voice_over</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg mb-6">AI Mock Interview</h3>
+<p class="text-on-surface-variant mb-10 text-body-lg leading-relaxed">Real-time feedback on your speech, confidence, and technical accuracy with AI avatars.</p>
+<div class="flex items-center gap-6">
+<div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">mic</span>
+</div>
+<div class="flex-1 h-2 bg-primary/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/2"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-card-padding rounded-lg luxury-shadow border border-outline-variant/10 hover:-translate-y-3 transition-all duration-700 section-reveal-init">
+<div class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mb-10">
+<span class="material-symbols-outlined text-secondary text-3xl">analytics</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg mb-6">Skill Analysis</h3>
+<p class="text-on-surface-variant mb-10 text-body-lg leading-relaxed">Visualize your skill gaps and get curated learning paths to bridge them in record time.</p>
+<div class="flex justify-center">
+<div class="w-20 h-20 border-[6px] border-secondary-container rounded-full border-t-secondary animate-spin-slow"></div>
+</div>
+</div>
+<div class="bg-primary p-card-padding rounded-lg luxury-shadow flex flex-col justify-between items-start group cursor-pointer overflow-hidden relative section-reveal-init">
+<div class="absolute -right-12 -bottom-12 w-64 h-64 bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-1000"></div>
+<h3 class="font-headline-lg text-headline-lg text-on-primary relative z-10">And 15+ more features waiting for you.</h3>
+<button class="bg-white text-primary px-8 py-4 rounded-full font-bold flex items-center gap-3 group-hover:gap-5 transition-all relative z-10">
+                            Discover All <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Student Transformation Story -->
+<section class="py-section-padding bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
+<div class="section-reveal-init">
+<h2 class="font-headline-xl text-headline-xl mb-12">From Confusion to a Dream Placement.</h2>
+<div class="space-y-16">
+<div class="flex gap-8">
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold shadow-lg">1</div>
+<div class="w-0.5 h-full bg-outline-variant/20 my-4"></div>
+</div>
+<div>
+<h4 class="font-bold text-xl mb-3">The Discovery</h4>
+<p class="text-on-surface-variant text-body-lg">Aryan (10th grade) was unsure between Engineering and Design. Our AI Quiz revealed a high aptitude for Product Design.</p>
+</div>
+</div>
+<div class="flex gap-8">
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold shadow-lg">2</div>
+<div class="w-0.5 h-full bg-outline-variant/20 my-4"></div>
+</div>
+<div>
+<h4 class="font-bold text-xl mb-3">The Preparation</h4>
+<p class="text-on-surface-variant text-body-lg">Post-12th, CareerOS AI mapped out the best design institutes and provided a curated portfolio-building roadmap.</p>
+</div>
+</div>
+<div class="flex gap-8">
+<div class="flex flex-col items-center">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold shadow-lg">3</div>
+</div>
+<div>
+<h4 class="font-bold text-xl mb-3">The Success</h4>
+<p class="text-on-surface-variant text-body-lg">During Graduation, AI Mock Interviews sharpened his pitch, leading to a placement at a top-tier tech firm.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative section-reveal-init">
+<div class="absolute -top-16 -left-16 w-80 h-80 bg-primary-fixed-dim/20 blur-3xl rounded-full"></div>
+<div class="relative rounded-2xl overflow-hidden luxury-shadow border-[12px] border-white">
+<img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-1000 transform hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWSQLWPcXrQTDIJx2mt7rnytarI4mhHDOcigi2I90Z6gLSsTXH57orl_9Fblkhd3jVC2GwKhzrcleR7zBluwklVLVIVn5-aPCgBLNXjiW4n00AjMERdRv8er2rwqGrQrEWfrPJ82MgSGSpZ18tk-TFNcSW7TpQn17qbk4QUNM6VqfJCHFJq7y3kpmeXre1Hri8MHsTrKKZP_Tyqp7lMhUT2O_ue03FzLDPK7yAmuWF1NzV7MlwcvcjKKnIF2n7KhhwqqpxZBL3374"/>
+</div>
+<div class="absolute -bottom-12 -right-12 bg-surface-container-lowest p-8 rounded-2xl luxury-shadow max-w-sm border border-outline-variant/10">
+<div class="flex gap-1 text-primary mb-3">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="italic text-on-surface-variant text-lg">"CareerOS AI didn't just give me advice; it gave me a blueprint for my life."</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Parent Trust Section -->
+<section class="py-section-padding mesh-gradient">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-32 items-center">
+<div class="order-2 lg:order-1 section-reveal-init">
+<div class="bg-surface-container-lowest rounded-[2rem] luxury-shadow p-12 border border-white/60">
+<div class="flex justify-between items-center mb-10">
+<h3 class="font-headline-lg text-headline-lg">Child's Growth Hub</h3>
+<span class="material-symbols-outlined text-outline">settings</span>
+</div>
+<div class="space-y-8">
+<div class="p-6 bg-surface-container rounded-2xl flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">auto_graph</span>
+</div>
+<div>
+<div class="font-bold text-lg">Skill Velocity</div>
+<div class="text-label-sm text-on-surface-variant">+12% this month</div>
+</div>
+</div>
+<div class="text-primary font-bold">On Track</div>
+</div>
+<div class="p-6 bg-surface-container rounded-2xl">
+<div class="flex justify-between items-center mb-4">
+<span class="font-bold">Recommendation Confidence</span>
+<span class="font-bold text-primary">94%</span>
+</div>
+<div class="w-full bg-outline-variant/20 h-3 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[94%]"></div>
+</div>
+</div>
+</div>
+<div class="mt-12 pt-10 border-t border-outline-variant/10">
+<h4 class="font-bold mb-6 text-lg">Latest Insights for Parents</h4>
+<div class="flex gap-3">
+<span class="px-5 py-2 bg-primary/5 text-primary rounded-full text-sm font-semibold">Entrance Trends</span>
+<span class="px-5 py-2 bg-primary/5 text-primary rounded-full text-sm font-semibold">Scholarships</span>
+</div>
+</div>
+</div>
+</div>
+<div class="order-1 lg:order-2 flex flex-col gap-8 section-reveal-init">
+<span class="text-label-sm font-label-sm text-primary uppercase tracking-widest block">Family Governance</span>
+<h2 class="font-headline-xl text-headline-xl">Parents Need Clarity Too.</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">We provide parents with a transparent window into their child's progress, offering reassurance through data-driven performance charts and verified career paths.</p>
+<ul class="space-y-6 mt-4">
+<li class="flex items-center gap-5">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="font-bold text-lg">Growth Tracking Dashboards</span>
+</li>
+<li class="flex items-center gap-5">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="font-bold text-lg">Performance Analysis Reports</span>
+</li>
+<li class="flex items-center gap-5">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<span class="font-bold text-lg">Expert Financial Guidance</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-section-padding">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="bg-primary rounded-[3rem] p-20 md:p-32 text-center relative overflow-hidden luxury-shadow section-reveal-init">
+<div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none grid-texture"></div>
+<div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-white/10 blur-[120px] rounded-full"></div>
+<div class="absolute -bottom-32 -right-32 w-[600px] h-[600px] bg-secondary/20 blur-[120px] rounded-full"></div>
+<div class="relative z-10 max-w-4xl mx-auto">
+<h2 class="font-instrument italic text-5xl md:text-8xl text-on-primary mb-12 leading-tight">Your Future Deserves Better Guidance.</h2>
+<p class="text-on-primary/80 text-xl font-body-lg mb-16 max-w-2xl mx-auto">Join 50,000+ students who have already started their journey with AI-driven precision.</p>
+<button class="bg-white text-primary px-16 py-7 rounded-full font-bold text-2xl shadow-2xl hover:scale-105 transition-transform">
+                            Explore Your Path Now
+                        </button>
+<div class="mt-20 flex justify-center gap-16 text-on-primary/70">
+<div class="flex flex-col">
+<span class="font-bold text-4xl text-on-primary">50k+</span>
+<span class="text-xs uppercase tracking-widest mt-2">Students</span>
+</div>
+<div class="w-px h-16 bg-white/10"></div>
+<div class="flex flex-col">
+<span class="font-bold text-4xl text-on-primary">200+</span>
+<span class="text-xs uppercase tracking-widest mt-2">Expert Mentors</span>
+</div>
+<div class="w-px h-16 bg-white/10"></div>
+<div class="flex flex-col">
+<span class="font-bold text-4xl text-on-primary">98%</span>
+<span class="text-xs uppercase tracking-widest mt-2">Satisfaction</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="py-section-padding bg-surface-container-low font-inter" id="faq">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-20 items-start">
+<div class="animated-gradient-card rounded-[3.5rem] p-16 lg:p-24 relative overflow-hidden flex flex-col items-start justify-center min-h-[600px] shadow-2xl section-reveal-init">
+<div class="relative z-10">
+<h2 class="text-5xl md:text-7xl font-bold text-white mb-12 leading-[1.05] tracking-tight">Ready to Transform Without Borders?</h2>
+<button class="bg-white text-primary px-12 py-6 rounded-full font-bold text-2xl hover:bg-opacity-90 transition-all flex items-center gap-4">
+                                Get Started Today
+                                <i class="w-8 h-8" data-lucide="arrow-right"></i>
+</button>
+</div>
+<div class="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+</div>
+<div class="flex flex-col gap-8 section-reveal-init">
+<h3 class="text-4xl font-bold text-on-surface mb-6">Common Questions</h3>
+<div class="space-y-5">
+<div class="accordion-item bg-white rounded-3xl border border-outline-variant/10 overflow-hidden transition-all duration-300 luxury-shadow">
+<button class="w-full flex items-center justify-between p-8 text-left focus:outline-none" onclick="toggleAccordion(this)">
+<span class="font-bold text-xl text-on-surface">What are the career path limits?</span>
+<i class="chevron w-6 h-6 text-outline transition-transform duration-300" data-lucide="chevron-down"></i>
+</button>
+<div class="accordion-content px-8">
+<p class="text-on-surface-variant leading-relaxed pb-6 text-lg">CareerOS AI provides unlimited pathway explorations for pro users. Standard users can explore up to 5 comprehensive roadmaps per month with full AI analysis.</p>
+</div>
+</div>
+<div class="accordion-item bg-white rounded-3xl border border-outline-variant/10 overflow-hidden transition-all duration-300 luxury-shadow">
+<button class="w-full flex items-center justify-between p-8 text-left focus:outline-none" onclick="toggleAccordion(this)">
+<span class="font-bold text-xl text-on-surface">Who are the recipients?</span>
+<i class="chevron w-6 h-6 text-outline transition-transform duration-300" data-lucide="chevron-down"></i>
+</button>
+<div class="accordion-content px-8">
+<p class="text-on-surface-variant leading-relaxed pb-6 text-lg">Our insights are tailored for students (8th grade to post-grad) and shared with parents/guardians through a dedicated dashboard for collaborative decision making.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white border-t border-outline-variant/10 pt-32 pb-16 font-inter">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 mb-24">
+<div class="flex flex-col gap-8 section-reveal-init">
+<div class="font-headline-lg text-headline-lg font-bold text-primary tracking-tighter">CareerOS AI</div>
+<p class="text-on-surface-variant text-lg leading-relaxed">Revolutionizing career guidance through personalized AI roadmaps. Empowering the next generation of global talent.</p>
+<div class="flex gap-5">
+<a class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-white transition-all" href="#"><i class="w-6 h-6" data-lucide="facebook"></i></a>
+<a class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-white transition-all" href="#"><i class="w-6 h-6" data-lucide="linkedin"></i></a>
+<a class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:bg-primary hover:text-white transition-all" href="#"><i class="w-6 h-6" data-lucide="instagram"></i></a>
+</div>
+</div>
+<div class="section-reveal-init">
+<h4 class="font-bold text-on-surface text-lg mb-10 uppercase tracking-widest">Navigation</h4>
+<ul class="flex flex-col gap-5 text-lg">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Home</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Pathways</a></li>
+</ul>
+</div>
+<div class="section-reveal-init">
+<h4 class="font-bold text-on-surface text-lg mb-10 uppercase tracking-widest">Resources</h4>
+<ul class="flex flex-col gap-5 text-lg">
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">AI Quiz</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<div class="section-reveal-init">
+<h4 class="font-bold text-on-surface text-lg mb-10 uppercase tracking-widest">Stay Updated</h4>
+<form class="flex flex-col gap-4">
+<input class="w-full px-6 py-4 rounded-2xl border border-outline-variant/20 focus:ring-2 focus:ring-primary focus:outline-none bg-surface-container" placeholder="Email address" type="email"/>
+<button class="bg-primary text-on-primary px-6 py-4 rounded-2xl font-bold hover:opacity-90 transition-opacity">Subscribe</button>
+</form>
+</div>
+</div>
+<div class="pt-12 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center gap-8">
+<p class="text-on-surface-variant text-base">© 2024 CareerOS AI. All rights reserved.</p>
+<div class="flex gap-10 text-base text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Cookie Settings</a>
+<a class="hover:text-primary transition-colors" href="#">Security</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+</main>
+<script>
+    lucide.createIcons();
+
+    function toggleAccordion(button) {
+        const item = button.parentElement;
+        const isActive = item.classList.contains('active');
+        document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
+        if (!isActive) item.classList.add('active');
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+    }
+    let userStartedScrolling = false;
+    ["wheel", "touchmove"].forEach((eventName) => {
+        window.addEventListener(eventName, () => userStartedScrolling = true, { once: true, passive: true });
+    });
+
+    function escapeHtml(value) {
+        const entities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#039;" };
+        return value.replace(/[&<>"']/g, (character) => entities[character]);
+    }
+
+    function splitWords(selector) {
+        document.querySelectorAll(selector).forEach((element) => {
+            if (element.dataset.splitReady === "true") return;
+            const text = element.textContent.replace(/\s+/g, " ").trim();
+            if (!text) return;
+
+            element.dataset.splitReady = "true";
+            element.setAttribute("aria-label", text);
+            element.innerHTML = text
+                .split(" ")
+                .map((word) => `<span class="word-clip"><span class="word-inner">${escapeHtml(word)}</span></span>`)
+                .join(" ");
+        });
+    }
+
+    function forceVideoPlayback() {
+        const video = document.getElementById("video-bg");
+        if (!video) return;
+
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "auto";
+        video.setAttribute("playsinline", "");
+        video.setAttribute("muted", "");
+
+        const tryPlay = () => {
+            const playAttempt = video.play();
+            if (playAttempt && typeof playAttempt.catch === "function") {
+                playAttempt.catch(() => {});
+            }
+        };
+
+        if (video.readyState >= 2) tryPlay();
+        video.addEventListener("loadeddata", tryPlay, { once: true });
+        video.addEventListener("canplay", tryPlay, { once: true });
+        document.addEventListener("visibilitychange", () => {
+            if (!document.hidden) tryPlay();
+        });
+    }
+
+    function createStarField() {
+        const starsContainer = document.getElementById('stars-field');
+        if (!starsContainer || starsContainer.children.length) return;
+
+        const starCount = window.innerWidth < 768 ? 34 : 68;
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2 + 1;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            starsContainer.appendChild(star);
+            
+            gsap.to(star, {
+                opacity: Math.random() * 0.5 + 0.2,
+                duration: Math.random() * 3 + 1,
+                repeat: -1,
+                yoyo: true,
+                delay: Math.random() * 5
+            });
+        }
+    }
+
+    function showStaticExperience() {
+        document.querySelectorAll(".fade-rise-init, .section-reveal-init, .reveal-copy, .word-inner").forEach((element) => {
+            gsap.set(element, { autoAlpha: 1, y: 0, yPercent: 0, scale: 1, rotateX: 0, filter: "blur(0px)" });
+        });
+        gsap.set("#sections-wrapper", { y: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 });
+        gsap.set("#bg-lightener", { autoAlpha: 0 });
+    }
+
+    function animateNavigationToLight() {
+        gsap.to("#main-nav", {
+            backgroundColor: "rgba(255, 255, 255, 0.88)",
+            backdropFilter: "blur(24px)",
+            borderColor: "rgba(0,0,0,0.06)",
+            boxShadow: "0 18px 45px rgba(0,0,0,0.07)",
+            duration: 0.7,
+            ease: "power3.out"
+        });
+        gsap.to("#nav-logo", { color: "#4f378a", duration: 0.7, ease: "power3.out" });
+        gsap.to(".nav-link", { color: "rgba(29, 27, 32, 0.72)", duration: 0.7, ease: "power3.out" });
+        gsap.to(".nav-cta", { backgroundColor: "#4f378a", color: "#ffffff", borderColor: "transparent", duration: 0.7, ease: "power3.out" });
+    }
+
+    function animateNavigationToHero() {
+        gsap.to("#main-nav", {
+            backgroundColor: "rgba(255, 255, 255, 0.03)",
+            backdropFilter: "blur(4px)",
+            borderColor: "rgba(255,255,255,0.1)",
+            boxShadow: "none",
+            duration: 0.7,
+            ease: "power3.out"
+        });
+        gsap.to("#nav-logo", { color: "#ffffff", duration: 0.7, ease: "power3.out" });
+        gsap.to(".nav-link", { color: "rgba(255, 255, 255, 0.82)", duration: 0.7, ease: "power3.out" });
+        gsap.to(".nav-cta", { backgroundColor: "rgba(255,255,255,0.1)", color: "#ffffff", borderColor: "rgba(255,255,255,0.2)", duration: 0.7, ease: "power3.out" });
+    }
+
+    function revealMissedContent() {
+        const revealLine = window.innerHeight * 0.94;
+
+        document.querySelectorAll(".section-reveal-init, .reveal-copy, .motion-card").forEach((element) => {
+            if (element.dataset.revealDone === "true") return;
+            const rect = element.getBoundingClientRect();
+            if (rect.top < revealLine && rect.bottom > -80) {
+                element.dataset.revealDone = "true";
+                gsap.to(element, {
+                    autoAlpha: 1,
+                    y: 0,
+                    scale: 1,
+                    rotateX: 0,
+                    filter: "blur(0px)",
+                    duration: 0.55,
+                    ease: "power3.out"
+                });
+                if (element.matches("#features .grid > .section-reveal-init, .accordion-item, footer form")) {
+                    element.classList.add("is-lit");
+                }
+            }
+        });
+
+        document.querySelectorAll("[data-split-ready='true']").forEach((textBlock) => {
+            if (textBlock.dataset.wordsDone === "true") return;
+            const rect = textBlock.getBoundingClientRect();
+            if (rect.top < revealLine && rect.bottom > -80) {
+                textBlock.dataset.wordsDone = "true";
+                gsap.to(textBlock.querySelectorAll(".word-inner"), {
+                    yPercent: 0,
+                    opacity: 1,
+                    duration: 0.68,
+                    stagger: 0.018,
+                    ease: "expo.out"
+                });
+            }
+        });
+
+        const featureGrid = document.querySelector("#features .grid");
+        if (featureGrid && featureGrid.dataset.connectionsDone !== "true") {
+            const gridRect = featureGrid.getBoundingClientRect();
+            if (gridRect.top < revealLine && gridRect.bottom > -80) {
+                featureGrid.dataset.connectionsDone = "true";
+                gsap.to(".feature-flow-path", {
+                    strokeDashoffset: 0,
+                    duration: 0.8,
+                    stagger: 0.06,
+                    ease: "power2.out"
+                });
+            }
+        }
+    }
+
+    function holdInitialScrollTop() {
+        [0, 120, 360, 900, 1600].forEach((delay) => {
+            setTimeout(() => {
+                if (!userStartedScrolling) {
+                    window.scrollTo(0, 0);
+                    gsap.set("#hero-bg", { autoAlpha: 1 });
+                    gsap.set("#bg-lightener", { autoAlpha: 0 });
+                    animateNavigationToHero();
+                    ScrollTrigger.refresh();
+                }
+            }, delay);
+        });
+    }
+
+    function setupFeatureConnections(cards) {
+        const grid = document.querySelector("#features .grid");
+        if (!grid || cards.length < 2) return;
+
+        let layer = grid.querySelector(".feature-flow-lines");
+        if (!layer) {
+            layer = document.createElement("div");
+            layer.className = "feature-flow-lines";
+            grid.prepend(layer);
+        }
+
+        const draw = () => {
+            const gridRect = grid.getBoundingClientRect();
+            const paths = [];
+            layer.innerHTML = `
+                <svg aria-hidden="true" focusable="false">
+                    <defs>
+                        <linearGradient id="feature-flow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#cfbcff"/>
+                            <stop offset="52%" stop-color="#6750a4"/>
+                            <stop offset="100%" stop-color="#e7c365"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            `;
+
+            const svg = layer.querySelector("svg");
+            cards.forEach((card, index) => {
+                const next = cards[index + 1];
+                if (!next) return;
+
+                const a = card.getBoundingClientRect();
+                const b = next.getBoundingClientRect();
+                const sameRow = Math.abs((a.top + a.height / 2) - (b.top + b.height / 2)) < Math.min(a.height, b.height) * 0.6;
+
+                let x1;
+                let y1;
+                let x2;
+                let y2;
+                let d;
+
+                if (sameRow) {
+                    x1 = a.right - gridRect.left + 10;
+                    y1 = a.top + a.height / 2 - gridRect.top;
+                    x2 = b.left - gridRect.left - 10;
+                    y2 = b.top + b.height / 2 - gridRect.top;
+                    const curve = Math.max(34, Math.abs(x2 - x1) * 0.35);
+                    d = `M ${x1} ${y1} C ${x1 + curve} ${y1}, ${x2 - curve} ${y2}, ${x2} ${y2}`;
+                } else {
+                    x1 = a.left + a.width / 2 - gridRect.left;
+                    y1 = a.bottom - gridRect.top + 10;
+                    x2 = b.left + b.width / 2 - gridRect.left;
+                    y2 = b.top - gridRect.top - 10;
+                    const midY = y1 + Math.max(38, (y2 - y1) * 0.45);
+                    d = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
+                }
+
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("class", "feature-flow-path");
+                path.setAttribute("d", d);
+                svg.appendChild(path);
+                paths.push(path);
+            });
+
+            paths.forEach((path) => {
+                const length = path.getTotalLength();
+                path.style.strokeDasharray = length;
+                path.style.strokeDashoffset = grid.dataset.connectionsDone === "true" ? 0 : length;
+            });
+        };
+
+        draw();
+        window.addEventListener("resize", () => requestAnimationFrame(draw), { passive: true });
+    }
+
+    function initExperience() {
+        window.scrollTo(0, 0);
+        holdInitialScrollTop();
+        forceVideoPlayback();
+        createStarField();
+
+        splitWords("#sections-wrapper h2, #features h3, #faq h3, footer h4");
+
+        document.querySelectorAll("#sections-wrapper p, #sections-wrapper li, #sections-wrapper button, #sections-wrapper form").forEach((element) => {
+            if (!element.closest(".accordion-content")) element.classList.add("reveal-copy");
+        });
+
+        document.querySelectorAll("#features .grid > .section-reveal-init, .accordion-item, footer form").forEach((element) => {
+            element.classList.add("motion-card");
+        });
+
+        if (reduceMotion) {
+            showStaticExperience();
+            return;
+        }
+
+        gsap.set("#sections-wrapper", { y: "18vh" });
+        gsap.set("#video-bg", { scale: 1.03, filter: "brightness(0.85) saturate(1.08) contrast(1.08)" });
+        gsap.set("#hero-title", { autoAlpha: 0, y: 72, scale: 0.96, filter: "blur(10px)" });
+        gsap.set("#hero-desc", { autoAlpha: 0, y: 36, filter: "blur(8px)" });
+        gsap.set(".section-reveal-init", { autoAlpha: 0, y: 70, filter: "blur(10px)" });
+        gsap.set(".reveal-copy", { autoAlpha: 0, y: 24 });
+        gsap.set("#features .grid > .section-reveal-init", { autoAlpha: 0, y: 110, scale: 0.92, rotateX: 16, filter: "blur(8px)" });
+
+        const heroEntrance = gsap.timeline({ defaults: { ease: "expo.out" } });
+        heroEntrance
+            .to("#video-bg", { scale: 1, filter: "brightness(1) saturate(1.06) contrast(1)", duration: 1.7 }, 0)
+            .to("#hero-title", { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 1.35 }, 0.12)
+            .to("#hero-desc", { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 1.05 }, 0.72);
+
+        const heroScroll = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#hero-section",
+                start: "top top",
+                end: "bottom top",
+                scrub: 1.15,
+                invalidateOnRefresh: true
+            }
+        });
+
+        heroScroll
+            .to("#video-bg", { scale: 1.42, filter: "brightness(1.42) saturate(1.24) contrast(1.08) blur(3px)", ease: "none" }, 0)
+            .to("#video-overlay", { backgroundColor: "rgba(0, 42, 66, 0.72)", ease: "none" }, 0)
+            .to("#stars-field", { autoAlpha: 0, scale: 1.65, ease: "none" }, 0.02)
+            .to("#hero-title", { autoAlpha: 0, y: -130, scale: 0.82, filter: "blur(14px)", ease: "none" }, 0.08)
+            .to("#hero-desc", { autoAlpha: 0, y: -92, scale: 0.94, filter: "blur(10px)", ease: "none" }, 0.14)
+            .to("#bg-lightener", { autoAlpha: 0.86, ease: "none" }, 0.42)
+            .to("#sections-wrapper", { y: "0vh", borderTopLeftRadius: "0px", borderTopRightRadius: "0px", ease: "none" }, 0.46)
+            .to("#bg-lightener", { autoAlpha: 0, ease: "none" }, 0.78)
+            .to("#hero-bg", { autoAlpha: 0, ease: "none" }, 0.9);
+        
+        ScrollTrigger.create({
+            trigger: "#sections-wrapper",
+            start: "top 72%",
+            onEnter: animateNavigationToLight,
+            onLeaveBack: animateNavigationToHero
+        });
+
+        const featureCards = gsap.utils.toArray("#features .grid > .section-reveal-init");
+        const revealBlocks = gsap.utils.toArray(".section-reveal-init").filter((element) => !featureCards.includes(element));
+        setupFeatureConnections(featureCards);
+
+        ScrollTrigger.batch(revealBlocks, {
+            start: "top 84%",
+            once: true,
+            onEnter: (batch) => gsap.to(batch, {
+                autoAlpha: 1,
+                y: 0,
+                filter: "blur(0px)",
+                duration: 1.05,
+                stagger: 0.12,
+                ease: "power4.out",
+                onComplete: () => batch.forEach((element) => element.dataset.revealDone = "true")
+            })
+        });
+
+        ScrollTrigger.batch(featureCards, {
+            start: "top 86%",
+            once: true,
+            onEnter: (batch) => {
+                const grid = document.querySelector("#features .grid");
+                const paths = gsap.utils.toArray(".feature-flow-path");
+                gsap.to(paths, {
+                    strokeDashoffset: 0,
+                    duration: 1.05,
+                    stagger: 0.09,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        if (grid) grid.dataset.connectionsDone = "true";
+                    }
+                });
+                gsap.to(batch, {
+                    autoAlpha: 1,
+                    y: 0,
+                    scale: 1,
+                    rotateX: 0,
+                    filter: "blur(0px)",
+                    duration: 1.08,
+                    stagger: 0.12,
+                    ease: "back.out(1.22)",
+                    onComplete: () => batch.forEach((element) => {
+                        element.dataset.revealDone = "true";
+                        element.classList.add("is-lit");
+                    })
+                });
+            }
+        });
+
+        ScrollTrigger.batch(".reveal-copy", {
+            start: "top 90%",
+            once: true,
+            onEnter: (batch) => gsap.to(batch, {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.72,
+                stagger: 0.045,
+                ease: "power3.out",
+                onComplete: () => batch.forEach((element) => element.dataset.revealDone = "true")
+            })
+        });
+
+        gsap.utils.toArray("[data-split-ready='true']").forEach((textBlock) => {
+            const words = textBlock.querySelectorAll(".word-inner");
+            const playWordReveal = () => {
+                if (textBlock.dataset.wordsDone === "true") return;
+                textBlock.dataset.wordsDone = "true";
+                gsap.fromTo(words,
+                    { yPercent: 115, opacity: 0 },
+                    {
+                        yPercent: 0,
+                        opacity: 1,
+                        duration: 0.9,
+                        stagger: 0.025,
+                        ease: "expo.out"
+                    }
+                );
+            };
+
+            ScrollTrigger.create({
+                trigger: textBlock,
+                start: "top 88%",
+                once: true,
+                onEnter: playWordReveal,
+                onEnterBack: playWordReveal
+            });
+
+            const rect = textBlock.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.92 && rect.bottom > -80) {
+                playWordReveal();
+            }
+        });
+
+        gsap.utils.toArray("#sections-wrapper .h-full.bg-primary, #sections-wrapper .h-full.bg-secondary").forEach((bar) => {
+            gsap.from(bar, {
+                scaleX: 0,
+                transformOrigin: "left center",
+                duration: 1.15,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: bar,
+                    start: "top 92%",
+                    once: true
+                }
+            });
+        });
+
+        gsap.utils.toArray("section .space-y-16 > .flex").forEach((step, index) => {
+            gsap.from(step, {
+                autoAlpha: 0,
+                x: -42,
+                duration: 0.85,
+                delay: index * 0.08,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: step,
+                    start: "top 88%",
+                    once: true
+                }
+            });
+        });
+
+        ScrollTrigger.addEventListener("refresh", revealMissedContent);
+        window.addEventListener("scroll", () => requestAnimationFrame(revealMissedContent), { passive: true });
+        window.addEventListener("load", () => {
+            ScrollTrigger.refresh();
+            revealMissedContent();
+        });
+        setTimeout(revealMissedContent, 500);
+    }
+
+    initExperience();
+</script>
+</body></html>
