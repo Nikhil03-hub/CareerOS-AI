@@ -13,7 +13,15 @@ const SOURCE_LINKS = [
   { label: "Kerala SBTE institution list", url: "https://www.sbte.kerala.gov.in/public/institns/general" },
   { label: "Government Polytechnic College Kalamassery", url: "https://gptckalamassery.ac.in/" },
   { label: "Government Polytechnic Ahmedabad", url: "https://www.gpahmedabad.ac.in/wp_advt.php" },
-  { label: "Chandigarh Class XI admission notice", url: "https://nltchd.info/utcouns/pdf/Notice2025.pdf" }
+  { label: "Chandigarh Class XI admission notice", url: "https://nltchd.info/utcouns/pdf/Notice2025.pdf" },
+  { label: "Avinash College of Commerce intermediate courses", url: "https://acc.edu.in/courses/intermediate/" },
+  { label: "KC College junior college", url: "https://kccollege.edu.in/junior-college/" },
+  { label: "R. D. National College", url: "https://www.rdnational.net/" },
+  { label: "Symbiosis Junior College Pune", url: "https://symbiosisjrcollege.ac.in/" },
+  { label: "Symbiosis College junior college", url: "https://symbiosiscollege.edu.in/junior_college" },
+  { label: "Jyoti Nivas Pre-University College courses", url: "https://jnpuc.org/courses.php" },
+  { label: "Don Bosco Kolkata Class XI guidelines", url: "https://www.donboscocampuscare.in/Documents/GuidelinesClassXI.pdf" },
+  { label: "Bhavan's Vidya Mandir Elamakkara senior secondary", url: "https://bhavanselamakkara.ac.in/Senior-Secondary" }
 ];
 
 const CITIES = [
@@ -268,7 +276,18 @@ const COLLEGES = [
   { name: "GMSSS Sector 35 Chandigarh", city: "chandigarh", area: "Sector 35", type: "Government Model School", level: "Class 11", streams: ["mpc", "bipc", "commerce", "humanities"], boards: ["CBSE"], budget: "low", fee: "Low fee", verified: true, highlight: "Popular senior secondary stream option in Chandigarh.", source: "https://www.sthapatya2024.in/chandigarh-govt-school-admission/" },
   { name: "Government Polytechnic for Women Chandigarh", city: "chandigarh", area: "Sector 10", type: "Government Polytechnic", level: "After 10th Diploma", streams: ["polytechnic", "paramedical"], boards: ["Chandigarh Administration"], budget: "low", fee: "Rs. 8K - 40K/year", verified: true, highlight: "Diploma route for women through Chandigarh technical education.", source: "https://chdeducation.gov.in/page/viewpage/102" },
   { name: "CCET Diploma Wing", city: "chandigarh", area: "Sector 26", type: "Government Polytechnic", level: "After 10th Diploma", streams: ["polytechnic"], boards: ["Chandigarh Administration"], budget: "low", fee: "Rs. 10K - 45K/year", verified: true, highlight: "Engineering diploma wing for technical learners.", source: "https://chdeducation.gov.in/page/viewpage/102" },
-  { name: "DAV Senior Secondary Route Chandigarh", city: "chandigarh", area: "Sector 8/15", type: "Senior Secondary", level: "Class 11", streams: ["mpc", "bipc", "commerce", "humanities"], boards: ["CBSE"], budget: "mid", fee: "Rs. 45K - 1.2L/year", verified: true, highlight: "Academic class 11 route with broad stream options.", source: "https://chdeducation.gov.in/page/viewpage/102" }
+  { name: "DAV Senior Secondary Route Chandigarh", city: "chandigarh", area: "Sector 8/15", type: "Senior Secondary", level: "Class 11", streams: ["mpc", "bipc", "commerce", "humanities"], boards: ["CBSE"], budget: "mid", fee: "Rs. 45K - 1.2L/year", verified: true, highlight: "Academic class 11 route with broad stream options.", source: "https://chdeducation.gov.in/page/viewpage/102" },
+
+  { name: "Avinash College of Commerce", city: "hyderabad", area: "SR Nagar / LB Nagar", type: "Commerce Junior College", level: "After 10th", streams: ["commerce"], boards: ["TSBIE"], budget: "mid", fee: "As per campus fee schedule", verified: true, highlight: "Commerce-focused intermediate route with MEC, CEC and ACE combinations for finance, CA and business pathways.", source: "https://acc.edu.in/courses/intermediate/" },
+  { name: "Government Polytechnic for Women Secunderabad", city: "hyderabad", area: "East Marredpally", type: "Women Government Polytechnic", level: "After 10th Diploma", streams: ["polytechnic", "paramedical"], boards: ["SBTET"], budget: "low", fee: "Government diploma fee range", verified: true, highlight: "Women-focused government diploma pathway listed in Telangana SBTET polytechnic counselling material.", source: "https://sbtet.telangana.gov.in/downloads/Circular/Instruction%20booklet.pdf" },
+  { name: "K. C. College Junior College", city: "mumbai", area: "Churchgate", type: "Junior College", level: "FYJC", streams: ["mpc", "bipc", "commerce", "humanities"], boards: ["Maharashtra HSC"], budget: "mid", fee: "As per FYJC/HSC notice", verified: true, highlight: "South Mumbai junior college route with arts, commerce and science options after class 10.", source: "https://kccollege.edu.in/junior-college/" },
+  { name: "R. D. National College Junior College", city: "mumbai", area: "Bandra", type: "Junior College", level: "FYJC", streams: ["mpc", "bipc", "commerce", "humanities"], boards: ["Maharashtra HSC"], budget: "mid", fee: "As per FYJC/HSC notice", verified: true, highlight: "Bandra junior college option attached to National College and S. W. A. Science College.", source: "https://www.rdnational.net/" },
+  { name: "Symbiosis Junior College", city: "pune", area: "Kiwale", type: "Junior College", level: "FYJC", streams: ["mpc", "bipc", "commerce", "humanities"], boards: ["Maharashtra HSC"], budget: "mid", fee: "As per junior college notice", verified: true, highlight: "Arts, science and commerce junior college route under Symbiosis Open Education Society.", source: "https://symbiosisjrcollege.ac.in/" },
+  { name: "Symbiosis College Junior College", city: "pune", area: "Senapati Bapat Road", type: "Junior College", level: "FYJC", streams: ["commerce", "humanities"], boards: ["Maharashtra HSC"], budget: "mid", fee: "As per junior college notice", verified: true, highlight: "Commerce and arts-focused junior college pathway through the Symbiosis College ecosystem.", source: "https://symbiosiscollege.edu.in/junior_college" },
+  { name: "Jyoti Nivas Pre-University College", city: "bengaluru", area: "Koramangala", type: "PU College", level: "After 10th PUC", streams: ["mpc", "bipc", "commerce", "humanities"], boards: ["Karnataka PU"], budget: "mid", fee: "As per PU fee notice", verified: true, highlight: "Women-focused PU college with science, commerce and arts combinations in Koramangala.", source: "https://jnpuc.org/courses.php" },
+  { name: "Kasturba DSEU Pitampura Campus", city: "delhi", area: "Pitampura", type: "Women Government Polytechnic", level: "After 10th Diploma", streams: ["polytechnic"], boards: ["DSEU/Delhi"], budget: "low", fee: "Delhi diploma government fee range", verified: true, highlight: "Women-focused DSEU diploma campus with technical programs listed in Delhi diploma admission material.", source: "https://www.dseu.ac.in/wp-content/uploads/2022/12/Summary-of-Programs-offered-in-2022-23-.pdf" },
+  { name: "Don Bosco School Park Circus", city: "kolkata", area: "Park Circus", type: "Higher Secondary", level: "Class 11", streams: ["mpc", "bipc", "commerce", "humanities"], boards: ["ISC"], budget: "mid", fee: "As per Class XI notice", verified: true, highlight: "Class XI route with science, commerce and humanities options in central Kolkata.", source: "https://www.donboscocampuscare.in/Documents/GuidelinesClassXI.pdf" },
+  { name: "Bhavan's Vidya Mandir Elamakkara", city: "kochi", area: "Elamakkara", type: "Senior Secondary", level: "Class 11", streams: ["mpc", "bipc", "commerce"], boards: ["CBSE"], budget: "mid", fee: "As per school admission notice", verified: true, highlight: "CBSE senior secondary option with science and commerce stream combinations in Kochi.", source: "https://bhavanselamakkara.ac.in/Senior-Secondary" }
 ];
 
 const STEP_LABELS = ["Profile", "City", "Board", "Interests", "Academics"];
@@ -619,7 +638,7 @@ function HeroIntro({ profile }) {
           </p>
           <div className="hero-metrics">
             <div className="metric"><strong>10</strong><span>popular cities mapped</span></div>
-            <div className="metric"><strong>55+</strong><span>curated institutions</span></div>
+            <div className="metric"><strong>{COLLEGES.length}+</strong><span>curated institutions</span></div>
             <div className="metric"><strong>6</strong><span>stream families</span></div>
           </div>
         </div>
@@ -909,7 +928,13 @@ function Results({ profile, rankedList, openStream, navigate, restart }) {
           <div className="summary-score"><strong>{top.score}%</strong><span>{top.name}</span></div>
           <div className="mini-bars">
             {rankedList.slice(0, 4).map((stream) => (
-              <div className="mini-bar" key={stream.id}><div style={{ width: `${stream.score}%` }}></div></div>
+              <div className="mini-bar" key={stream.id}>
+                <div className="mini-bar-meta">
+                  <span>{stream.name}</span>
+                  <strong>{stream.score}%</strong>
+                </div>
+                <span className="mini-track"><b style={{ width: `${stream.score}%` }}></b></span>
+              </div>
             ))}
           </div>
         </div>
@@ -1089,17 +1114,34 @@ function StreamDetail({ profile, stream, score, navigate }) {
         <div className="section-title">
           <h2>Ask about {stream.name}</h2>
         </div>
-        <div className="ask-box">
-          <div className="chip-row">
+        <div className="chatbot-box">
+          <div className="chatbot-head">
+            <span className="chatbot-avatar"><Icon name="bot" /></span>
+            <div>
+              <strong>CareerOS Stream Assistant</strong>
+              <span>Answers use your selected city, score and stream data.</span>
+            </div>
+          </div>
+          <div className="chat-messages">
+            <div className="chat-message bot">
+              <span>Ask me about subjects, exams, colleges, preparation, difficulty or whether {stream.name} fits your profile.</span>
+            </div>
+            {answer && (
+              <>
+                <div className="chat-message user"><span>{question}</span></div>
+                <div className="chat-message bot"><span>{answer}</span></div>
+              </>
+            )}
+          </div>
+          <div className="quick-prompts">
             {["What subjects will I study?", "What exams matter?", "Which colleges should I compare?", "Is this right for me?"].map((item) => (
-              <button className="tag" key={item} onClick={() => setQuestion(item)}>{item}</button>
+              <button key={item} onClick={() => setQuestion(item)}>{item}</button>
             ))}
           </div>
-          <div className="ask-input">
+          <div className="ask-input chatbot-input">
             <input value={question} onChange={(event) => setQuestion(event.target.value)} placeholder={`Ask a question about ${stream.name}...`} />
             <button className="btn btn-primary" onClick={ask}>Ask</button>
           </div>
-          {answer && <div className="answer">{answer}</div>}
         </div>
       </section>
 
@@ -1110,7 +1152,6 @@ function StreamDetail({ profile, stream, score, navigate }) {
             {colleges.slice(0, 4).map((college) => <CollegeCard key={college.name} college={college} />)}
           </div>
         </div>
-        <SourcesCard />
       </aside>
     </div>
   );
@@ -1279,19 +1320,6 @@ function CareerPathsPage() {
             <h3>{path.title}</h3>
             <p>{path.desc}</p>
           </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function SourcesCard() {
-  return (
-    <div className="source-card">
-      <h3>Research sources</h3>
-      <div className="clean-list">
-        {SOURCE_LINKS.map((source) => (
-          <a key={source.url} href={source.url} target="_blank" rel="noreferrer">{source.label}</a>
         ))}
       </div>
     </div>
