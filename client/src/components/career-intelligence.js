@@ -214,6 +214,155 @@
         };
     }
 
+    function readJsonFromStorage(keys, fallback = null) {
+        for (const key of keys) {
+            try {
+                const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
+                if (!raw) continue;
+                return JSON.parse(raw);
+            } catch {
+                // Keep checking other known keys.
+            }
+        }
+        return fallback;
+    }
+
+    function getLatestResumeAnalysis() {
+        const history = readJsonFromStorage(["resumeHistory"], []);
+        if (Array.isArray(history) && history.length) {
+            return history[0]?.analysisResult || history[0]?.result || history[0] || null;
+        }
+
+        return readJsonFromStorage(["lastResumeAnalysis", "resumeAnalysisResult", "currentResume"], null);
+    }
+
+    function getStoredProfileData() {
+        const profile = readJsonFromStorage(["userProfile", "auroraProfile", "studentProfile"], {}) || {};
+        const user = readJsonFromStorage(["user", "auroraUser", "careerOSUser", "careerosUser", "currentUser"], {}) || {};
+        return {
+            ...profile,
+            ...user,
+            firstName: profile.firstName || user.firstName || "",
+            lastName: profile.lastName || user.lastName || "",
+            displayName: profile.displayName || user.displayName || user.name || "",
+            email: profile.email || user.email || ""
+        };
+    }
+
+    function uniqueList(values) {
+        return values
+            .flatMap((value) => Array.isArray(value) ? value : String(value || "").split(/[,|]/))
+            .map((value) => String(value || "").trim())
+            .filter(Boolean)
+            .filter((value, index, array) => array.findIndex((item) => item.toLowerCase() === value.toLowerCase()) === index);
+    }
+
+    function enrichPayloadFromCareerOSState(payload) {
+        const profile = getStoredProfileData();
+        const resume = getLatestResumeAnalysis() || {};
+        const profileName = profile.displayName || `${profile.firstName || ""} ${profile.lastName || ""}`.trim();
+        const formSkills = $("#input-skills")?.value || "";
+        const profileSkills = profile.skills || profile.technologies || "";
+        const resumeSkills = uniqueList([resume.skills || []]);
+        const skillText = uniqueList([payload.certifications, formSkills, profileSkills, resumeSkills]).join(", ");
+        const targetRole = payload.targetRole || profile.jobTitle || $("#input-job-title")?.value || "Full Stack Developer";
+        const linkedinUrl = payload.linkedinUrl || profile.linkedin || profile.linkedinUrl || $("#input-linkedin")?.value || "";
+
+        return {
+            ...payload,
+            targetRole,
+            linkedinUrl,
+            linkedinHeadline: payload.linkedinHeadline || `${targetRole}${skillText ? ` | ${skillText.split(",").slice(0, 4).join(" | ")}` : ""}`,
+            linkedinSummary: payload.linkedinSummary || profile.summary || profile.bio || `${profileName ? `${profileName} is ` : "Candidate is "}preparing for ${targetRole} opportunities through CareerOS AI.`,
+            resumeText: payload.resumeText || [
+                resume.summary,
+                ...(resume.skills || []),
+                ...(resume.suggestions || [])
+            ].filter(Boolean).join(" "),
+            experienceText: payload.experienceText || [
+                resume.experience,
+                profile.experience,
+                $("#input-summary")?.value,
+                ...(resume.strengths || [])
+            ].filter(Boolean).join(" "),
+            educationText: payload.educationText || resume.education || profile.education || profile.college || "",
+            githubText: payload.githubText || profile.github || profile.githubUrl || "",
+            portfolioText: payload.portfolioText || profile.portfolio || profile.website || "",
+            certifications: payload.certifications || skillText
+        };
+    }
+
+    function hasCareerSignals(payload) {
+        const combined = [
+            payload.linkedinHeadline,
+            payload.linkedinSummary,
+            payload.resumeText,
+            payload.experienceText,
+            payload.educationText,
+            payload.githubText,
+            payload.portfolioText,
+            payload.certifications
+        ].join(" ");
+        return normalize(combined).length > 35;
+    }
+
+    function buildNoInputResult(payload) {
+        const result = fallbackAnalyze(payload);
+        return {
+            ...result,
+            type: "profile-empty-state",
+            overallScore: 0,
+            recruiterSimulation: {
+                verdict: "Add a LinkedIn URL or upload a resume to start",
+                likelyConcern: "CareerOS does not yet have enough profile signals to evaluate discoverability.",
+                interviewFocus: ["Upload a resume", "Add target role and skills", "Paste LinkedIn URL when available"]
+            },
+            strengths: ["CareerOS is ready, but it needs at least one signal source before scoring."],
+            quickFixes: [
+                "Upload a resume in the Resume Analyzer and run this scan again.",
+                "Or paste your public LinkedIn /in/ URL for a quick recruiter-discoverability check.",
+                "Add your target role and skills in the profile page to improve matching."
+            ],
+            generated: {
+                headline: `${payload.targetRole || "Target Role"} | Add skills to generate a stronger headline`,
+                summary: "Upload a resume or add a LinkedIn profile URL so CareerOS can generate a personalized summary.",
+                resumeBullets: ["Add project, skill and outcome details to unlock personalized resume bullets."]
+            }
+        };
+    }
+
+    function markProfileFallbackResult(result, payload) {
+        if (payload.linkedinUrl.trim()) return result;
+        return {
+            ...result,
+            type: "profile-signal-review",
+            engine: `${result.engine || "CareerOS Career Intelligence"} · no LinkedIn URL fallback`,
+            strengths: [
+                "LinkedIn URL was not provided, so CareerOS used saved resume/profile signals instead.",
+                ...(result.strengths || [])
+            ],
+            quickFixes: [
+                "Optional: add your public LinkedIn /in/ URL later to improve recruiter-discoverability scoring.",
+                ...(result.quickFixes || [])
+            ],
+            scores: {
+                ...(result.scores || {}),
+                linkedinUrl: {
+                    score: 0,
+                    title: "LinkedIn URL",
+                    insight: "Skipped. Profile scan continued using resume, skills and CareerOS profile data.",
+                    status: "Optional"
+                }
+            },
+            linkedinUrl: {
+                score: 0,
+                handle: "",
+                words: [],
+                insight: "No LinkedIn URL provided. This scan used CareerOS profile/resume fallback signals."
+            }
+        };
+    }
+
     function setPayload(payload) {
         if ($("#careerTargetRole")) $("#careerTargetRole").value = payload.targetRole;
         if ($("#careerLinkedinUrl")) $("#careerLinkedinUrl").value = payload.linkedinUrl || "";
@@ -230,12 +379,12 @@
     function applyUrlOnlyMode() {
         const intro = document.querySelector(".career-ai-panel p");
         if (intro) {
-            intro.textContent = "Paste your public LinkedIn profile URL. CareerOS will run URL quality, recruiter discoverability, keyword-gap and profile-optimization checks without asking you to manually paste every LinkedIn section.";
+            intro.textContent = "Paste your public LinkedIn URL if available. If not, CareerOS automatically uses your saved resume analysis, profile fields and skills to run a profile-only intelligence scan.";
         }
 
         const subtitle = document.querySelector(".career-ai-subtitle");
         if (subtitle) {
-            subtitle.textContent = "Submit one public profile URL and CareerOS converts it into recruiter-style profile strength, discoverability, keyword gaps, smart rewrites and next-step roadmap insights.";
+            subtitle.textContent = "Run recruiter-style profile strength, discoverability, keyword gap, smart rewrite and roadmap insights from a LinkedIn URL, or from your saved CareerOS resume/profile data.";
         }
 
         [
@@ -253,11 +402,11 @@
         });
 
         const urlHelp = $("#careerLinkedinUrl")?.closest(".career-ai-field")?.querySelector("small");
-        if (urlHelp) urlHelp.textContent = "Only the public /in/ URL is needed for this quick profile intelligence scan.";
+        if (urlHelp) urlHelp.textContent = "Optional. Paste the public /in/ URL for stronger LinkedIn scoring, or leave blank to use saved CareerOS data.";
 
         const analyzeProfileBtn = $("#runCareerIntelligence");
         if (analyzeProfileBtn) {
-            analyzeProfileBtn.innerHTML = '<i class="fa-brands fa-linkedin"></i> Analyze profile URL';
+            analyzeProfileBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Analyze profile';
         }
 
         const duplicateUrlBtn = $("#analyzeLinkedinUrl");
@@ -343,13 +492,24 @@
     }
 
     async function runLinkedinUrlAnalysis() {
-        const payload = payloadFromForm();
-        if (!payload.linkedinUrl.trim()) {
-            $("#careerLinkedinUrl")?.focus();
-            return;
-        }
+        const payload = enrichPayloadFromCareerOSState(payloadFromForm());
+        const hasLinkedinUrl = Boolean(payload.linkedinUrl.trim());
+        const hasFallbackSignals = hasCareerSignals(payload);
         const loader = $("#careerIntelligenceLoading");
         loader?.classList.add("active");
+
+        if (!hasLinkedinUrl && !hasFallbackSignals) {
+            renderResults(buildNoInputResult(payload));
+            setTimeout(() => loader?.classList.remove("active"), 450);
+            return;
+        }
+
+        if (!hasLinkedinUrl) {
+            renderResults(markProfileFallbackResult(fallbackAnalyze(payload), payload));
+            setTimeout(() => loader?.classList.remove("active"), 450);
+            return;
+        }
+
         try {
             const token = localStorage.getItem("jc_token") || localStorage.getItem("jwt") || localStorage.getItem("authToken") || localStorage.getItem("token");
             const response = await fetch("http://localhost:5000/api/career-intelligence/linkedin-url", {
@@ -363,7 +523,7 @@
             if (!response.ok) throw new Error("API unavailable");
             const partial = await response.json();
             renderResults({
-                ...fallbackAnalyze(payload),
+                ...markProfileFallbackResult(fallbackAnalyze(payload), payload),
                 ...partial,
                 scores: {
                     ...fallbackAnalyze(payload).scores,
@@ -371,7 +531,7 @@
                 }
             });
         } catch {
-            renderResults(fallbackAnalyze(payload));
+            renderResults(markProfileFallbackResult(fallbackAnalyze(payload), payload));
         } finally {
             setTimeout(() => loader?.classList.remove("active"), 450);
         }
