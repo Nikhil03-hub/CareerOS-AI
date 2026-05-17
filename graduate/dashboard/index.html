@@ -5760,6 +5760,161 @@
                 }
             }
 
+            async function analyzeResumeViaApiOrBrowser(file, formData, headers = {}) {
+                const isLocalHost = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+                const endpoints = isLocalHost
+                    ? ['http://localhost:5001/api/resume/ats', 'http://localhost:5000/api/resume/ats', '/api/resume/ats']
+                    : ['/api/resume/ats'];
+
+                for (const endpoint of endpoints) {
+                    try {
+                        updateStatus(`Analyzing resume${isLocalHost ? ' with local ATS server' : ''}...`);
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), isLocalHost ? 18000 : 6500);
+                        const response = await fetch(endpoint, {
+                            method: 'POST',
+                            headers,
+                            body: formData,
+                            cache: 'no-store',
+                            signal: controller.signal
+                        });
+                        clearTimeout(timeoutId);
+
+                        if (!response.ok) {
+                            console.warn(`Resume API unavailable at ${endpoint}: ${response.status}`);
+                            continue;
+                        }
+
+                        const result = await response.json();
+                        if (result && result.success !== false) {
+                            return { ...result, success: true };
+                        }
+                    } catch (apiError) {
+                        console.warn(`Resume API failed at ${endpoint}:`, apiError.message || apiError);
+                    }
+                }
+
+                updateStatus('Running CareerOS browser ATS analysis...');
+                return analyzeResumeInBrowser(file);
+            }
+
+            async function readResumeTextForBrowser(file) {
+                const extension = '.' + (file.name.split('.').pop() || '').toLowerCase();
+                if (extension === '.txt') {
+                    return file.text();
+                }
+
+                const buffer = await file.arrayBuffer();
+                const utf8 = new TextDecoder('utf-8', { fatal: false }).decode(buffer);
+                const latin = new TextDecoder('latin1', { fatal: false }).decode(buffer);
+                const raw = utf8.length > latin.length * 0.5 ? utf8 : latin;
+
+                return raw
+                    .replace(/\u0000/g, ' ')
+                    .replace(/[^\x09\x0A\x0D\x20-\x7E]+/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+
+            async function analyzeResumeInBrowser(file) {
+                const rawText = await readResumeTextForBrowser(file);
+                const text = `${file.name} ${rawText}`.toLowerCase();
+                const readableWordCount = (rawText.match(/[a-zA-Z][a-zA-Z+#.-]{2,}/g) || []).length;
+
+                const skillCatalog = [
+                    ['JavaScript', /javascript|\bjs\b|ecmascript/i],
+                    ['TypeScript', /typescript|\bts\b/i],
+                    ['React', /react|next\.js|nextjs/i],
+                    ['Node.js', /node\.js|nodejs|express/i],
+                    ['Python', /python|django|flask|fastapi/i],
+                    ['Java', /\bjava\b|spring boot/i],
+                    ['C++', /c\+\+|cpp/i],
+                    ['SQL', /\bsql\b|mysql|postgres|postgresql/i],
+                    ['MongoDB', /mongodb|mongoose/i],
+                    ['HTML', /\bhtml\b/i],
+                    ['CSS', /\bcss\b|tailwind|bootstrap/i],
+                    ['Machine Learning', /machine learning|\bml\b|scikit|tensorflow|pytorch/i],
+                    ['Data Analysis', /data analysis|pandas|numpy|power bi|tableau/i],
+                    ['Cloud', /aws|azure|gcp|cloud/i],
+                    ['Docker', /docker|kubernetes|container/i],
+                    ['Git', /\bgit\b|github|gitlab/i],
+                    ['REST APIs', /rest api|restful|api development|graphql/i],
+                    ['Authentication', /jwt|oauth|authentication|authorization/i]
+                ];
+
+                const skills = skillCatalog
+                    .filter(([, pattern]) => pattern.test(text))
+                    .map(([name]) => name);
+
+                const hasEmail = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i.test(rawText);
+                const hasPhone = /(\+?\d[\d\s().-]{8,}\d)/.test(rawText);
+                const hasLinks = /github|linkedin|portfolio|https?:\/\//i.test(text);
+                const hasProjects = /project|built|developed|implemented|created|dashboard|platform/i.test(text);
+                const hasEducation = /b\.?tech|bachelor|degree|mca|m\.tech|mba|university|college|engineering/i.test(text);
+                const hasExperience = /experience|intern|worked|developer|engineer|freelance|employment/i.test(text);
+                const hasMetrics = /\b\d+%|\b\d+\+|reduced|improved|increased|optimized|users|latency|performance/i.test(text);
+                const hasSummary = /summary|objective|profile|about me/i.test(text);
+
+                let score = 35;
+                if (hasEmail) score += 8;
+                if (hasPhone) score += 7;
+                if (hasLinks) score += 10;
+                if (hasSummary) score += 8;
+                if (hasEducation) score += 10;
+                if (hasExperience) score += 10;
+                if (hasProjects) score += 12;
+                if (hasMetrics) score += 8;
+                score += Math.min(18, skills.length * 3);
+                if (readableWordCount < 80 && file.type !== 'text/plain') score -= 12;
+                score = Math.max(42, Math.min(94, score));
+
+                const strengths = [];
+                if (skills.length >= 5) strengths.push(`Strong technical keyword coverage with ${skills.length} detected skills.`);
+                if (hasProjects) strengths.push('Project or implementation experience is visible.');
+                if (hasLinks) strengths.push('Professional links such as GitHub, LinkedIn or portfolio are included.');
+                if (hasMetrics) strengths.push('Resume includes measurable outcomes or impact signals.');
+                if (hasEducation) strengths.push('Education details are clearly represented.');
+                if (!strengths.length) strengths.push('Resume file was accepted and basic profile structure was detected.');
+
+                const weaknesses = [];
+                if (!hasLinks) weaknesses.push('Add GitHub, LinkedIn and portfolio links for stronger recruiter trust.');
+                if (!hasMetrics) weaknesses.push('Add measurable impact such as percentages, users, speed improvements or project outcomes.');
+                if (skills.length < 5) weaknesses.push('Add a dedicated technical skills section with role-specific keywords.');
+                if (!hasProjects) weaknesses.push('Add 2-3 strong projects with tech stack, problem solved and result.');
+                if (readableWordCount < 80 && file.type !== 'text/plain') weaknesses.push('Resume may be scanned/image-based. Use selectable text for better ATS parsing.');
+
+                const suggestions = [
+                    'Place the strongest role title and tech stack in the top summary.',
+                    'Use bullet points that start with action verbs and end with measurable results.',
+                    'Add a clean skills section grouped by language, frontend, backend, database, tools and cloud.',
+                    'Keep formatting simple so ATS systems can read headings, dates and project details.'
+                ];
+
+                const education = hasEducation
+                    ? 'Education section detected. Ensure degree, college, graduation year and CGPA/percentage are clearly formatted.'
+                    : 'Education section not clearly detected. Add degree, college, graduation year and relevant coursework.';
+
+                const experience = hasExperience || hasProjects
+                    ? 'Experience/project signals detected. Strengthen each bullet with tech stack, ownership and measurable impact.'
+                    : 'Experience section not clearly detected. Add internships, freelance work, academic projects or open-source contributions.';
+
+                const topSkills = skills.length ? skills : ['JavaScript', 'React', 'Node.js', 'SQL', 'Git'].filter(skill => text.includes(skill.toLowerCase()));
+
+                return {
+                    success: true,
+                    score,
+                    summary: `CareerOS analyzed ${file.name} using the browser ATS engine. The resume shows ${topSkills.length || 'some'} skill signals and is currently ${score >= 75 ? 'job-ready with minor polish' : score >= 60 ? 'promising but needs stronger ATS optimization' : 'in need of clearer structure and keywords'}.`,
+                    skills: topSkills,
+                    strengths,
+                    weaknesses,
+                    suggestions,
+                    education,
+                    experience,
+                    source: 'browser-ats',
+                    analyzedAt: new Date().toISOString()
+                };
+            }
+
             // ============================================================
             // START ANALYSIS - Uses globally stored file
             // ============================================================
@@ -5832,11 +5987,6 @@
                     console.log("📤 Sending to backend...");
                     updateStatus('Analyzing your resume...');
 
-                    // Send to LOCAL ATS backend (no external AI)
-                    // Use AbortController to prevent cancellation on reload
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
-
                     // Get token for authenticated users
                     const token = localStorage.getItem('jc_token') ||
                         localStorage.getItem('token') ||
@@ -5848,20 +5998,7 @@
                         headers['Authorization'] = `Bearer ${token}`;
                     }
 
-                    const response = await fetch("http://localhost:5001/api/resume/ats", {
-                        method: "POST",
-                        headers: headers,
-                        body: formData,
-                        cache: 'no-store'
-                    });
-
-                    clearTimeout(timeoutId);
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-
-                    const result = await response.json();
+                    const result = await analyzeResumeViaApiOrBrowser(uploadedResumeFile, formData, headers);
                     console.log("✅ Analysis result received:", result);
                     console.log("✅ Success:", result.success);
                     console.log("✅ Score:", result.score);
