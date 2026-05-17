@@ -87,6 +87,18 @@
       "destination": "/class-12/index.html"
     },
     {
+      "source": "/undergard",
+      "destination": "/undergard/index.html"
+    },
+    {
+      "source": "/interview-prep",
+      "destination": "/undergard/index.html"
+    },
+    {
+      "source": "/undergrad",
+      "destination": "/undergard/index.html"
+    },
+    {
       "source": "/graduate",
       "destination": "/client/src/pages/index.html"
     },

@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Prep Company Library | CareerOS AI</title>
+    <meta name="description" content="CareerOS AI company-wise interview preparation library with coding questions, difficulty filters, progress tracking and practice links.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fustat:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght,FILL@400,0&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f4f8ff;
+            --panel: rgba(255, 255, 255, 0.78);
+            --panel-strong: rgba(255, 255, 255, 0.92);
+            --ink: #0f172a;
+            --muted: #64748b;
+            --soft: #eaf1fb;
+            --line: rgba(15, 23, 42, 0.1);
+            --blue: #2563eb;
+            --cyan: #06b6d4;
+            --green: #16a34a;
+            --orange: #f97316;
+            --red: #ef4444;
+            --shadow: 0 26px 80px rgba(15, 23, 42, 0.11);
+            --radius-xl: 32px;
+            --radius-lg: 22px;
+            --radius-md: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 12% 8%, rgba(96, 165, 250, 0.22), transparent 30%),
+                radial-gradient(circle at 88% 0%, rgba(6, 182, 212, 0.16), transparent 28%),
+                linear-gradient(180deg, #fbfdff 0%, var(--bg) 42%, #ffffff 100%);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: geometricPrecision;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.52;
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+            background-size: 54px 54px;
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 78%);
+            -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 78%);
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 520px;
+            height: 520px;
+            right: -180px;
+            top: 230px;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.12), transparent 62%);
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .material-symbols-rounded {
+            font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .shell {
+            width: min(1500px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .top-nav {
+            position: sticky;
+            top: 18px;
+            z-index: 40;
+            width: min(1180px, calc(100% - 32px));
+            margin: 18px auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 12px 14px 12px 18px;
+            border: 1px solid rgba(15, 23, 42, 0.09);
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(34px);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.8),
+                0 18px 60px rgba(15, 23, 42, 0.09);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-family: "Fustat", sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            white-space: nowrap;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0f172a, #2563eb);
+            box-shadow: 0 14px 30px rgba(37, 99, 235, 0.24);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 13px;
+            border-radius: 999px;
+            color: #475569;
+            font-size: 14px;
+            font-weight: 700;
+            transition: color 180ms ease, background 180ms ease, transform 180ms ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--ink);
+            background: rgba(15, 23, 42, 0.05);
+            transform: translateY(-1px);
+        }
+
+        .nav-links .active {
+            color: #ffffff;
+            background: #0f172a;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+        }
+
+        .nav-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #2563eb, #06b6d4);
+            font-size: 14px;
+            font-weight: 800;
+            white-space: nowrap;
+            box-shadow: 0 16px 34px rgba(37, 99, 235, 0.24);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+            gap: 28px;
+            align-items: stretch;
+            padding: 72px 0 28px;
+        }
+
+        .hero-card,
+        .hero-side,
+        .metric-card,
+        .workspace,
+        .company-card,
+        .question-panel,
+        .empty-state {
+            border: 1px solid var(--line);
+            background: var(--panel);
+            backdrop-filter: blur(26px);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-card {
+            position: relative;
+            min-height: 390px;
+            overflow: hidden;
+            border-radius: 36px;
+            padding: clamp(28px, 4vw, 54px);
+        }
+
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            inset: auto -80px -160px auto;
+            width: 430px;
+            height: 430px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.16), transparent 66%);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            color: #1d4ed8;
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.14);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            position: relative;
+            z-index: 1;
+            max-width: 850px;
+            margin: 0;
+            font-family: "Fustat", sans-serif;
+            font-size: clamp(46px, 6vw, 86px);
+            line-height: 0.96;
+            letter-spacing: -0.07em;
+        }
+
+        h1 span {
+            display: block;
+            color: transparent;
+            background: linear-gradient(110deg, #2563eb, #06b6d4 52%, #0f172a);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+            margin: 22px 0 0;
+            color: var(--muted);
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .primary-btn,
+        .ghost-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 50px;
+            padding: 14px 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .primary-btn {
+            color: #ffffff;
+            background: linear-gradient(135deg, #0f172a, #2563eb);
+            box-shadow: 0 16px 34px rgba(37, 99, 235, 0.24);
+        }
+
+        .ghost-btn {
+            color: #0f172a;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(15, 23, 42, 0.1);
+        }
+
+        .primary-btn:hover,
+        .ghost-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .hero-side {
+            position: relative;
+            overflow: hidden;
+            border-radius: 36px;
+            padding: 28px;
+            color: #ffffff;
+            background:
+                radial-gradient(circle at 20% 8%, rgba(96, 165, 250, 0.34), transparent 28%),
+                linear-gradient(145deg, #0f172a, #111827 56%, #1e3a8a);
+        }
+
+        .hero-side h2 {
+            margin: 0;
+            font-family: "Fustat", sans-serif;
+            font-size: 28px;
+            letter-spacing: -0.04em;
+        }
+
+        .hero-side p {
+            max-width: 420px;
+            color: rgba(255, 255, 255, 0.72);
+            line-height: 1.7;
+        }
+
+        .side-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 28px;
+        }
+
+        .side-tile {
+            min-height: 116px;
+            padding: 18px;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .side-tile strong {
+            display: block;
+            font-size: 26px;
+            letter-spacing: -0.04em;
+        }
+
+        .side-tile span {
+            color: rgba(255, 255, 255, 0.64);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin: 8px 0 24px;
+        }
+
+        .metric-card {
+            border-radius: 24px;
+            padding: 22px;
+        }
+
+        .metric-card span {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .metric-card strong {
+            display: block;
+            margin-top: 10px;
+            font-family: "Fustat", sans-serif;
+            font-size: clamp(28px, 3vw, 44px);
+            line-height: 1;
+            letter-spacing: -0.06em;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 390px minmax(0, 1fr);
+            gap: 0;
+            min-height: 760px;
+            overflow: hidden;
+            border-radius: 34px;
+            margin-bottom: 64px;
+        }
+
+        .company-pane {
+            border-right: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.56);
+            min-width: 0;
+        }
+
+        .pane-head,
+        .question-head {
+            position: sticky;
+            top: 90px;
+            z-index: 5;
+            padding: 22px;
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .pane-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .pane-title h2,
+        .question-head h2 {
+            margin: 0;
+            font-family: "Fustat", sans-serif;
+            letter-spacing: -0.04em;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap .material-symbols-rounded {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .search,
+        .select {
+            width: 100%;
+            min-height: 48px;
+            border: 1px solid rgba(15, 23, 42, 0.1);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.86);
+            color: #0f172a;
+            outline: none;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+        }
+
+        .search {
+            padding: 0 14px 0 44px;
+        }
+
+        .select {
+            padding: 0 14px;
+        }
+
+        .search:focus,
+        .select:focus {
+            border-color: rgba(37, 99, 235, 0.55);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .company-list {
+            display: grid;
+            gap: 12px;
+            max-height: calc(100vh - 238px);
+            overflow: auto;
+            padding: 16px;
+        }
+
+        .company-card {
+            width: 100%;
+            text-align: left;
+            border-radius: 22px;
+            padding: 16px;
+            color: inherit;
+            transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+        }
+
+        .company-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .company-card.active {
+            border-color: rgba(37, 99, 235, 0.42);
+            background: rgba(239, 246, 255, 0.86);
+        }
+
+        .company-top,
+        .question-title-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .company-logo {
+            width: 44px;
+            height: 44px;
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            border-radius: 16px;
+            color: #ffffff;
+            font-weight: 900;
+            background: linear-gradient(135deg, #0f172a, #2563eb);
+            box-shadow: 0 12px 26px rgba(37, 99, 235, 0.18);
+            overflow: hidden;
+        }
+
+        .company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+            background: #ffffff;
+        }
+
+        .company-name {
+            min-width: 0;
+        }
+
+        .company-name strong {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 16px;
+        }
+
+        .company-name span {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .difficulty-strip {
+            display: flex;
+            gap: 7px;
+            margin-top: 13px;
+        }
+
+        .mini-pill,
+        .tag,
+        .difficulty {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .mini-pill {
+            padding: 6px 8px;
+            color: #475569;
+            background: rgba(15, 23, 42, 0.05);
+        }
+
+        .progress-line {
+            position: relative;
+            height: 8px;
+            margin-top: 14px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.08);
+        }
+
+        .progress-line i {
+            display: block;
+            height: 100%;
+            width: var(--progress, 0%);
+            border-radius: inherit;
+            background: linear-gradient(90deg, #2563eb, #06b6d4);
+        }
+
+        .question-panel {
+            min-width: 0;
+            border: 0;
+            box-shadow: none;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .question-head {
+            display: grid;
+            gap: 16px;
+        }
+
+        .company-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .selected-company {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .selected-company h2 {
+            margin: 0;
+            font-size: clamp(28px, 3vw, 46px);
+        }
+
+        .selected-company p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .focus-card {
+            min-width: 250px;
+            padding: 16px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(6, 182, 212, 0.1));
+            border: 1px solid rgba(37, 99, 235, 0.16);
+        }
+
+        .focus-card span {
+            display: block;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .focus-card strong {
+            display: block;
+            margin-top: 7px;
+            font-size: 16px;
+            line-height: 1.45;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: minmax(220px, 1fr) 160px 160px 190px;
+            gap: 12px;
+        }
+
+        .question-list {
+            display: grid;
+            gap: 14px;
+            padding: 20px;
+        }
+
+        .question-card {
+            border: 1px solid rgba(15, 23, 42, 0.09);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.76);
+            padding: 18px;
+            transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(37, 99, 235, 0.2);
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        .question-card.solved {
+            border-color: rgba(22, 163, 74, 0.22);
+            background: rgba(240, 253, 244, 0.72);
+        }
+
+        .check {
+            width: 34px;
+            height: 34px;
+            flex: 0 0 auto;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            border: 1px solid rgba(15, 23, 42, 0.14);
+            background: #ffffff;
+            color: transparent;
+        }
+
+        .question-card.solved .check {
+            color: #ffffff;
+            border-color: var(--green);
+            background: var(--green);
+        }
+
+        .question-title {
+            min-width: 0;
+        }
+
+        .question-title strong {
+            display: block;
+            font-size: 17px;
+            line-height: 1.35;
+        }
+
+        .question-title span {
+            display: block;
+            margin-top: 5px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .question-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            padding: 7px 10px;
+            color: #475569;
+            background: rgba(15, 23, 42, 0.05);
+        }
+
+        .difficulty {
+            padding: 7px 10px;
+        }
+
+        .difficulty.easy {
+            color: #15803d;
+            background: rgba(22, 163, 74, 0.11);
+        }
+
+        .difficulty.medium {
+            color: #b45309;
+            background: rgba(249, 115, 22, 0.13);
+        }
+
+        .difficulty.hard {
+            color: #dc2626;
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        .practice-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            color: #ffffff;
+            background: #0f172a;
+            font-size: 13px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+
+        .empty-state {
+            display: none;
+            margin: 20px;
+            padding: 34px;
+            border-radius: 26px;
+            text-align: center;
+        }
+
+        .empty-state.show {
+            display: block;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 8px;
+            font-family: "Fustat", sans-serif;
+            font-size: 28px;
+            letter-spacing: -0.04em;
+        }
+
+        .empty-state p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .loading {
+            padding: 38px;
+            color: var(--muted);
+            font-weight: 800;
+        }
+
+        @media (max-width: 1180px) {
+            .hero,
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .company-pane {
+                border-right: 0;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .company-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                max-height: 520px;
+            }
+
+            .metrics {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 780px) {
+            .shell {
+                width: min(100% - 24px, 1500px);
+            }
+
+            .top-nav {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                justify-content: flex-start;
+            }
+
+            .nav-action {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero {
+                padding-top: 42px;
+            }
+
+            .hero-card,
+            .hero-side,
+            .workspace {
+                border-radius: 24px;
+            }
+
+            .metrics,
+            .company-list,
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .company-summary,
+            .question-meta {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .focus-card {
+                width: 100%;
+            }
+
+            .pane-head,
+            .question-head {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="top-nav" aria-label="Primary navigation">
+        <a class="brand" href="/graduate">
+            <span class="brand-mark"><span class="material-symbols-rounded">school</span></span>
+            CareerOS AI
+        </a>
+        <div class="nav-links">
+            <a href="/graduate"><span class="material-symbols-rounded">home</span>Graduate</a>
+            <a href="/jobs"><span class="material-symbols-rounded">work</span>Jobs</a>
+            <a href="/skill-test"><span class="material-symbols-rounded">psychology</span>Skill Test</a>
+            <a class="active" href="/undergard"><span class="material-symbols-rounded">code_blocks</span>Interview Prep</a>
+            <a href="/dashboard"><span class="material-symbols-rounded">dashboard</span>Dashboard</a>
+            <a href="/client/src/pages/resume-analyzer.html"><span class="material-symbols-rounded">description</span>Resume</a>
+        </div>
+        <a class="nav-action" href="/graduate/dashboard">
+            Open workspace
+            <span class="material-symbols-rounded">arrow_forward</span>
+        </a>
+    </nav>
+
+    <main class="shell">
+        <section class="hero" aria-labelledby="page-title">
+            <article class="hero-card">
+                <div class="eyebrow">
+                    <span class="material-symbols-rounded">auto_awesome</span>
+                    Company interview library
+                </div>
+                <h1 id="page-title">Practice smarter for <span>real hiring rounds.</span></h1>
+                <p class="hero-copy">
+                    Explore company-wise coding questions, sort by frequency, track solved problems and build a focused interview plan without leaving CareerOS.
+                </p>
+                <div class="hero-actions">
+                    <a class="primary-btn" href="#library">
+                        Start practicing
+                        <span class="material-symbols-rounded">arrow_downward</span>
+                    </a>
+                    <a class="ghost-btn" href="/graduate/dashboard">
+                        Back to graduate dashboard
+                        <span class="material-symbols-rounded">dashboard</span>
+                    </a>
+                </div>
+            </article>
+
+            <aside class="hero-side" aria-label="Preparation summary">
+                <h2>One page for company prep.</h2>
+                <p>
+                    CareerOS keeps the library clean and useful: top companies, most repeated questions, difficulty mix, topic coverage and personal progress in one calm view.
+                </p>
+                <div class="side-grid">
+                    <div class="side-tile">
+                        <strong id="sideCompanyCount">--</strong>
+                        <span>companies indexed</span>
+                    </div>
+                    <div class="side-tile">
+                        <strong id="sideQuestionCount">--</strong>
+                        <span>practice questions</span>
+                    </div>
+                    <div class="side-tile">
+                        <strong id="sideSolvedCount">0</strong>
+                        <span>solved locally</span>
+                    </div>
+                    <div class="side-tile">
+                        <strong id="sideHardCount">--</strong>
+                        <span>hard problems</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="metrics" aria-label="Library metrics">
+            <article class="metric-card">
+                <span>Companies</span>
+                <strong id="metricCompanies">--</strong>
+            </article>
+            <article class="metric-card">
+                <span>Questions</span>
+                <strong id="metricQuestions">--</strong>
+            </article>
+            <article class="metric-card">
+                <span>Completed</span>
+                <strong id="metricSolved">0</strong>
+            </article>
+            <article class="metric-card">
+                <span>Focus topic</span>
+                <strong id="metricTopic">--</strong>
+            </article>
+        </section>
+
+        <section class="workspace" id="library" aria-label="Company problem library">
+            <aside class="company-pane">
+                <div class="pane-head">
+                    <div class="pane-title">
+                        <h2>Companies</h2>
+                        <span class="mini-pill" id="visibleCompanies">0 shown</span>
+                    </div>
+                    <label class="input-wrap">
+                        <span class="material-symbols-rounded">search</span>
+                        <input class="search" id="companySearch" type="search" placeholder="Search company" autocomplete="off">
+                    </label>
+                </div>
+                <div class="company-list" id="companyList">
+                    <div class="loading">Loading company library...</div>
+                </div>
+            </aside>
+
+            <section class="question-panel">
+                <div class="question-head">
+                    <div class="company-summary">
+                        <div class="selected-company">
+                            <div class="company-logo" id="selectedLogo">C</div>
+                            <div>
+                                <h2 id="selectedCompany">Company</h2>
+                                <p id="selectedMeta">Choose a company to begin.</p>
+                            </div>
+                        </div>
+                        <div class="focus-card">
+                            <span>Recommended focus</span>
+                            <strong id="focusText">Search or select a company to see the strongest preparation route.</strong>
+                        </div>
+                    </div>
+                    <div class="filters">
+                        <label class="input-wrap">
+                            <span class="material-symbols-rounded">search</span>
+                            <input class="search" id="questionSearch" type="search" placeholder="Search question or topic" autocomplete="off">
+                        </label>
+                        <select class="select" id="difficultyFilter" aria-label="Filter by difficulty">
+                            <option value="all">All difficulty</option>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                        <select class="select" id="statusFilter" aria-label="Filter by solved status">
+                            <option value="all">All status</option>
+                            <option value="todo">To practice</option>
+                            <option value="solved">Solved</option>
+                        </select>
+                        <select class="select" id="sortFilter" aria-label="Sort questions">
+                            <option value="frequency">Most repeated first</option>
+                            <option value="difficulty">Hardest first</option>
+                            <option value="acceptance">Highest acceptance</option>
+                            <option value="title">A to Z</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="question-list" id="questionList"></div>
+                <div class="empty-state" id="emptyState">
+                    <h3>No questions found</h3>
+                    <p>Try another company, difficulty or search keyword.</p>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="/client/src/data/undergard-problems.js"></script>
+    <script>
+        (() => {
+            const companies = Array.isArray(window.CAREEROS_COMPANY_PROBLEMS)
+                ? window.CAREEROS_COMPANY_PROBLEMS
+                : [];
+
+            const storagePrefix = "careeros-interview-solved:";
+            const els = {
+                companyList: document.getElementById("companyList"),
+                questionList: document.getElementById("questionList"),
+                emptyState: document.getElementById("emptyState"),
+                companySearch: document.getElementById("companySearch"),
+                questionSearch: document.getElementById("questionSearch"),
+                difficultyFilter: document.getElementById("difficultyFilter"),
+                statusFilter: document.getElementById("statusFilter"),
+                sortFilter: document.getElementById("sortFilter"),
+                selectedLogo: document.getElementById("selectedLogo"),
+                selectedCompany: document.getElementById("selectedCompany"),
+                selectedMeta: document.getElementById("selectedMeta"),
+                focusText: document.getElementById("focusText"),
+                visibleCompanies: document.getElementById("visibleCompanies"),
+                metricCompanies: document.getElementById("metricCompanies"),
+                metricQuestions: document.getElementById("metricQuestions"),
+                metricSolved: document.getElementById("metricSolved"),
+                metricTopic: document.getElementById("metricTopic"),
+                sideCompanyCount: document.getElementById("sideCompanyCount"),
+                sideQuestionCount: document.getElementById("sideQuestionCount"),
+                sideSolvedCount: document.getElementById("sideSolvedCount"),
+                sideHardCount: document.getElementById("sideHardCount")
+            };
+
+            let selectedSlug = companies[0]?.slug || "";
+
+            const normalizeTopics = (topics) => {
+                if (Array.isArray(topics)) return topics.filter(Boolean);
+                if (typeof topics === "string") return [topics].filter(Boolean);
+                return [];
+            };
+
+            const questionKey = (company, question) => {
+                const base = `${company.slug || company.name}:${question.title}`;
+                return storagePrefix + base.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+            };
+
+            const isSolved = (company, question) => localStorage.getItem(questionKey(company, question)) === "1";
+
+            const setSolved = (company, question, solved) => {
+                const key = questionKey(company, question);
+                if (solved) localStorage.setItem(key, "1");
+                else localStorage.removeItem(key);
+            };
+
+            const countDifficulty = (company, difficulty) => (company.questions || [])
+                .filter((question) => String(question.difficulty || "").toLowerCase() === difficulty)
+                .length;
+
+            const getSolvedCount = (company) => (company.questions || [])
+                .filter((question) => isSolved(company, question))
+                .length;
+
+            const allQuestions = () => companies.flatMap((company) => (company.questions || []).map((question) => ({ company, question })));
+
+            const getTopTopic = (items) => {
+                const counts = new Map();
+                items.forEach(({ question }) => {
+                    normalizeTopics(question.topics).forEach((topic) => {
+                        counts.set(topic, (counts.get(topic) || 0) + 1);
+                    });
+                });
+                return [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || "Arrays";
+            };
+
+            const formatNumber = (value) => new Intl.NumberFormat("en-IN").format(value || 0);
+
+            const renderLogo = (company) => {
+                const initial = (company.name || "C").charAt(0).toUpperCase();
+                if (company.logo) {
+                    return `<img src="${company.logo}" alt="${company.name} logo" onerror="this.replaceWith(document.createTextNode('${initial}'))">`;
+                }
+                return initial;
+            };
+
+            const updateMetrics = () => {
+                const questions = allQuestions();
+                const solved = questions.filter(({ company, question }) => isSolved(company, question)).length;
+                const hard = questions.filter(({ question }) => String(question.difficulty || "").toLowerCase() === "hard").length;
+                const topTopic = getTopTopic(questions);
+
+                els.metricCompanies.textContent = formatNumber(companies.length);
+                els.metricQuestions.textContent = formatNumber(questions.length);
+                els.metricSolved.textContent = formatNumber(solved);
+                els.metricTopic.textContent = topTopic;
+                els.sideCompanyCount.textContent = formatNumber(companies.length);
+                els.sideQuestionCount.textContent = formatNumber(questions.length);
+                els.sideSolvedCount.textContent = formatNumber(solved);
+                els.sideHardCount.textContent = formatNumber(hard);
+            };
+
+            const renderCompanies = () => {
+                const term = els.companySearch.value.trim().toLowerCase();
+                const visible = companies
+                    .filter((company) => !term || company.name.toLowerCase().includes(term))
+                    .sort((a, b) => (b.questions || []).length - (a.questions || []).length);
+
+                els.visibleCompanies.textContent = `${visible.length} shown`;
+
+                if (!visible.length) {
+                    els.companyList.innerHTML = '<div class="loading">No companies match this search.</div>';
+                    return;
+                }
+
+                if (!visible.some((company) => company.slug === selectedSlug)) {
+                    selectedSlug = visible[0].slug;
+                }
+
+                els.companyList.innerHTML = visible.map((company) => {
+                    const total = (company.questions || []).length;
+                    const solved = getSolvedCount(company);
+                    const progress = total ? Math.round((solved / total) * 100) : 0;
+                    const active = company.slug === selectedSlug ? " active" : "";
+                    return `
+                        <button class="company-card${active}" type="button" data-slug="${company.slug}" aria-label="Open ${company.name}">
+                            <div class="company-top">
+                                <span class="company-logo">${renderLogo(company)}</span>
+                                <span class="company-name">
+                                    <strong>${company.name}</strong>
+                                    <span>${total} questions · ${progress}% complete</span>
+                                </span>
+                            </div>
+                            <div class="difficulty-strip">
+                                <span class="mini-pill">E ${countDifficulty(company, "easy")}</span>
+                                <span class="mini-pill">M ${countDifficulty(company, "medium")}</span>
+                                <span class="mini-pill">H ${countDifficulty(company, "hard")}</span>
+                            </div>
+                            <span class="progress-line" style="--progress: ${progress}%"><i></i></span>
+                        </button>
+                    `;
+                }).join("");
+            };
+
+            const difficultyWeight = { hard: 3, medium: 2, easy: 1 };
+
+            const getFilteredQuestions = (company) => {
+                const term = els.questionSearch.value.trim().toLowerCase();
+                const difficulty = els.difficultyFilter.value;
+                const status = els.statusFilter.value;
+                const sort = els.sortFilter.value;
+
+                return (company.questions || [])
+                    .filter((question) => {
+                        const topics = normalizeTopics(question.topics);
+                        const haystack = [question.title, question.difficulty, ...topics].join(" ").toLowerCase();
+                        const solved = isSolved(company, question);
+                        const matchesTerm = !term || haystack.includes(term);
+                        const matchesDifficulty = difficulty === "all" || String(question.difficulty || "").toLowerCase() === difficulty;
+                        const matchesStatus = status === "all" || (status === "solved" ? solved : !solved);
+                        return matchesTerm && matchesDifficulty && matchesStatus;
+                    })
+                    .sort((a, b) => {
+                        if (sort === "difficulty") {
+                            return (difficultyWeight[String(b.difficulty || "").toLowerCase()] || 0) - (difficultyWeight[String(a.difficulty || "").toLowerCase()] || 0)
+                                || (Number(b.frequency) || 0) - (Number(a.frequency) || 0);
+                        }
+                        if (sort === "acceptance") {
+                            return (Number(b.acceptance) || 0) - (Number(a.acceptance) || 0);
+                        }
+                        if (sort === "title") {
+                            return String(a.title).localeCompare(String(b.title));
+                        }
+                        return (Number(b.frequency) || 0) - (Number(a.frequency) || 0);
+                    });
+            };
+
+            const renderQuestions = () => {
+                const company = companies.find((item) => item.slug === selectedSlug) || companies[0];
+                if (!company) {
+                    els.questionList.innerHTML = "";
+                    els.emptyState.classList.add("show");
+                    return;
+                }
+
+                const total = (company.questions || []).length;
+                const solved = getSolvedCount(company);
+                const progress = total ? Math.round((solved / total) * 100) : 0;
+                const filtered = getFilteredQuestions(company);
+                const topic = getTopTopic(filtered.map((question) => ({ company, question })));
+
+                els.selectedLogo.innerHTML = renderLogo(company);
+                els.selectedCompany.textContent = company.name;
+                els.selectedMeta.textContent = `${total} questions · ${solved} solved · ${progress}% complete`;
+                els.focusText.textContent = filtered.length
+                    ? `Start with ${topic}, then clear high-frequency medium problems before moving to hard rounds.`
+                    : "No matching questions right now. Clear filters to rebuild your focus list.";
+
+                els.emptyState.classList.toggle("show", !filtered.length);
+
+                els.questionList.innerHTML = filtered.slice(0, 120).map((question) => {
+                    const solvedClass = isSolved(company, question) ? " solved" : "";
+                    const difficulty = String(question.difficulty || "medium").toLowerCase();
+                    const topics = normalizeTopics(question.topics).slice(0, 5);
+                    const link = question.link || "#";
+                    return `
+                        <article class="question-card${solvedClass}">
+                            <div class="question-title-row">
+                                <button class="check" type="button" data-question="${encodeURIComponent(question.title)}" aria-label="Toggle solved status">
+                                    <span class="material-symbols-rounded">check</span>
+                                </button>
+                                <div class="question-title">
+                                    <strong>${question.title}</strong>
+                                    <span>Frequency ${Number(question.frequency || 0).toFixed(1)} · Acceptance ${Number(question.acceptance || 0).toFixed(1)}%</span>
+                                </div>
+                            </div>
+                            <div class="question-meta">
+                                <div class="tags">
+                                    <span class="difficulty ${difficulty}">${String(question.difficulty || "Medium")}</span>
+                                    ${topics.map((topicItem) => `<span class="tag">${topicItem}</span>`).join("")}
+                                </div>
+                                <a class="practice-link" href="${link}" target="_blank" rel="noopener noreferrer">
+                                    Practice
+                                    <span class="material-symbols-rounded">open_in_new</span>
+                                </a>
+                            </div>
+                        </article>
+                    `;
+                }).join("");
+            };
+
+            const refresh = () => {
+                updateMetrics();
+                renderCompanies();
+                renderQuestions();
+            };
+
+            els.companySearch.addEventListener("input", refresh);
+            [els.questionSearch, els.difficultyFilter, els.statusFilter, els.sortFilter].forEach((control) => {
+                control.addEventListener("input", renderQuestions);
+                control.addEventListener("change", renderQuestions);
+            });
+
+            els.companyList.addEventListener("click", (event) => {
+                const card = event.target.closest(".company-card");
+                if (!card) return;
+                selectedSlug = card.dataset.slug;
+                renderCompanies();
+                renderQuestions();
+            });
+
+            els.questionList.addEventListener("click", (event) => {
+                const toggle = event.target.closest(".check");
+                if (!toggle) return;
+                const company = companies.find((item) => item.slug === selectedSlug) || companies[0];
+                const title = decodeURIComponent(toggle.dataset.question || "");
+                const question = (company.questions || []).find((item) => item.title === title);
+                if (!company || !question) return;
+                setSolved(company, question, !isSolved(company, question));
+                refresh();
+            });
+
+            if (!companies.length) {
+                els.companyList.innerHTML = '<div class="loading">The company problem dataset could not be loaded.</div>';
+                els.emptyState.classList.add("show");
+                return;
+            }
+
+            refresh();
+        })();
+    </script>
+</body>
+</html>

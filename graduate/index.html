@@ -19,7 +19,7 @@
     <!-- Google Fonts: Fustat + Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fustat:wght@600;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Fustat:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.2.8/index.css" rel="stylesheet">
@@ -718,52 +718,49 @@
             width: 100%;
             min-height: 100vh;
             overflow: hidden;
-            background:
-                radial-gradient(ellipse at 18% 18%, rgba(202, 231, 255, 0.42) 0%, rgba(239, 248, 255, 0.22) 32%, rgba(255, 255, 255, 0) 56%),
-                radial-gradient(circle at 72% 42%, rgba(0, 132, 255, 0.08) 0%, rgba(124, 198, 255, 0.045) 30%, rgba(255, 255, 255, 0) 52%),
-                radial-gradient(ellipse at 48% 100%, rgba(229, 243, 255, 0.72) 0%, rgba(255, 255, 255, 0) 46%),
-                linear-gradient(135deg, #fbfdff 0%, #f6fbff 36%, #ffffff 66%, #f8fbff 100%);
-            padding: 126px 32px 52px;
+            background: #ffffff;
+            padding: 126px 32px 72px;
             display: flex;
             flex-direction: column;
-            align-items: stretch;
+            align-items: center;
             justify-content: center;
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.92),
-                inset 0 -150px 150px rgba(255, 255, 255, 0.9);
+                inset 0 -90px 100px rgba(255, 255, 255, 0.94);
         }
 
         .career-hero-bg-video {
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 0;
             width: 100%;
-            height: 100%;
+            height: min(58vh, 560px);
             object-fit: cover;
             opacity: 0;
-            filter: saturate(58%) contrast(0.72) brightness(1.22) blur(1.2px);
+            filter: saturate(120%) contrast(0.92) brightness(1.12);
             mix-blend-mode: normal;
-            transform: scale(1.015);
-            mask-image: radial-gradient(ellipse at 52% 48%, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.3) 48%, rgba(0, 0, 0, 0.08) 78%, transparent 100%);
-            -webkit-mask-image: radial-gradient(ellipse at 52% 48%, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.3) 48%, rgba(0, 0, 0, 0.08) 78%, transparent 100%);
+            transform: scale(1.01);
+            mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.92) 34%, rgba(0, 0, 0, 0.38) 66%, transparent 100%);
+            -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.92) 34%, rgba(0, 0, 0, 0.38) 66%, transparent 100%);
             pointer-events: none;
             transition: opacity 120ms linear;
         }
 
         .career-hero-blur {
             position: absolute;
-            top: 50%;
+            top: 58%;
             left: 50%;
             z-index: 1;
-            width: min(984px, 72vw);
-            height: min(527px, 48vw);
+            width: min(1040px, 82vw);
+            height: min(420px, 42vw);
             border-radius: 999px;
             transform: translate(-50%, -50%);
             background:
-                radial-gradient(ellipse at 50% 45%, rgba(255, 255, 255, 0.78), rgba(239, 248, 255, 0.28) 42%, rgba(255, 255, 255, 0) 70%),
-                rgba(248, 251, 255, 0.62);
-            filter: blur(82px);
-            opacity: 0.92;
+                radial-gradient(ellipse at center, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.9) 42%, rgba(255, 255, 255, 0) 76%);
+            filter: blur(58px);
+            opacity: 0.98;
             pointer-events: none;
         }
 
@@ -773,43 +770,42 @@
             position: absolute;
             pointer-events: none;
             border-radius: 999px;
-            filter: blur(88px);
-            opacity: 0.72;
+            filter: blur(70px);
+            opacity: 0.55;
             z-index: 2;
             mix-blend-mode: normal;
         }
 
         .hero-redesign::before {
-            width: 760px;
-            height: 520px;
-            top: -210px;
-            left: -230px;
+            width: 680px;
+            height: 320px;
+            top: 24px;
+            left: -180px;
             background:
-                radial-gradient(circle at 28% 28%, rgba(96, 177, 255, 0.22), transparent 38%),
-                radial-gradient(circle at 68% 56%, rgba(255, 255, 255, 0.86), transparent 44%);
+                radial-gradient(ellipse at center, rgba(255, 255, 255, 0.76), rgba(96, 177, 255, 0.12) 44%, transparent 72%);
         }
 
         .hero-redesign::after {
-            width: 880px;
-            height: 620px;
-            top: 60px;
-            right: -320px;
+            width: 620px;
+            height: 360px;
+            top: 30px;
+            right: -120px;
             left: auto;
             background:
-                radial-gradient(circle at 48% 44%, rgba(0, 132, 255, 0.11), rgba(96, 177, 255, 0.055) 35%, rgba(255, 255, 255, 0) 68%);
+                radial-gradient(ellipse at center, rgba(255, 255, 255, 0.74), rgba(255, 142, 215, 0.12) 42%, transparent 72%);
         }
 
         .hero-redesign .liquid-hero-container::before {
             content: "";
             position: absolute;
-            inset: -120px -110px;
+            inset: -70px -90px;
             z-index: -1;
             pointer-events: none;
-            opacity: 0.38;
+            opacity: 0.16;
             background-image:
-                linear-gradient(rgba(15, 23, 42, 0.022) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(15, 23, 42, 0.018) 1px, transparent 1px);
-            background-size: 44px 44px;
+                linear-gradient(rgba(15, 23, 42, 0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 23, 42, 0.014) 1px, transparent 1px);
+            background-size: 34px 34px;
             mask-image: radial-gradient(circle at 50% 46%, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0) 72%);
             -webkit-mask-image: radial-gradient(circle at 50% 46%, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0) 72%);
         }
@@ -817,28 +813,32 @@
         .liquid-hero-container {
             position: relative;
             z-index: 10;
-            max-width: 1600px;
+            max-width: 980px;
             width: 100%;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: minmax(0, 0.92fr) minmax(420px, 0.88fr);
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: clamp(42px, 7vw, 120px);
-            padding-bottom: clamp(22px, 4vh, 46px);
+            justify-content: center;
+            gap: 0;
+            padding-top: clamp(56px, 10vh, 118px);
+            padding-bottom: 0;
+            text-align: center;
         }
 
         .liquid-hero-copy {
-            max-width: 690px;
+            max-width: 780px;
+            margin: 0 auto;
         }
 
         .hero-proof-badge {
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            padding: 9px 13px;
-            margin-bottom: 28px;
+            padding: 9px 14px;
+            margin-bottom: 34px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.52);
+            background: rgba(255, 255, 255, 0.68);
             backdrop-filter: blur(36px);
             -webkit-backdrop-filter: blur(36px);
             border: 1px solid rgba(0, 0, 0, 0.08);
@@ -858,29 +858,31 @@
         .liquid-hero-title {
             margin: 0;
             font-family: 'General Sans', 'Fustat', 'Geist Sans', 'Inter', sans-serif;
-            font-size: clamp(48px, 5.15vw, 75px);
-            line-height: 1.05;
-            letter-spacing: -2px;
+            font-size: clamp(48px, 6vw, 92px);
+            line-height: 0.96;
+            letter-spacing: -0.055em;
             font-weight: 700;
             color: var(--career-ink);
         }
 
         .liquid-hero-title span {
-            display: block;
-            color: transparent;
-            background-image: linear-gradient(92deg, #0084ff 0%, #1b6fff 46%, #6cbcff 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
+            display: inline;
+            color: #0b1220;
+            background: none;
+            font-family: 'Instrument Serif', 'Georgia', serif;
+            font-style: italic;
+            font-weight: 400;
+            letter-spacing: -0.04em;
         }
 
         .liquid-hero-subtitle {
-            max-width: 620px;
-            margin: 24px 0 34px;
+            max-width: 590px;
+            margin: 24px auto 28px;
             font-family: 'Inter', sans-serif;
-            font-size: 18px;
-            line-height: 1.65;
-            letter-spacing: -1px;
-            color: var(--career-muted);
+            font-size: 16px;
+            line-height: 1.7;
+            letter-spacing: -0.02em;
+            color: rgba(71, 85, 105, 0.82);
         }
 
         .liquid-hero-cta {
@@ -907,6 +909,52 @@
             transition: transform 240ms ease, box-shadow 240ms ease, background 240ms ease;
         }
 
+        .hero-email-cta {
+            width: min(100%, 430px);
+            min-height: 58px;
+            margin: 0 auto;
+            padding: 7px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.74);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 20px 70px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+        }
+
+        .hero-email-cta input {
+            min-width: 0;
+            flex: 1;
+            height: 44px;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            padding: 0 14px;
+            color: #111827;
+            font: 600 14px/1 'Inter', sans-serif;
+        }
+
+        .hero-email-cta input::placeholder {
+            color: rgba(100, 116, 139, 0.72);
+        }
+
+        .hero-email-cta .liquid-hero-cta {
+            min-height: 44px;
+            padding: 0 21px;
+            border-radius: 999px;
+            background: #171827;
+            box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.14), 0 12px 34px rgba(15, 23, 42, 0.18);
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .hero-email-cta .liquid-hero-cta:hover {
+            background: #0c1020;
+        }
+
         .liquid-hero-cta:hover {
             transform: scale(1.02);
             background: rgba(0, 132, 255, 0.9);
@@ -928,18 +976,24 @@
         }
 
         .liquid-hero-note {
-            margin-top: 16px;
-            font-size: 13px;
-            color: rgba(100, 116, 139, 0.9);
-        }
-
-        .liquid-orb-stage {
-            position: relative;
-            min-height: clamp(360px, 38vw, 560px);
+            margin: 16px 0 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            isolation: isolate;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: rgba(15, 23, 42, 0.82);
+        }
+
+        .liquid-hero-note .hero-proof-stars {
+            font-size: 14px;
+            color: #111827;
+            letter-spacing: 2px;
+        }
+
+        .liquid-orb-stage {
+            display: none !important;
         }
 
         .liquid-orb-stage::before {
@@ -1288,7 +1342,7 @@
                             <a href="/jobs/" class="nav-link">Jobs</a>
                             <a href="/skill-test/" class="nav-link">Skill Test</a>
                             <a href="/class-12/" class="nav-link">Class 12</a>
-                            <a href="/undergard/" class="nav-link">Undergard</a>
+                            <a href="/undergard/" class="nav-link">Interview Prep</a>
                             <a href="/graduate/dashboard/" class="nav-link">Dashboard</a>
                             <a href="#features" class="nav-link">Features</a>
                             <a href="/graduate/dashboard/#view-upload-resume" class="nav-link">Resume</a>
@@ -1306,7 +1360,7 @@
                     <video class="career-hero-bg-video" id="careerHeroBgVideo" muted playsinline preload="auto"
                         aria-hidden="true">
                         <source
-                            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_065045_c44942da-53c6-4804-b734-f9e07fc22e08.mp4"
+                            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260302_085640_276ea93b-d7da-4418-a09b-2aa5b490e838.mp4"
                             type="video/mp4">
                     </video>
                     <div class="career-hero-blur" aria-hidden="true"></div>
@@ -1320,24 +1374,25 @@
                             </div>
 
                             <h1 class="liquid-hero-title">
-                                Plan smarter,
-                                <span>get hired faster</span>
+                                Simple <span>career</span><br>
+                                planning for every student
                             </h1>
 
                             <p class="liquid-hero-subtitle">
-                                CareerOS AI brings resume intelligence, skill-gap analysis, mock interviews,
-                                job matching and career guidance into one calm operating system for students and graduates.
+                                CareerOS AI helps students and graduates choose the right path, close skill gaps,
+                                prepare for interviews and discover opportunities with one intelligent workflow.
                             </p>
 
-                            <a href="/graduate/dashboard/" class="liquid-hero-cta" id="hero-explore-jobs">
-                                <span>Start CareerOS Now</span>
-                                <span class="liquid-hero-cta-icon" aria-hidden="true">
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </span>
-                            </a>
+                            <div class="hero-email-cta" role="group" aria-label="Start CareerOS AI">
+                                <input type="email" placeholder="Enter your email" aria-label="Email address">
+                                <a href="/graduate/dashboard/" class="liquid-hero-cta" id="hero-explore-jobs">
+                                    <span>Start Free Assessment</span>
+                                </a>
+                            </div>
 
                             <p class="liquid-hero-note">
-                                No setup friction. Upload a resume, test your skills, and see the next best move.
+                                <span class="hero-proof-stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                                <span>1,020+ learners guided</span>
                             </p>
                         </div>
 
@@ -2214,7 +2269,7 @@
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             if (heroVideo && !reduceMotion) {
-                const maxOpacity = 0.085;
+                const maxOpacity = 0.86;
                 const fadeMs = 500;
 
                 const updateVideoOpacity = () => {
