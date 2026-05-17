@@ -1,6 +1,23 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/client/src/pages",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/client/src/pages/",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/client/src/pages/index.html",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/",
