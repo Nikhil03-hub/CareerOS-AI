@@ -227,19 +227,30 @@
             scores.recruiterDiscoverability,
             scores.roleMatch
         ].filter(Boolean);
+        const modelLabel = result.modelInfo?.type === "ridge-linear-regression"
+            ? `Trained ${result.modelInfo.trainingRows || 0}`
+            : "Semantic";
+        const isLinkedinUrlReview = result.type === "linkedin-url-review";
+        const linkedinHandle = result.linkedinUrl?.handle ? `/${result.linkedinUrl.handle}` : "Not found";
 
         $("#careerOverallScore").textContent = result.overallScore || 0;
         $("#careerVerdict").textContent = result.recruiterSimulation?.verdict || "Analysis ready";
-        $("#careerMetrics").innerHTML = `
+        $("#careerMetrics").innerHTML = isLinkedinUrlReview ? `
+            <article class="career-ai-metric"><span>URL Quality</span><strong>${scores.linkedinUrl?.score || result.linkedinUrl?.score || 0}</strong></article>
+            <article class="career-ai-metric"><span>Public Handle</span><strong>${linkedinHandle}</strong></article>
+            <article class="career-ai-metric"><span>Discoverability</span><strong>${scores.recruiterDiscoverability?.score || 0}</strong></article>
+            <article class="career-ai-metric"><span>AI Model</span><strong>${modelLabel}</strong></article>
+        ` : `
             <article class="career-ai-metric"><span>ATS Score</span><strong>${scores.ats?.score || 0}</strong></article>
             <article class="career-ai-metric"><span>LinkedIn URL</span><strong>${scores.linkedinUrl?.score || result.linkedinUrl?.score || 0}</strong></article>
             <article class="career-ai-metric"><span>Discoverability</span><strong>${scores.recruiterDiscoverability?.score || 0}</strong></article>
+            <article class="career-ai-metric"><span>AI Model</span><strong>${modelLabel}</strong></article>
         `;
         $("#careerBreakdowns").innerHTML = keyScores.map(renderBar).join("");
         $("#careerKeywords").innerHTML = (result.keywords?.suggested || []).map((keyword) => `<span>${keyword}</span>`).join("") || "<span>No major keyword gaps</span>";
         $("#careerStrengths").innerHTML = (result.strengths || []).map((item) => `<li>${item}</li>`).join("");
         $("#careerFixes").innerHTML = (result.quickFixes || []).map((item) => `<li>${item}</li>`).join("");
-        $("#careerRoadmap").innerHTML = (result.roadmap || []).map((item) => `<article><h4>${item.phase}: ${item.title}</h4><p>${(item.tasks || []).join(" • ")}</p></article>`).join("");
+        $("#careerRoadmap").innerHTML = (result.roadmap || []).map((item) => `<article><h4>${item.phase}: ${item.title}</h4><p>${(item.tasks || []).join(" &middot; ")}</p></article>`).join("");
         $("#careerGenerated").innerHTML = `
             <h3 class="text-lg font-bold text-slate-900 mb-3">AI-generated enhancements</h3>
             <div class="career-ai-field"><label>Optimized LinkedIn headline</label><textarea readonly>${result.generated?.headline || ""}</textarea></div>

@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/client/src/pages/index.html"
+      "destination": "/index.html"
     },
     {
       "source": "/dashboard",

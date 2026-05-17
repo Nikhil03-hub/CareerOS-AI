@@ -1,3 +1,20 @@
+const fs = require("fs");
+const path = require("path");
+
+const CAREER_MODEL_PATH = path.join(__dirname, "..", "ml", "career-intelligence-model.json");
+
+function loadTrainedModel() {
+    if (process.env.CAREER_INTELLIGENCE_DISABLE_MODEL === "1") return null;
+
+    try {
+        return JSON.parse(fs.readFileSync(CAREER_MODEL_PATH, "utf8"));
+    } catch {
+        return null;
+    }
+}
+
+const TRAINED_MODEL = loadTrainedModel();
+
 const ROLE_LIBRARY = {
     "Full Stack Developer": {
         titles: ["full stack developer", "mern developer", "software engineer", "product engineer"],
@@ -34,6 +51,27 @@ const ROLE_LIBRARY = {
 const ACTION_VERBS = ["built", "designed", "developed", "deployed", "optimized", "improved", "automated", "integrated", "reduced", "increased", "launched", "implemented"];
 const IMPACT_WORDS = ["%", "users", "latency", "performance", "revenue", "conversion", "accuracy", "scale", "production", "metrics", "reduced", "increased"];
 const COMMUNICATION_WORDS = ["collaborated", "presented", "documented", "mentored", "communicated", "led", "stakeholders", "team", "feedback"];
+const MODEL_FEATURE_NAMES = [
+    "bias",
+    "urlScore",
+    "headlineScore",
+    "summaryScore",
+    "atsScore",
+    "keywordScore",
+    "technicalScore",
+    "communicationScore",
+    "impactScore",
+    "projectScore",
+    "portfolioScore",
+    "discoverabilityScore",
+    "roleMatchScore",
+    "matchedCoreRatio",
+    "matchedAdjacentRatio",
+    "suggestedPenalty",
+    "contentRichness",
+    "hasProfileContent",
+    "qualityPrior"
+];
 
 function normalize(value = "") {
     return String(value).toLowerCase().replace(/[^a-z0-9+#.% ]+/g, " ").replace(/\s+/g, " ").trim();
@@ -93,6 +131,72 @@ function section(score, title, insight, fixes = []) {
         insight,
         fixes
     };
+}
+
+function modelFeatureMap({
+    checks,
+    matchedCore,
+    matchedAdjacent,
+    suggested,
+    model,
+    resume,
+    headline,
+    summary,
+    experience,
+    education,
+    github,
+    portfolio,
+    certifications,
+    hasProfileContent
+}) {
+    const content = [resume, headline, summary, experience, education, github, portfolio, certifications].join(" ");
+    const values = {
+        bias: 1,
+        urlScore: (checks.linkedinUrl?.score || 0) / 100,
+        headlineScore: (checks.linkedinHeadline?.score || 0) / 100,
+        summaryScore: (checks.linkedinSummary?.score || 0) / 100,
+        atsScore: (checks.ats?.score || 0) / 100,
+        keywordScore: (checks.keywordOptimization?.score || 0) / 100,
+        technicalScore: (checks.technicalSkill?.score || 0) / 100,
+        communicationScore: (checks.communication?.score || 0) / 100,
+        impactScore: (checks.resumeImpact?.score || 0) / 100,
+        projectScore: (checks.projectQuality?.score || 0) / 100,
+        portfolioScore: (checks.portfolio?.score || 0) / 100,
+        discoverabilityScore: (checks.recruiterDiscoverability?.score || 0) / 100,
+        roleMatchScore: (checks.roleMatch?.score || 0) / 100,
+        matchedCoreRatio: matchedCore.length / model.skills.length,
+        matchedAdjacentRatio: matchedAdjacent.length / Math.max(1, model.adjacent.length),
+        suggestedPenalty: suggested.length / (model.skills.length + model.adjacent.length),
+        contentRichness: Math.min(1, normalize(content).length / 2400),
+        hasProfileContent: hasProfileContent ? 1 : 0,
+        qualityPrior: Math.min(1, (
+            (checks.keywordOptimization?.score || 0) +
+            (checks.projectQuality?.score || 0) +
+            (checks.linkedinHeadline?.score || 0) +
+            (checks.linkedinSummary?.score || 0)
+        ) / 400)
+    };
+
+    return MODEL_FEATURE_NAMES.reduce((features, name) => {
+        features[name] = values[name] || 0;
+        return features;
+    }, {});
+}
+
+function predictWithTrainedModel(targetName, fallbackScore, features) {
+    const target = TRAINED_MODEL?.targets?.[targetName];
+    const featureNames = TRAINED_MODEL?.featureNames || MODEL_FEATURE_NAMES;
+
+    if (!target?.weights?.length) {
+        return clamp(fallbackScore);
+    }
+
+    const rawPrediction = target.weights.reduce((sum, weight, index) => {
+        const featureName = featureNames[index];
+        return sum + weight * (features[featureName] || 0);
+    }, 0) * 100;
+
+    return clamp(rawPrediction * 0.82 + fallbackScore * 0.18);
 }
 
 function linkedinUrlSignals(url = "") {
@@ -242,7 +346,45 @@ function analyzeCareerProfile(input = {}) {
         ])
     };
 
-    const overallScore = hasProfileContent ? clamp(
+    const trainedFeatures = modelFeatureMap({
+        checks,
+        matchedCore,
+        matchedAdjacent,
+        suggested,
+        model,
+        resume,
+        headline,
+        summary,
+        experience,
+        education,
+        github,
+        portfolio,
+        certifications,
+        hasProfileContent
+    });
+
+    const trainedTargetMap = {
+        ats: "ats",
+        profileStrength: "profileStrength",
+        keywordOptimization: "keywordOptimization",
+        technicalSkill: "technicalSkill",
+        communication: "communication",
+        resumeImpact: "resumeImpact",
+        projectQuality: "projectQuality",
+        portfolio: "portfolio",
+        recruiterDiscoverability: "recruiterDiscoverability",
+        roleMatch: "roleMatch"
+    };
+
+    Object.entries(trainedTargetMap).forEach(([scoreKey, targetName]) => {
+        checks[scoreKey] = {
+            ...checks[scoreKey],
+            score: predictWithTrainedModel(targetName, checks[scoreKey].score, trainedFeatures),
+            model: TRAINED_MODEL ? "trained-calibrated" : "semantic-fallback"
+        };
+    });
+
+    const weightedOverall = clamp(
         checks.profileStrength.score * 0.18 +
         checks.ats.score * 0.16 +
         checks.keywordOptimization.score * 0.14 +
@@ -251,15 +393,29 @@ function analyzeCareerProfile(input = {}) {
         checks.roleMatch.score * 0.1 +
         checks.linkedinUrl.score * 0.04 +
         checks.communication.score * 0.1
-    ) : checks.linkedinUrl.score;
+    );
+    const overallScore = hasProfileContent
+        ? predictWithTrainedModel("overall", weightedOverall, trainedFeatures)
+        : checks.linkedinUrl.score;
 
     const smartHeadline = `${role} | ${matchedCore.slice(0, 4).join(" | ") || model.skills.slice(0, 4).join(" | ")} | Building production-ready AI and web products`;
     const smartSummary = `I am a ${role} focused on building practical, production-ready software across ${unique([...matchedCore, ...model.skills]).slice(0, 6).join(", ")}. My work combines hands-on projects, clean engineering, and measurable product thinking. I enjoy turning ideas into deployed systems, improving user experience, and learning deeply through real builds. I am currently looking for opportunities where I can contribute to ${role.toLowerCase()} work, strengthen product engineering skills, and solve meaningful real-world problems.`;
 
     return {
         success: true,
-        engine: "CareerOS Career Intelligence Semantic Engine v1",
-        methodology: ["NLP tokenization", "hashed semantic embeddings", "role vector similarity", "skill ontology matching", "impact scoring", "adaptive recommendation ranking"],
+        engine: TRAINED_MODEL ? "CareerOS Career Intelligence Trained Semantic Engine v2" : "CareerOS Career Intelligence Semantic Engine v1",
+        methodology: TRAINED_MODEL
+            ? ["NLP tokenization", "hashed semantic embeddings", "role vector similarity", "skill ontology matching", "supervised score calibration", "adaptive recommendation ranking"]
+            : ["NLP tokenization", "hashed semantic embeddings", "role vector similarity", "skill ontology matching", "impact scoring", "adaptive recommendation ranking"],
+        modelInfo: TRAINED_MODEL ? {
+            type: TRAINED_MODEL.modelType,
+            version: TRAINED_MODEL.version,
+            trainedAt: TRAINED_MODEL.trainedAt,
+            trainingRows: TRAINED_MODEL.trainingRows,
+            averageMae: Number((Object.values(TRAINED_MODEL.targets || {}).reduce((sum, target) => sum + (target.mae || 0), 0) / Math.max(1, Object.keys(TRAINED_MODEL.targets || {}).length)).toFixed(3))
+        } : {
+            type: "semantic-fallback"
+        },
         targetRole: role,
         linkedinUrl: linkedin,
         overallScore,
@@ -272,8 +428,8 @@ function analyzeCareerProfile(input = {}) {
         },
         strengths: [
             matchedCore.length ? `Strongest matched skills: ${matchedCore.slice(0, 5).join(", ")}.` : "Profile has a base structure but needs stronger target-role skill proof.",
-            projectScore >= 70 ? "Projects show credible technical proof." : "Projects need clearer architecture, live links and measurable outcomes.",
-            headlineScore >= 80 ? "Headline is recruiter-readable." : "Headline needs stronger role and keyword positioning."
+            checks.projectQuality.score >= 70 ? "Projects show credible technical proof." : "Projects need clearer architecture, live links and measurable outcomes.",
+            checks.linkedinHeadline.score >= 80 ? "Headline is recruiter-readable." : "Headline needs stronger role and keyword positioning."
         ],
         quickFixes: [
             checks.linkedinUrl.fixes[0],
@@ -303,19 +459,23 @@ function analyzeCareerProfile(input = {}) {
             { phase: "Week 3", title: "Portfolio authority", tasks: ["Publish one case study", "Improve GitHub READMEs", "Add live demos", "Add project architecture"] },
             { phase: "Week 4", title: "Placement execution", tasks: ["Apply to semantic job matches", "Practice interview stories", "Network with templates", "Track progress weekly"] }
         ],
-        recruiterSimulation: {
+        recruiterSimulation: hasProfileContent ? {
             verdict: overallScore >= 82 ? "Strong shortlist candidate" : overallScore >= 65 ? "Potential candidate with fixable gaps" : "Needs profile optimization before aggressive applications",
             likelyConcern: missingCore.length ? `Missing visible proof for ${missingCore.slice(0, 3).join(", ")}.` : "Needs stronger measurable outcomes and project storytelling.",
             interviewFocus: [`Explain your strongest ${role} project.`, "Describe one technical tradeoff you made.", "Show how your skills connect to business/user impact."]
+        } : {
+            verdict: "LinkedIn URL quality checked",
+            likelyConcern: "Only the public LinkedIn URL was provided, so full profile strength needs headline, summary, experience, skills and project content.",
+            interviewFocus: ["Paste your exported LinkedIn profile or summary text for full recruiter simulation.", "Add resume, GitHub and portfolio details for role-match scoring.", "Use a clean /in/ LinkedIn handle across resume and portfolio."]
         },
         heatmap: [
-            { label: "Resume", value: atsScore },
-            { label: "LinkedIn", value: clamp((headlineScore + summaryScore) / 2) },
+            { label: "Resume", value: checks.ats.score },
+            { label: "LinkedIn", value: clamp((checks.linkedinHeadline.score + checks.linkedinSummary.score) / 2) },
             { label: "URL", value: linkedin.score },
-            { label: "GitHub", value: projectScore },
-            { label: "Portfolio", value: portfolioScore },
-            { label: "Role Fit", value: roleMatchScore },
-            { label: "Discovery", value: discoverabilityScore }
+            { label: "GitHub", value: checks.projectQuality.score },
+            { label: "Portfolio", value: checks.portfolio.score },
+            { label: "Role Fit", value: checks.roleMatch.score },
+            { label: "Discovery", value: checks.recruiterDiscoverability.score }
         ]
     };
 }

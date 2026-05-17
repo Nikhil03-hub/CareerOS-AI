@@ -1,7 +1,7 @@
 {
   "name": "CareerOS Career Intelligence Supervised Calibration Model",
   "version": "1.0.0",
-  "trainedAt": "2026-05-17T17:53:43.945Z",
+  "trainedAt": "2026-05-17T17:56:32.753Z",
   "trainingRows": 270,
   "modelType": "ridge-linear-regression",
   "featureNames": [

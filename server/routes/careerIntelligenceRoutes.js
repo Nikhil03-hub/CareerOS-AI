@@ -37,23 +37,8 @@ router.post('/linkedin-url', optionalAuth, (req, res) => {
             portfolioText: req.body?.portfolioText || ''
         });
         res.json({
-            success: true,
+            ...result,
             type: 'linkedin-url-review',
-            linkedinUrl: result.linkedinUrl,
-            overallScore: result.overallScore,
-            scores: {
-                linkedinUrl: result.scores.linkedinUrl,
-                linkedinHeadline: result.scores.linkedinHeadline,
-                linkedinSummary: result.scores.linkedinSummary,
-                recruiterDiscoverability: result.scores.recruiterDiscoverability,
-                keywordOptimization: result.scores.keywordOptimization
-            },
-            keywords: result.keywords,
-            quickFixes: result.quickFixes,
-            generated: {
-                headline: result.generated.headline,
-                summary: result.generated.summary
-            },
             analyzedAt: new Date().toISOString()
         });
     } catch (error) {
