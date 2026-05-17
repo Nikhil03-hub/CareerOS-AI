@@ -1919,6 +1919,14 @@
             return cleanUser;
         };
 
+        const clearStoredAuth = () => {
+            ["auroraUser", "auroraProfile", "user", "jwt", "jc_token", "authToken", "token"].forEach((key) => {
+                localStorage.removeItem(key);
+                sessionStorage.removeItem(key);
+            });
+            window.location.href = "/";
+        };
+
         const updateHeroSteps = (stepNumber) => {
             document.querySelectorAll("[data-aurora-step]").forEach((step) => {
                 const isActive = Number(step.dataset.auroraStep) === stepNumber;
@@ -1988,7 +1996,10 @@
             const firstName = user.firstName || (user.displayName || "Profile").split(" ")[0];
             document.querySelectorAll("[data-auth-open]").forEach((button) => {
                 if (button.dataset.authOpen === "signup") button.textContent = firstName;
-                if (button.dataset.authOpen === "login") button.textContent = "Profile";
+                if (button.dataset.authOpen === "login") {
+                    button.textContent = "Logout";
+                    button.dataset.authAction = "logout";
+                }
             });
         };
 
@@ -2126,7 +2137,13 @@
         };
 
         document.querySelectorAll("[data-auth-open]").forEach((button) => {
-            button.addEventListener("click", () => openModal(button.dataset.authOpen));
+            button.addEventListener("click", () => {
+                if (button.dataset.authAction === "logout") {
+                    clearStoredAuth();
+                    return;
+                }
+                openModal(button.dataset.authOpen);
+            });
         });
 
         closeButton.addEventListener("click", closeModal);

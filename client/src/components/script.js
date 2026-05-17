@@ -665,11 +665,10 @@ document.querySelectorAll('.btn-primary').forEach(button => {
     });
 });
 
-// Navigate to dashboard page when Dashboard button is clicked
+// Navigate to CareerOS graduate dashboard when header CTA is clicked
 document.querySelectorAll('.btn-header').forEach(button => {
     button.addEventListener('click', function () {
-        // Redirect to local Dashboard redesign
-        window.location.href = 'Dashboard redesign/index.html';
+        window.location.href = '/graduate/dashboard/';
     });
 });
 

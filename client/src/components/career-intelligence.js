@@ -265,7 +265,7 @@
         const loader = $("#careerIntelligenceLoading");
         loader?.classList.add("active");
         try {
-            const token = localStorage.getItem("authToken");
+            const token = localStorage.getItem("jc_token") || localStorage.getItem("jwt") || localStorage.getItem("authToken") || localStorage.getItem("token");
             const response = await fetch("http://localhost:5000/api/career-intelligence/analyze", {
                 method: "POST",
                 headers: {
@@ -292,7 +292,7 @@
         const loader = $("#careerIntelligenceLoading");
         loader?.classList.add("active");
         try {
-            const token = localStorage.getItem("authToken");
+            const token = localStorage.getItem("jc_token") || localStorage.getItem("jwt") || localStorage.getItem("authToken") || localStorage.getItem("token");
             const response = await fetch("http://localhost:5000/api/career-intelligence/linkedin-url", {
                 method: "POST",
                 headers: {

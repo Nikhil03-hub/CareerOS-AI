@@ -7,14 +7,33 @@ const API_BASE_URL = 'http://localhost:8000';
 
 // Auth state management
 const AuthUI = {
+    decodeTokenPayload(token) {
+        try {
+            if (!token || token.split('.').length !== 3) return null;
+            const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+            return JSON.parse(atob(payload));
+        } catch (e) {
+            return null;
+        }
+    },
+
     // Get current user from localStorage
     getCurrentUser() {
         try {
-            const userStr = localStorage.getItem('user');
-            // Check both jwt and authToken for compatibility
-            const token = localStorage.getItem('jwt') || localStorage.getItem('authToken');
-            if (userStr && token) {
+            const userStr = localStorage.getItem('user') || localStorage.getItem('auroraUser');
+            if (userStr) {
                 return JSON.parse(userStr);
+            }
+
+            const token = localStorage.getItem('jc_token') || localStorage.getItem('jwt') || localStorage.getItem('authToken') || localStorage.getItem('token');
+            const payload = this.decodeTokenPayload(token);
+            if (payload) {
+                return {
+                    name: payload.name || payload.displayName || payload.email || 'CareerOS User',
+                    displayName: payload.name || payload.displayName || payload.email || 'CareerOS User',
+                    email: payload.email || '',
+                    picture: payload.picture || payload.avatar || payload.photoURL || ''
+                };
             }
         } catch (e) {
             console.error('Error parsing user data:', e);
@@ -24,25 +43,28 @@ const AuthUI = {
 
     // Check if user is logged in
     isLoggedIn() {
-        // Check for token (either jwt or authToken)
-        const token = localStorage.getItem('jwt') || localStorage.getItem('authToken');
-        if (!token) return false;
-
-        // Also check for user data
         const user = this.getCurrentUser();
-        return !!user || !!token; // Logged in if we have a token
+        const token = localStorage.getItem('jc_token') || localStorage.getItem('jwt') || localStorage.getItem('authToken') || localStorage.getItem('token');
+        return !!user || !!token;
     },
 
     // Save user data
     saveUser(userData) {
         localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('auroraUser', JSON.stringify(userData));
     },
 
     // Clear auth data
     clearAuth() {
         localStorage.removeItem('user');
+        localStorage.removeItem('auroraUser');
+        localStorage.removeItem('auroraProfile');
+        localStorage.removeItem('jc_token');
         localStorage.removeItem('jwt');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('token');
         sessionStorage.removeItem('user');
+        sessionStorage.removeItem('auroraUser');
         sessionStorage.removeItem('jwt');
     },
 
@@ -75,7 +97,8 @@ const AuthUI = {
             signupUrl = 'signup.html',
             profileUrl = '/graduate/dashboard/#view-profile',
             buttonClass = 'btn-header',
-            avatarSize = 40
+            avatarSize = 40,
+            publicMode = container.getAttribute('data-public-auth') === 'true'
         } = options;
 
         const isLoggedIn = this.isLoggedIn();
@@ -271,6 +294,11 @@ const AuthUI = {
             container.appendChild(wrapper);
 
         } else {
+            if (publicMode) {
+                container.innerHTML = '';
+                return;
+            }
+
             // Render Signup/Signin button
             const button = document.createElement('a');
             button.href = signupUrl;
@@ -410,7 +438,8 @@ const AuthUI = {
                 signupUrl: container.getAttribute('data-signup-url') || '/signup/',
                 profileUrl: container.getAttribute('data-profile-url') || '/graduate/dashboard/#view-profile',
                 buttonClass: container.getAttribute('data-button-class') || 'btn-header',
-                avatarSize: 40
+                avatarSize: 40,
+                publicMode: container.getAttribute('data-public-auth') === 'true'
             });
         });
     },
@@ -436,11 +465,7 @@ const AuthUI = {
         // Refresh all auth UI on the page
         this.refreshAllAuthUI();
 
-        // Redirect to home or signup page
-        const currentPath = window.location.pathname;
-        if (currentPath.includes('dashboard') || currentPath.includes('Dashboard')) {
-            window.location.href = '/';
-        }
+        window.location.href = '/';
     },
 
     // Initialize auth UI on page load
@@ -464,7 +489,8 @@ const AuthUI = {
                 signupUrl: container.getAttribute('data-signup-url') || '/signup/',
                 profileUrl: container.getAttribute('data-profile-url') || '/graduate/dashboard/#view-profile',
                 buttonClass: container.getAttribute('data-button-class') || 'btn-header',
-                avatarSize: 40
+                avatarSize: 40,
+                publicMode: container.getAttribute('data-public-auth') === 'true'
             });
         });
     }

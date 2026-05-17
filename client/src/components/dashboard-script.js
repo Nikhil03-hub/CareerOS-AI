@@ -1222,7 +1222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
 
     // Check token on load
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('jc_token') || localStorage.getItem('jwt') || localStorage.getItem('authToken') || localStorage.getItem('token');
     if (token) {
         if (logoutBtn) logoutBtn.style.display = 'flex'; // Show if logged in
         // loadUserProfile() is called below
@@ -1233,7 +1233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('jc_token') || localStorage.getItem('jwt') || localStorage.getItem('authToken') || localStorage.getItem('token');
 
             if (token) {
                 try {
@@ -1248,9 +1248,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            localStorage.removeItem('authToken');
-            // Redirect to signup page
-            window.location.href = '../signup.html';
+            ['auroraUser', 'auroraProfile', 'user', 'jc_token', 'jwt', 'authToken', 'token'].forEach((key) => {
+                localStorage.removeItem(key);
+                sessionStorage.removeItem(key);
+            });
+            window.location.href = '/';
         });
     }
 
@@ -1334,7 +1336,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const authContainer = document.querySelector('.auth-ui-container');
                     if (authContainer) {
                         window.AuthUI.renderAuthUI(authContainer, {
-                            signupUrl: authContainer.getAttribute('data-signup-url') || '../signup.html',
+                            signupUrl: authContainer.getAttribute('data-signup-url') || '/signup/',
                             profileUrl: authContainer.getAttribute('data-profile-url') || '#view-profile',
                             buttonClass: authContainer.getAttribute('data-button-class') || 'bg-black text-white px-6 py-2.5 rounded-full text-[15px] font-semibold shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5',
                             avatarSize: 40

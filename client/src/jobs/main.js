@@ -43,6 +43,89 @@ const categoryToSkills = {
     'AI/ML': ['ai engineer', 'machine learning', 'deep learning']
 };
 
+function getStaticJobsData() {
+    if (typeof jobsData !== 'undefined' && Array.isArray(jobsData)) return jobsData;
+    if (Array.isArray(window.jobsData)) return window.jobsData;
+    return [];
+}
+
+function normalizeJobRecord(job, index = 0) {
+    const logo = job.logo && !/^(https?:)?\/\//i.test(job.logo) && !job.logo.startsWith('/')
+        ? `/client/src/jobs/${job.logo.replace(/^\.?\//, '')}`
+        : (job.logo || '');
+
+    return {
+        id: job.id || `static-${index}`,
+        title: job.title || 'Software Developer',
+        company: job.company || 'CareerOS Partner',
+        logo,
+        location: job.location || 'India',
+        salary: job.salary || 'Not specified',
+        experience: job.experience || '',
+        jobType: job.jobType || job.type || 'Full-time',
+        companyType: job.companyType || '',
+        industry: job.industry || '',
+        postedDays: Number.isFinite(job.postedDays) ? job.postedDays : 0,
+        description: job.description || job.snippet || 'Curated CareerOS opportunity for graduate candidates.',
+        badges: Array.isArray(job.badges) ? job.badges : [],
+        skills: Array.isArray(job.skills) ? job.skills : [],
+        applyLink: job.applyLink || job.url || '#'
+    };
+}
+
+function getStaticJobs(query = '', location = '') {
+    const staticJobs = getStaticJobsData().map(normalizeJobRecord);
+    if (!staticJobs.length) return [];
+
+    const queryTerms = String(query || '')
+        .toLowerCase()
+        .split(/[\s,]+/)
+        .map(term => term.trim())
+        .filter(term => term.length > 1);
+    const locationTerm = String(location || '').toLowerCase().trim();
+    const textForJob = (job) => [
+        job.title,
+        job.company,
+        job.location,
+        job.salary,
+        job.experience,
+        job.jobType,
+        job.companyType,
+        job.industry,
+        job.description,
+        ...(job.skills || []),
+        ...(job.badges || [])
+    ].join(' ').toLowerCase();
+
+    let results = staticJobs;
+    if (queryTerms.length) {
+        results = results.filter(job => {
+            const text = textForJob(job);
+            return queryTerms.some(term => text.includes(term));
+        });
+    }
+
+    if (locationTerm && locationTerm !== 'india') {
+        const locationFiltered = results.filter(job => textForJob(job).includes(locationTerm));
+        if (locationFiltered.length) results = locationFiltered;
+    }
+
+    return results.length ? results : staticJobs;
+}
+
+function loadStaticJobs(query = '', location = '') {
+    allJobs = getStaticJobs(query, location);
+    filteredJobs = [...allJobs];
+    currentPage = 1;
+    jooblePage = 1;
+    hasMoreJobs = false;
+    hideLoadingState();
+    renderJobs();
+    renderActiveFilters();
+    updateResultsCount();
+    updateLoadMoreButton();
+}
+
 // Scroll Reveal Observer - Performance optimized
 let scrollRevealObserver = null;
 
@@ -104,10 +187,7 @@ async function fetchJobsFromJooble(query = 'developer', location = '', page = 1,
 
         if (!response.ok || !data.success) {
             console.error('Failed to fetch jobs:', data.error || 'Unknown error');
-            hideLoadingState();
-            if (!append && allJobs.length === 0) {
-                showEmptyState('No jobs found. Please try a different search.');
-            }
+            if (!append) loadStaticJobs(query, location);
             isLoading = false;
             return;
         }
@@ -118,7 +198,7 @@ async function fetchJobsFromJooble(query = 'developer', location = '', page = 1,
             hasMoreJobs = false;
             hideLoadingState();
             if (!append && allJobs.length === 0) {
-                showEmptyState('No jobs found. Please try a different search.');
+                loadStaticJobs(query, location);
             } else if (append) {
                 // Hide load more button if no more jobs
                 const loadMoreBtn = document.getElementById('load-more-btn');
@@ -168,9 +248,7 @@ async function fetchJobsFromJooble(query = 'developer', location = '', page = 1,
     } catch (error) {
         console.error('Error fetching jobs:', error);
         hideLoadingState();
-        if (!append && allJobs.length === 0) {
-            showEmptyState('Error loading jobs. Please try again.');
-        }
+        if (!append) loadStaticJobs(query, location);
     } finally {
         isLoading = false;
     }
@@ -927,6 +1005,7 @@ function renderJobs(jobs) {
 
     // Render pagination
     renderPagination();
+    updateResultsCount();
 }
 
 // Get badge CSS class
@@ -1177,7 +1256,7 @@ function updateResultsCount() {
 // Search jobs function (actual API call logic)
 async function searchJobs(query = "", location = "India") {
     try {
-        const res = await fetch("http://localhost:5000/api/jobs/search", {
+        const res = await fetch("/api/jobs/search", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -1189,15 +1268,15 @@ async function searchJobs(query = "", location = "India") {
         const data = await res.json();
         // Reset to page 1 when new jobs are loaded
         currentPage = 1;
-        if (data.success && data.jobs) {
+        if (data.success && Array.isArray(data.jobs) && data.jobs.length) {
             renderJobs(data.jobs);   // ⬅ display jobs directly
         } else {
-            renderJobs([]); // show empty message
+            renderJobs(getStaticJobs(query, location));
         }
     } catch (err) {
         console.log("Job fetch error:", err);
         currentPage = 1;
-        renderJobs([]);
+        renderJobs(getStaticJobs(query, location));
     }
 }
 

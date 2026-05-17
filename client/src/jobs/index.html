@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CareerOS AI – Intelligent Career Intelligence Platform</title>
+    <base href="/client/src/jobs/">
     <meta name="description"
         content="CareerOS AI – AI-powered skill assessment, career discovery, and intelligent job matching platform.">
     <!-- Tailwind CSS -->
@@ -457,8 +458,8 @@
 
             <!-- CTA -->
             <div class="flex items-center gap-4">
-                <div class="auth-ui-container" data-signup-url="../pages/signup.html"
-                    data-profile-url="../pages/dashboard/index.html#view-profile"
+                <div class="auth-ui-container" data-signup-url="/signup/"
+                    data-profile-url="/graduate/dashboard/#view-profile"
                     data-button-class="primary-btn cta-magnet bg-gray-900 text-white px-6 py-2.5 rounded-full text-sm font-semibold">
                 </div>
             </div>
@@ -1251,7 +1252,7 @@
                         and unlocks the best opportunities instantly.
                     </p>
                     <div class="pt-2" data-scale-in data-duration="0.6" data-delay="0.3" data-scale="0.9">
-                        <a href="../../../../../APP (2)/APP/Dashboard redesign/index.html#view-upload-resume"
+                        <a href="/graduate/dashboard/#view-upload-resume"
                             class="profile-cta cta-magnet inline-flex items-center justify-center px-8 md:px-10 py-3.5 md:py-4 rounded-full bg-[#4b8fd0] text-white font-semibold text-sm md:text-base shadow-lg shadow-blue-200 hover:bg-[#3a7bb0] transition-all duration-300">
                             <span class="cta-inner inline-flex items-center gap-2">
                                 Create Profile
@@ -1658,7 +1659,7 @@
             );
 
             // Animate input fields with stagger
-            const inputFields = searchForm.querySelectorAll('> div');
+            const inputFields = searchForm.querySelectorAll(':scope > div');
             gsap.fromTo(inputFields,
                 {
                     opacity: 0,
@@ -1975,8 +1976,8 @@
                 const container = document.querySelector('.auth-ui-container');
                 if (container) {
                     window.AuthUI.renderAuthUI(container, {
-                        signupUrl: container.getAttribute('data-signup-url') || '../../../../../APP (2)/APP/signup.html',
-                        profileUrl: container.getAttribute('data-profile-url') || '../../../../../APP (2)/APP/Dashboard redesign/index.html#view-profile',
+                        signupUrl: container.getAttribute('data-signup-url') || '/signup/',
+                        profileUrl: container.getAttribute('data-profile-url') || '/graduate/dashboard/#view-profile',
                         buttonClass: 'primary-btn cta-magnet bg-gray-900 text-white px-6 py-2.5 rounded-full text-sm font-semibold',
                         avatarSize: 40
                     });

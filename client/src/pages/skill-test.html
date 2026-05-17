@@ -1368,6 +1368,281 @@
             min-width: 180px;
         }
 
+        .puter-connect-card {
+            margin-top: 18px;
+            padding: 16px;
+            border: 1px solid rgba(37, 99, 235, 0.18);
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(239, 246, 255, 0.98) 0%, #FFFFFF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .puter-connect-card::before {
+            content: "";
+            width: 9px;
+            height: 9px;
+            border-radius: 999px;
+            background: #F59E0B;
+            box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.14);
+            flex: 0 0 auto;
+        }
+
+        .puter-connect-card.loading::before {
+            background: #2563EB;
+            box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.14);
+        }
+
+        .puter-connect-card.ready::before,
+        .puter-connect-card.connected::before {
+            background: #10B981;
+            box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.14);
+        }
+
+        .puter-connect-card strong {
+            display: block;
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 3px;
+        }
+
+        .puter-connect-card span {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.45;
+        }
+
+        .puter-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .puter-connect-card button,
+        .puter-actions a {
+            border: 0;
+            border-radius: 999px;
+            padding: 11px 16px;
+            background: var(--primary);
+            color: white;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            white-space: nowrap;
+            text-decoration: none;
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.24);
+        }
+
+        .puter-connect-card button:disabled {
+            cursor: wait;
+            opacity: 0.72;
+            box-shadow: none;
+        }
+
+        .puter-actions a {
+            background: #fff;
+            color: var(--primary);
+            border: 1px solid rgba(37, 99, 235, 0.18);
+            box-shadow: none;
+        }
+
+        .puter-connect-card.connected {
+            border-color: rgba(16, 185, 129, 0.35);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.10) 0%, #FFFFFF 100%);
+        }
+
+        .intelligence-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 24px;
+        }
+
+        .insight-card h3,
+        .roadmap-card h3,
+        .review-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .readiness-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .readiness-pill {
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: #F8FAFC;
+        }
+
+        .readiness-pill span {
+            display: block;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 5px;
+        }
+
+        .readiness-pill strong {
+            font-size: 20px;
+            color: var(--text);
+        }
+
+        .gap-list,
+        .review-list,
+        .roadmap-list {
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .gap-list li,
+        .roadmap-list li {
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: #F8FAFC;
+            border: 1px solid #EEF2F7;
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.55;
+            display: flex;
+            gap: 10px;
+        }
+
+        .gap-list i,
+        .roadmap-list i {
+            color: var(--primary);
+            margin-top: 2px;
+        }
+
+        .roadmap-card,
+        .review-card {
+            margin-top: 24px;
+        }
+
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .roadmap-step {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+        }
+
+        .roadmap-step .week {
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .roadmap-step h4 {
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .roadmap-step p {
+            font-size: 13px;
+            line-height: 1.55;
+            color: var(--text-secondary);
+        }
+
+        .review-list {
+            max-height: 420px;
+            overflow: auto;
+            padding-right: 4px;
+        }
+
+        .review-item {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 15px;
+            background: #FFFFFF;
+        }
+
+        .review-item.correct {
+            border-color: rgba(16, 185, 129, 0.28);
+            background: rgba(16, 185, 129, 0.04);
+        }
+
+        .review-item.wrong {
+            border-color: rgba(239, 68, 68, 0.24);
+            background: rgba(239, 68, 68, 0.035);
+        }
+
+        .review-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .review-question {
+            font-size: 14px;
+            line-height: 1.55;
+            color: var(--text);
+            margin-bottom: 9px;
+            font-weight: 700;
+        }
+
+        .review-answer {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        .review-answer strong {
+            color: var(--text);
+        }
+
+        .career-actions {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .mini-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
         @media (max-width:768px) {
             .hero-content h1 {
                 font-size: 30px;
@@ -1405,6 +1680,12 @@
             }
 
             .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .intelligence-grid,
+            .roadmap-grid,
+            .readiness-row {
                 grid-template-columns: 1fr;
             }
 
@@ -1481,6 +1762,16 @@
                                 <strong>50K+</strong>
                                 <span>Assessments completed</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="puter-connect-card" id="puterConnectCard">
+                        <div>
+                            <strong id="puterStatusTitle">Puter AI engine</strong>
+                            <span id="puterStatusText">Powered directly by Puter.js. No API key or backend is required.</span>
+                        </div>
+                        <div class="puter-actions">
+                            <button type="button" id="puterConnectButton">Check AI Engine</button>
                         </div>
                     </div>
 
@@ -1698,11 +1989,33 @@
                     <h3><i class="ri-lightbulb-flash-line" style="color:var(--orange)"></i> Career Recommendation</h3>
                     <div id="recBody"></div>
                 </div>
+                <div class="intelligence-grid">
+                    <div class="card insight-card" id="readinessCard">
+                        <h3><i class="ri-radar-line" style="color:var(--primary)"></i> Readiness Snapshot</h3>
+                        <div class="readiness-row" id="readinessPills"></div>
+                        <div class="career-actions">
+                            <a class="mini-action" id="jobMatchAction" href="/jobs/"><i class="ri-briefcase-4-line"></i> Matched Jobs</a>
+                            <a class="mini-action" href="/graduate/dashboard/#view-career-intelligence"><i class="ri-dashboard-3-line"></i> Open Dashboard</a>
+                        </div>
+                    </div>
+                    <div class="card insight-card" id="gapCard">
+                        <h3><i class="ri-focus-3-line" style="color:var(--orange)"></i> Skill Gap Focus</h3>
+                        <ul class="gap-list" id="gapList"></ul>
+                    </div>
+                </div>
+                <div class="card roadmap-card" id="roadmapCard">
+                    <h3><i class="ri-route-line" style="color:var(--green)"></i> Next 3-Week Action Plan</h3>
+                    <div class="roadmap-grid" id="roadmapGrid"></div>
+                </div>
+                <div class="card review-card" id="reviewCard">
+                    <h3><i class="ri-file-list-3-line" style="color:var(--primary)"></i> Answer Review</h3>
+                    <div class="review-list" id="answerReview"></div>
+                </div>
                 <div class="result-btns">
                     <button class="btn btn-primary" onclick="resetTest()">
                         <i class="ri-refresh-line"></i> Take Another Test
                     </button>
-                    <a href="../jobs/index.html" class="btn btn-outline">
+                    <a href="/jobs/" class="btn btn-outline" id="exploreJobsBtn">
                         <i class="ri-briefcase-line"></i> Explore Jobs
                     </a>
                 </div>
@@ -1753,6 +2066,78 @@
                 return null;
             }
         }
+
+        let puterScriptPromise = null;
+
+        function getPuterAPI() {
+            if (window.puter) return window.puter;
+            try {
+                if (typeof puter !== 'undefined') return puter;
+            } catch { }
+            return null;
+        }
+
+        function hasPuterAI() {
+            const api = getPuterAPI();
+            return !!(api?.ai && typeof api.ai.chat === 'function');
+        }
+
+        function setPuterStatus(state, titleText, detailText, buttonText, disabled = false) {
+            const card = document.getElementById('puterConnectCard');
+            const title = document.getElementById('puterStatusTitle');
+            const text = document.getElementById('puterStatusText');
+            const button = document.getElementById('puterConnectButton');
+            if (!card || !title || !text || !button) return;
+
+            card.classList.remove('loading', 'ready', 'connected', 'error');
+            if (state) card.classList.add(state);
+            title.textContent = titleText;
+            text.textContent = detailText;
+            button.textContent = buttonText;
+            button.disabled = disabled;
+        }
+
+        async function refreshPuterStatus(loadIfNeeded = true) {
+            if (hasPuterAI()) {
+                setPuterStatus('ready', 'Puter AI ready', 'No manual login popup is needed. Generate Test will call puter.ai.chat() directly.', 'Test AI Engine');
+                return true;
+            }
+
+            setPuterStatus('loading', 'Loading Puter AI', 'Loading https://js.puter.com/v2/ for direct frontend AI generation.', 'Loading...', true);
+            const loaded = loadIfNeeded ? await ensurePuterScript(false) : false;
+            if (loaded && hasPuterAI()) {
+                setPuterStatus('ready', 'Puter AI ready', 'No manual login popup is needed. Generate Test will call puter.ai.chat() directly.', 'Test AI Engine');
+                return true;
+            }
+
+            setPuterStatus('', 'Puter AI not ready', 'The page can still run with local fallback questions. Click again to reload Puter.js.', 'Reload Puter');
+            return false;
+        }
+
+        async function testPuterAI() {
+            try {
+                setPuterStatus('loading', 'Testing Puter AI', 'Sending a tiny test prompt through puter.ai.chat().', 'Testing...', true);
+                const loaded = await ensurePuterScript(false);
+                if (!loaded || !hasPuterAI()) throw new Error('Puter.js not ready');
+                const api = getPuterAPI();
+                await Promise.race([
+                    api.ai.chat('Reply only with READY', { model: 'gpt-5-nano', temperature: 0.1, max_tokens: 12 }),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('Puter AI test timeout')), 15000))
+                ]);
+                setPuterStatus('connected', 'Puter AI working', 'Great. DomainX-style AI generation is ready for your skill test.', 'AI Ready', true);
+            } catch (error) {
+                console.warn('Puter AI test failed:', error);
+                setPuterStatus('', 'Puter AI fallback active', 'Puter did not respond in this browser session, so CareerOS will still generate a complete local test.', 'Retry Puter');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            refreshPuterStatus(true);
+            const connectButton = document.getElementById('puterConnectButton');
+            if (connectButton) {
+                connectButton.addEventListener('click', testPuterAI);
+            }
+        });
 
         /* ══════════════════════════════════════
            FALLBACK STATIC QUESTIONS
@@ -1809,6 +2194,106 @@
         /* ══════════════════════════════════════
            PUTER.JS QUESTION GENERATION
            ══════════════════════════════════════ */
+        function extractAIText(resp) {
+            if (typeof resp === 'string') return resp;
+            if (typeof resp?.message?.content === 'string') return resp.message.content;
+            if (Array.isArray(resp?.message?.content)) {
+                return resp.message.content.map(part => part?.text || part?.content || '').join('\n');
+            }
+            if (typeof resp?.text === 'string') return resp.text;
+            if (typeof resp?.content === 'string') return resp.content;
+            return JSON.stringify(resp || {});
+        }
+
+        function ensurePuterScript(forceReload = false) {
+            if (hasPuterAI()) return Promise.resolve(true);
+            if (puterScriptPromise && !forceReload) return puterScriptPromise;
+
+            puterScriptPromise = new Promise((resolve) => {
+                if (forceReload) {
+                    document.querySelectorAll('script[src*="js.puter.com/v2"]').forEach(script => script.remove());
+                    try { delete window.puter; } catch { window.puter = undefined; }
+                }
+
+                const existing = document.querySelector('script[src="https://js.puter.com/v2/"]');
+                if (existing && !forceReload) {
+                    const started = Date.now();
+                    const waitForExisting = () => {
+                        if (hasPuterAI()) {
+                            resolve(true);
+                            return;
+                        }
+                        if (Date.now() - started > 4500) {
+                            puterScriptPromise = null;
+                            resolve(false);
+                            return;
+                        }
+                        setTimeout(waitForExisting, 120);
+                    };
+                    waitForExisting();
+                    return;
+                }
+
+                const script = document.createElement('script');
+                script.src = 'https://js.puter.com/v2/';
+                script.async = true;
+                script.dataset.careerosPuter = 'true';
+                script.onload = () => {
+                    const started = Date.now();
+                    const poll = () => {
+                        if (hasPuterAI()) {
+                            resolve(true);
+                            return;
+                        }
+                        if (Date.now() - started > 5000) {
+                            puterScriptPromise = null;
+                            resolve(false);
+                            return;
+                        }
+                        setTimeout(poll, 100);
+                    };
+                    poll();
+                };
+                script.onerror = () => {
+                    puterScriptPromise = null;
+                    resolve(false);
+                };
+                document.head.appendChild(script);
+            });
+
+            return puterScriptPromise;
+        }
+
+        async function waitForPuter(maxMs = 7000) {
+            await ensurePuterScript(false);
+            const started = Date.now();
+            while (Date.now() - started < maxMs) {
+                if (hasPuterAI()) return true;
+                await new Promise(resolve => setTimeout(resolve, 120));
+            }
+            return false;
+        }
+
+        async function callPuterAI(prompt) {
+            const ready = await waitForPuter();
+            if (!ready) throw new Error('Puter.js not ready');
+            const api = getPuterAPI();
+            return Promise.race([
+                api.ai.chat(prompt, { model: 'gpt-5-nano', temperature: 0.2, max_tokens: 2200 }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Puter AI timeout')), 18000))
+            ]);
+        }
+
+        function clearStuckPuterDialog() {
+            document.querySelectorAll('dialog').forEach(dialog => {
+                const text = dialog.innerText || '';
+                if (text.includes('Puter') || text.includes('puter.com')) {
+                    try { dialog.close(); } catch { }
+                    dialog.remove();
+                }
+            });
+        }
+
         async function generateWithPuter(testMode, domain, company) {
             let prompt = '';
             if (testMode === 'domain') {
@@ -1838,8 +2323,8 @@ Return ONLY valid JSON:
             }
 
             try {
-                const resp = await puter.ai.chat(prompt, { model: 'claude-3-5-sonnet', temperature: 0.4 });
-                const text = typeof resp === 'string' ? resp : (resp?.message?.content || resp?.text || JSON.stringify(resp));
+                const resp = await callPuterAI(prompt);
+                const text = extractAIText(resp);
                 const data = safeParseJSON(text);
                 if (data && data.questions && Array.isArray(data.questions) && data.questions.length >= 3) {
                     const valid = data.questions.filter(q =>
@@ -1851,6 +2336,7 @@ Return ONLY valid JSON:
                 throw new Error('Invalid AI response structure');
             } catch (err) {
                 console.warn('Puter AI failed, using fallback:', err.message);
+                clearStuckPuterDialog();
                 return null;
             }
         }
@@ -1897,7 +2383,9 @@ Return ONLY valid JSON:
                 return `<div class="opt ${sel}" onclick="pick(${i})"><div class="dot"></div><span>${esc(o)}</span></div>`;
             }).join('');
             document.getElementById('btnPrev').disabled = ci === 0;
-            document.getElementById('btnNext').innerHTML = ci === total - 1
+            const nextBtn = document.getElementById('btnNext');
+            nextBtn.onclick = ci === total - 1 ? submitTest : () => go(1);
+            nextBtn.innerHTML = ci === total - 1
                 ? 'Finish <i class="ri-check-line"></i>'
                 : 'Next <i class="ri-arrow-right-s-line"></i>';
             syncGrid();
@@ -1913,6 +2401,90 @@ Return ONLY valid JSON:
         function go(dir) { const n = ci + dir; if (n >= 0 && n < qs.length) { ci = n; render(); } }
         function jump(i) { ci = i; render(); }
         function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+        const ROLE_MAP = {
+            "Frontend": ["React Developer", "Frontend Engineer", "UI Engineer", "Web Performance Engineer"],
+            "Backend": ["Backend Developer", "API Engineer", "Node.js Developer", "Platform Engineer"],
+            "AI/ML": ["ML Engineer", "AI Engineer", "NLP Engineer", "Computer Vision Engineer"],
+            "Data Science": ["Data Scientist", "Data Analyst", "BI Analyst", "Analytics Engineer"],
+            "DevOps": ["DevOps Engineer", "Cloud Engineer", "SRE", "Infrastructure Engineer"],
+            "Aptitude": ["Business Analyst", "Product Analyst", "Consultant", "Management Trainee"],
+            "Cybersecurity": ["Security Analyst", "SOC Analyst", "Application Security Engineer", "Cloud Security Engineer"],
+            "Full Stack": ["Full Stack Developer", "MERN Developer", "Product Engineer", "Software Engineer"],
+            "Mobile Development": ["Mobile App Developer", "React Native Developer", "Android Developer", "Flutter Developer"],
+            "Cloud Computing": ["Cloud Engineer", "AWS Associate", "Azure Engineer", "Cloud Support Engineer"]
+        };
+
+        const GAP_MAP = {
+            "Frontend": ["Revise DOM, CSS layout, React hooks, accessibility and state management.", "Build one responsive dashboard and deploy it with a clean README.", "Practice 20 JavaScript and React interview MCQs before the next attempt."],
+            "Backend": ["Revise REST APIs, middleware, authentication, database schema and error handling.", "Build one CRUD API with JWT, validation and MongoDB or PostgreSQL.", "Practice request lifecycle, status codes and system design basics."],
+            "AI/ML": ["Revise model training flow, overfitting, metrics, classification and preprocessing.", "Build a small ML project with dataset, evaluation report and demo notebook.", "Practice Python, pandas, NumPy and basic model interpretation."],
+            "Data Science": ["Revise SQL, pandas, statistics, charts and data cleaning.", "Create one analytics dashboard from a real dataset.", "Practice explaining insights in simple business language."],
+            "DevOps": ["Revise Docker, CI/CD, Linux, cloud basics and deployment pipelines.", "Containerize one existing project and document the deployment flow.", "Practice GitHub Actions, logs and environment variable handling."],
+            "Aptitude": ["Practice speed math, ratios, series, probability and logical reasoning.", "Track accuracy and time per question for the next 7 days.", "Revise the mistakes from this test before moving to advanced rounds."]
+        };
+
+        function domainColor(v) {
+            if (v < 50) return 'var(--red)';
+            if (v < 70) return 'var(--orange)';
+            if (v < 85) return 'var(--teal)';
+            return 'var(--green)';
+        }
+
+        function scoreLevel(pct) {
+            if (pct >= 85) return { label: "Interview Ready", note: "Strong enough for company-style rounds." };
+            if (pct >= 70) return { label: "Strong Base", note: "Good foundation. Polish weak topics next." };
+            if (pct >= 50) return { label: "Practice Zone", note: "You have direction, but need focused revision." };
+            return { label: "Foundation Build", note: "Start with basics and retry after revision." };
+        }
+
+        function sortedPerformance(performance) {
+            return Object.entries(performance || {}).sort((a, b) => b[1].percentage - a[1].percentage);
+        }
+
+        function buildCareerAdvice(domainPerformance, pct) {
+            const sorted = sortedPerformance(domainPerformance);
+            const recommendedDomain = sorted[0]?.[0] || qs[0]?.domain || "Frontend";
+            const weakAreas = sorted.slice(-2).map(item => item[0]).filter(Boolean);
+            const strongAreas = sorted.slice(0, 2).map(item => item[0]).filter(Boolean);
+            const roles = ROLE_MAP[recommendedDomain] || ROLE_MAP["Full Stack"];
+            const gaps = (GAP_MAP[recommendedDomain] || GAP_MAP["Frontend"]).slice();
+            weakAreas.forEach(area => {
+                if (area !== recommendedDomain) gaps.push(`Improve ${area} fundamentals because it supports your ${recommendedDomain} path.`);
+            });
+            const level = scoreLevel(pct);
+            return {
+                recommended_domain: recommendedDomain,
+                strong_areas: strongAreas,
+                weak_areas: weakAreas,
+                suggested_jobs: roles,
+                gaps: gaps.slice(0, 5),
+                readiness: level,
+                career_advice: `${level.note} Your best current path is ${recommendedDomain}. Use the action plan below, rebuild weak topics, and then explore matching roles.`
+            };
+        }
+
+        function buildRoadmap(advice, pct) {
+            const domain = advice.recommended_domain || "your target domain";
+            return [
+                { week: "Week 1", title: "Fix fundamentals", text: pct >= 70 ? `Review missed ${domain} questions and revise the exact concepts you got wrong.` : `Rebuild ${domain} basics with notes, short videos and 25 practice questions.` },
+                { week: "Week 2", title: "Build proof", text: `Create one mini project related to ${domain}, add screenshots, explain architecture and push it to GitHub.` },
+                { week: "Week 3", title: "Apply and interview", text: `Update resume keywords, open matching jobs, and practice one mock interview using your test review.` }
+            ];
+        }
+
+        function renderAnswerReview() {
+            document.getElementById('answerReview').innerHTML = qs.map((q, idx) => {
+                const selected = ans[idx] || "Not answered";
+                const ok = selected === q.correct_answer;
+                return `<div class="review-item ${ok ? 'correct' : 'wrong'}">
+                    <div class="review-top"><span>${esc(q.domain || 'General')} - Q${idx + 1}</span><span>${ok ? 'Correct' : 'Review'}</span></div>
+                    <div class="review-question">${esc(q.question)}</div>
+                    <div class="review-answer"><strong>Your answer:</strong> ${esc(selected)}</div>
+                    <div class="review-answer"><strong>Correct answer:</strong> ${esc(q.correct_answer)}</div>
+                </div>`;
+            }).join('');
+        }
 
         /* ── Navigator Grid ── */
         function buildGrid() {
@@ -1961,30 +2533,8 @@ Return ONLY valid JSON:
                     domainPerformance[dom] = { correct: ds.correct, total: ds.total, percentage: Math.round((ds.correct / ds.total) * 100) };
                 }
 
-                let recommendedDomain = null;
-                let careerAdvice = null;
-
-                if (mode === 'discovery') {
-                    const sorted = Object.entries(domainPerformance).sort((a, b) => b[1].percentage - a[1].percentage);
-                    recommendedDomain = sorted[0] ? sorted[0][0] : null;
-
-                    const jobMap = {
-                        "Frontend": ["UI Developer", "React Developer", "Frontend Engineer", "Web Designer", "UX Engineer"],
-                        "Backend": ["Backend Developer", "API Engineer", "Node.js Developer", "Systems Engineer", "Platform Engineer"],
-                        "AI/ML": ["ML Engineer", "AI Researcher", "Data Analyst", "NLP Engineer", "Computer Vision Engineer"],
-                        "Data Science": ["Data Scientist", "Analytics Engineer", "BI Analyst", "Statistician", "Data Engineer"],
-                        "DevOps": ["DevOps Engineer", "SRE", "Cloud Engineer", "Platform Engineer", "Infrastructure Architect"],
-                        "Aptitude": ["Management Trainee", "Business Analyst", "Consultant", "Product Manager", "Strategy Analyst"]
-                    };
-
-                    careerAdvice = {
-                        recommended_domain: recommendedDomain,
-                        strong_areas: sorted.slice(0, 2).map(s => s[0]),
-                        weak_areas: sorted.slice(-2).map(s => s[0]),
-                        suggested_jobs: jobMap[recommendedDomain] || ["Software Developer", "Tech Lead", "Full Stack Engineer"],
-                        career_advice: `Based on your scores, your strongest area is ${recommendedDomain}. Focus on building expertise in this domain and explore related job roles.`
-                    };
-                }
+                const careerAdvice = buildCareerAdvice(domainPerformance, percentage);
+                const recommendedDomain = careerAdvice.recommended_domain;
 
                 loading(false);
                 showResults({
@@ -1999,50 +2549,76 @@ Return ONLY valid JSON:
             show('s4');
             const pct = d.percentage || 0;
             const circ = 2 * Math.PI * 74;
-            let color = 'var(--green)';
-            if (pct < 50) color = 'var(--red)';
-            else if (pct < 70) color = 'var(--orange)';
-            else if (pct < 85) color = 'var(--teal)';
+            const color = domainColor(pct);
             setTimeout(() => {
                 const arc = document.getElementById('arcFill');
                 arc.style.stroke = color;
                 arc.setAttribute('stroke-dasharray', `${(pct / 100) * circ} ${circ}`);
             }, 200);
+
             countUp('rPct', pct, '%');
             document.getElementById('rCorrect').textContent = d.totalCorrect;
             document.getElementById('rTotal').textContent = d.totalQuestions;
             document.getElementById('rAcc').textContent = pct + '%';
+
+            const advice = d.careerAdvice || buildCareerAdvice(d.domainPerformance, pct);
+            const level = advice.readiness || scoreLevel(pct);
             const pc = document.getElementById('perfCard');
             const rc = document.getElementById('recCard');
-            if (mode === 'discovery' && d.domainPerformance) {
+
+            if (d.domainPerformance) {
                 pc.style.display = 'block';
                 let bh = '';
                 for (const [dom, info] of Object.entries(d.domainPerformance)) {
                     const v = info.percentage;
-                    let c = 'var(--green)';
-                    if (v < 50) c = 'var(--red)'; else if (v < 70) c = 'var(--orange)'; else if (v < 85) c = 'var(--teal)';
                     bh += `<div class="bar-row">
-                    <div class="bar-meta"><span class="domain-name">${dom}</span><span class="domain-pct">${v}%</span></div>
-                    <div class="bar-bg"><div class="bar-fg" style="width:0%;background:${c}" data-w="${v}"></div></div>
-                </div>`;
+                        <div class="bar-meta"><span class="domain-name">${esc(dom)}</span><span class="domain-pct">${v}%</span></div>
+                        <div class="bar-bg"><div class="bar-fg" style="width:0%;background:${domainColor(v)}" data-w="${v}"></div></div>
+                    </div>`;
                 }
                 document.getElementById('perfBars').innerHTML = bh;
                 setTimeout(() => document.querySelectorAll('.bar-fg').forEach(b => b.style.width = b.dataset.w + '%'), 300);
-                if (d.careerAdvice) {
-                    rc.style.display = 'block';
-                    const ca = d.careerAdvice;
-                    let rh = '';
-                    if (ca.recommended_domain) rh += `<div class="rec-badge"><i class="ri-star-fill"></i> ${ca.recommended_domain}</div>`;
-                    if (ca.suggested_jobs?.length) rh += `<p style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em">Suggested Roles</p><ul class="rec-list">${ca.suggested_jobs.map(j => `<li><i class="ri-checkbox-circle-fill" style="color:var(--green)"></i>${j}</li>`).join('')}</ul>`;
-                    if (ca.strong_areas?.length) rh += `<p style="font-size:12px;font-weight:700;color:var(--text-muted);margin:14px 0 6px;text-transform:uppercase;letter-spacing:0.04em">Strong Areas</p><ul class="rec-list">${ca.strong_areas.map(a => `<li><i class="ri-thumb-up-fill" style="color:var(--green)"></i>${a}</li>`).join('')}</ul>`;
-                    if (ca.weak_areas?.length) rh += `<p style="font-size:12px;font-weight:700;color:var(--text-muted);margin:14px 0 6px;text-transform:uppercase;letter-spacing:0.04em">Improve</p><ul class="rec-list">${ca.weak_areas.map(a => `<li><i class="ri-focus-3-line" style="color:var(--orange)"></i>${a}</li>`).join('')}</ul>`;
-                    if (ca.career_advice) rh += `<div class="advice-box"><strong>💡 AI Insight:</strong> ${ca.career_advice}</div>`;
-                    document.getElementById('recBody').innerHTML = rh;
-                }
-            } else { pc.style.display = 'none'; rc.style.display = 'none'; }
+            } else {
+                pc.style.display = 'none';
+            }
+
+            rc.style.display = 'block';
+            let rh = '';
+            if (advice.recommended_domain) rh += `<div class="rec-badge"><i class="ri-star-fill"></i> ${esc(advice.recommended_domain)}</div>`;
+            if (advice.suggested_jobs?.length) rh += `<p style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em">Suggested Roles</p><ul class="rec-list">${advice.suggested_jobs.map(j => `<li><i class="ri-checkbox-circle-fill" style="color:var(--green)"></i>${esc(j)}</li>`).join('')}</ul>`;
+            if (advice.strong_areas?.length) rh += `<p style="font-size:12px;font-weight:700;color:var(--text-muted);margin:14px 0 6px;text-transform:uppercase;letter-spacing:0.04em">Strong Areas</p><ul class="rec-list">${advice.strong_areas.map(a => `<li><i class="ri-thumb-up-fill" style="color:var(--green)"></i>${esc(a)}</li>`).join('')}</ul>`;
+            if (advice.weak_areas?.length) rh += `<p style="font-size:12px;font-weight:700;color:var(--text-muted);margin:14px 0 6px;text-transform:uppercase;letter-spacing:0.04em">Improve</p><ul class="rec-list">${advice.weak_areas.map(a => `<li><i class="ri-focus-3-line" style="color:var(--orange)"></i>${esc(a)}</li>`).join('')}</ul>`;
+            if (advice.career_advice) rh += `<div class="advice-box"><strong>AI Insight:</strong> ${esc(advice.career_advice)}</div>`;
+            document.getElementById('recBody').innerHTML = rh;
+
+            document.getElementById('readinessPills').innerHTML = `
+                <div class="readiness-pill"><span>Readiness</span><strong>${esc(level.label)}</strong></div>
+                <div class="readiness-pill"><span>Best Domain</span><strong>${esc(advice.recommended_domain || 'General')}</strong></div>
+                <div class="readiness-pill"><span>Next Step</span><strong>${pct >= 70 ? 'Interview Prep' : 'Skill Repair'}</strong></div>
+            `;
+            document.getElementById('gapList').innerHTML = (advice.gaps || []).map(item => `<li><i class="ri-arrow-right-circle-line"></i><span>${esc(item)}</span></li>`).join('');
+            document.getElementById('roadmapGrid').innerHTML = buildRoadmap(advice, pct).map(step => `
+                <div class="roadmap-step">
+                    <div class="week">${esc(step.week)}</div>
+                    <h4>${esc(step.title)}</h4>
+                    <p>${esc(step.text)}</p>
+                </div>
+            `).join('');
+            renderAnswerReview();
+
+            const roleQuery = encodeURIComponent((advice.suggested_jobs || [advice.recommended_domain || 'developer']).slice(0, 2).join(' '));
+            const jobsHref = `/jobs/?search=${roleQuery}&location=India`;
+            document.getElementById('exploreJobsBtn').href = jobsHref;
+            document.getElementById('jobMatchAction').href = jobsHref;
+
+            localStorage.setItem('careerOSSkillTestLastResult', JSON.stringify({
+                mode, percentage: pct, totalCorrect: d.totalCorrect, totalQuestions: d.totalQuestions,
+                domainPerformance: d.domainPerformance, advice, completedAt: new Date().toISOString()
+            }));
+
             const sub = document.getElementById('resSub');
-            sub.textContent = d.recommendedDomain
-                ? `Your strongest domain: ${d.recommendedDomain}`
+            sub.textContent = advice.recommended_domain
+                ? `Your strongest domain: ${advice.recommended_domain}`
                 : pct >= 70 ? 'Great performance!' : 'Keep practicing to improve!';
         }
 

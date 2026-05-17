@@ -31,6 +31,26 @@
       "source": "/client/src/pages/dashboard/index.html",
       "destination": "/graduate/dashboard",
       "permanent": false
+    },
+    {
+      "source": "/client/src/jobs",
+      "destination": "/jobs",
+      "permanent": false
+    },
+    {
+      "source": "/client/src/jobs/",
+      "destination": "/jobs",
+      "permanent": false
+    },
+    {
+      "source": "/client/src/jobs/index.html",
+      "destination": "/jobs",
+      "permanent": false
+    },
+    {
+      "source": "/client/src/jobs/jobs.html",
+      "destination": "/jobs",
+      "permanent": false
     }
   ],
   "rewrites": [
