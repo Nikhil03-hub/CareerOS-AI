@@ -21,8 +21,59 @@
             localStorage.getItem('jwt') ||
             localStorage.getItem('authToken') ||
             localStorage.getItem('token') ||
+            sessionStorage.getItem('jc_token') ||
+            sessionStorage.getItem('jwt') ||
+            sessionStorage.getItem('authToken') ||
+            sessionStorage.getItem('token') ||
             null
         );
+    }
+
+    function getSessionUser() {
+        if (window.AuthUI?.getCurrentUser) return window.AuthUI.getCurrentUser();
+        for (const key of ['user', 'auroraUser', 'careerOSUser', 'careerosUser', 'currentUser']) {
+            try {
+                const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
+                if (!raw) continue;
+                const parsed = JSON.parse(raw);
+                const source = parsed.user || parsed.profile || parsed;
+                if (source?.email || source?.displayName || source?.name) return source;
+            } catch {
+                // Ignore malformed legacy session keys.
+            }
+        }
+        return null;
+    }
+
+    function getJobId(job = {}) {
+        return job.jobId || job.id || job.url || job.applyLink || `${job.title || 'Job'}|${job.company || 'Company'}|${job.location || 'Location'}`;
+    }
+
+    function readLocalSavedJobs() {
+        const merged = [];
+        const seen = new Set();
+        ['careerOSSavedJobs', 'savedJobs', 'domainx_saved_jobs', 'jc_saved_jobs'].forEach((key) => {
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw) return;
+                const parsed = JSON.parse(raw);
+                const jobs = Array.isArray(parsed) ? parsed : Array.isArray(parsed.jobs) ? parsed.jobs : [];
+                jobs.forEach((job) => {
+                    const jobId = getJobId(job);
+                    if (seen.has(jobId)) return;
+                    seen.add(jobId);
+                    merged.push({ ...job, jobId });
+                });
+            } catch {
+                // Try next key.
+            }
+        });
+        return merged;
+    }
+
+    function writeLocalSavedJobs(jobs) {
+        localStorage.setItem('careerOSSavedJobs', JSON.stringify(jobs));
+        localStorage.setItem('savedJobs', JSON.stringify(jobs));
     }
 
     /**
@@ -55,7 +106,7 @@
         const token = getToken();
         
         if (!token) {
-            return null;
+            return getSessionUser() ? readLocalSavedJobs() : [];
         }
 
         try {
@@ -73,7 +124,7 @@
             return result.success ? result.jobs : [];
         } catch (error) {
             console.error('Error fetching saved jobs:', error);
-            return [];
+            return readLocalSavedJobs();
         }
     }
 
@@ -84,7 +135,9 @@
         const token = getToken();
         
         if (!token) {
-            return false;
+            const remaining = readLocalSavedJobs().filter((job) => getJobId(job) !== jobId);
+            writeLocalSavedJobs(remaining);
+            return true;
         }
 
         try {
@@ -101,7 +154,9 @@
             return result.success;
         } catch (error) {
             console.error('Error removing saved job:', error);
-            return false;
+            const remaining = readLocalSavedJobs().filter((job) => getJobId(job) !== jobId);
+            writeLocalSavedJobs(remaining);
+            return true;
         }
     }
 
@@ -225,38 +280,10 @@
     async function init() {
         const token = getToken();
         
-        if (!token) {
-            const container = document.getElementById('savedJobsList') || 
-                             document.getElementById('saved-jobs-container');
-            if (container) {
-                container.innerHTML = `
-                    <div class="text-center py-12">
-                        <p class="text-gray-500 text-lg mb-4">Please login to view saved jobs.</p>
-                        <a href="jobs.html" class="text-primary hover:underline font-semibold">
-                            Go to login
-                        </a>
-                    </div>
-                `;
-            }
-            return;
-        }
-
         const jobs = await fetchSavedJobs();
         
         if (jobs === null) {
-            // Token invalid
-            const container = document.getElementById('savedJobsList') || 
-                             document.getElementById('saved-jobs-container');
-            if (container) {
-                container.innerHTML = `
-                    <div class="text-center py-12">
-                        <p class="text-gray-500 text-lg mb-4">Please login to view saved jobs.</p>
-                        <a href="jobs.html" class="text-primary hover:underline font-semibold">
-                            Go to login
-                        </a>
-                    </div>
-                `;
-            }
+            renderSavedJobs([]);
             return;
         }
 

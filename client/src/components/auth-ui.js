@@ -4,6 +4,68 @@
  */
 
 const API_BASE_URL = 'http://localhost:8000';
+const USER_STORAGE_KEYS = [
+    'user',
+    'auroraUser',
+    'careerOSUser',
+    'careerosUser',
+    'currentUser',
+    'googleUser',
+    'studentProfile',
+    'profile'
+];
+const TOKEN_STORAGE_KEYS = ['jc_token', 'jwt', 'authToken', 'token', 'accessToken', 'googleAccessToken'];
+
+function safeParseStoredValue(value) {
+    if (!value) return null;
+    if (typeof value !== 'string') return value;
+    try {
+        return JSON.parse(value);
+    } catch {
+        return value;
+    }
+}
+
+function normalizeStoredUser(value) {
+    if (!value) return null;
+    const parsed = safeParseStoredValue(value);
+    const source = parsed?.user || parsed?.profile || parsed?.data?.user || parsed?.data || parsed;
+    if (!source || typeof source !== 'object') {
+        if (typeof parsed === 'string' && parsed.includes('@')) {
+            return { name: parsed, displayName: parsed, email: parsed, provider: 'local' };
+        }
+        return null;
+    }
+
+    const firstName = source.firstName || source.given_name || '';
+    const lastName = source.lastName || source.family_name || '';
+    const composedName = `${firstName} ${lastName}`.trim();
+    const displayName = source.displayName || source.name || composedName || source.email || 'CareerOS User';
+    const photoURL = source.photoURL || source.picture || source.avatar || source.image || '';
+
+    if (!displayName && !source.email && !photoURL) return null;
+
+    return {
+        ...source,
+        name: displayName,
+        displayName,
+        firstName,
+        lastName,
+        email: source.email || '',
+        photoURL,
+        picture: source.picture || photoURL,
+        avatar: source.avatar || photoURL,
+        provider: source.provider || 'career-os-session'
+    };
+}
+
+function getStoredToken() {
+    for (const key of TOKEN_STORAGE_KEYS) {
+        const token = localStorage.getItem(key) || sessionStorage.getItem(key);
+        if (token) return token;
+    }
+    return null;
+}
 
 // Auth state management
 const AuthUI = {
@@ -20,12 +82,15 @@ const AuthUI = {
     // Get current user from localStorage
     getCurrentUser() {
         try {
-            const userStr = localStorage.getItem('user') || localStorage.getItem('auroraUser');
-            if (userStr) {
-                return JSON.parse(userStr);
+            const stores = [localStorage, sessionStorage];
+            for (const store of stores) {
+                for (const key of USER_STORAGE_KEYS) {
+                    const user = normalizeStoredUser(store.getItem(key));
+                    if (user) return user;
+                }
             }
 
-            const token = localStorage.getItem('jc_token') || localStorage.getItem('jwt') || localStorage.getItem('authToken') || localStorage.getItem('token');
+            const token = getStoredToken();
             const payload = this.decodeTokenPayload(token);
             if (payload) {
                 return {
@@ -44,7 +109,7 @@ const AuthUI = {
     // Check if user is logged in
     isLoggedIn() {
         const user = this.getCurrentUser();
-        const token = localStorage.getItem('jc_token') || localStorage.getItem('jwt') || localStorage.getItem('authToken') || localStorage.getItem('token');
+        const token = getStoredToken();
         return !!user || !!token;
     },
 
@@ -56,16 +121,14 @@ const AuthUI = {
 
     // Clear auth data
     clearAuth() {
-        localStorage.removeItem('user');
-        localStorage.removeItem('auroraUser');
-        localStorage.removeItem('auroraProfile');
-        localStorage.removeItem('jc_token');
-        localStorage.removeItem('jwt');
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('user');
-        sessionStorage.removeItem('auroraUser');
-        sessionStorage.removeItem('jwt');
+        [...USER_STORAGE_KEYS, 'auroraProfile'].forEach((key) => {
+            localStorage.removeItem(key);
+            sessionStorage.removeItem(key);
+        });
+        TOKEN_STORAGE_KEYS.forEach((key) => {
+            localStorage.removeItem(key);
+            sessionStorage.removeItem(key);
+        });
     },
 
     // Get user profile photo or default
@@ -372,7 +435,7 @@ const AuthUI = {
         if (authStatus === 'success') {
             // Fetch user from backend using JWT
             try {
-                const token = localStorage.getItem('jc_token');
+                const token = getStoredToken();
                 if (!token) {
                     console.error('No token found after OAuth');
                     return;
@@ -407,7 +470,14 @@ const AuthUI = {
     // Check auth state on page load
     async checkAuthState() {
         try {
-            const token = localStorage.getItem('jc_token');
+            const cachedUser = this.getCurrentUser();
+            if (cachedUser) {
+                this.saveUser(cachedUser);
+                this.refreshAllAuthUI();
+                return true;
+            }
+
+            const token = getStoredToken();
             if (!token) return false;
             
             const response = await fetch(`${API_BASE_URL}/auth/me`, {
@@ -447,7 +517,7 @@ const AuthUI = {
     // Logout function
     async logout() {
         try {
-            const token = localStorage.getItem('jc_token');
+            const token = getStoredToken();
             // Call backend logout endpoint
             await fetch(`${API_BASE_URL}/auth/logout`, {
                 method: 'GET',

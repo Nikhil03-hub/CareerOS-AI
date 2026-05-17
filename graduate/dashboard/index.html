@@ -1752,7 +1752,7 @@
                                 <i class="fa-solid fa-user"></i>
                             </div>
                             <div>
-                                <p id="profile-name" class="font-bold text-slate-900 text-sm">Loading...</p>
+                                <p id="profile-name" class="font-bold text-slate-900 text-sm">CareerOS User</p>
                                 <p id="profile-email" class="text-xs text-slate-500"></p>
                             </div>
                         </div>
@@ -5816,6 +5816,67 @@
                     .trim();
             }
 
+            function buildSkillGapInsights(detectedSkills = [], resumeText = '', score = 0) {
+                const normalizedSkills = detectedSkills.map(skill => String(skill).toLowerCase());
+                const normalizedText = String(resumeText || '').toLowerCase();
+                const hasSkill = (skill) => normalizedSkills.includes(skill.toLowerCase()) || normalizedText.includes(skill.toLowerCase());
+                const roleTracks = [
+                    {
+                        name: 'Full Stack Developer',
+                        matchers: ['react', 'node.js', 'javascript', 'mongodb', 'rest apis', 'authentication'],
+                        required: ['JavaScript', 'React', 'Node.js', 'Express.js', 'MongoDB', 'REST APIs', 'Authentication', 'Git', 'Deployment', 'Testing'],
+                        roles: ['Full Stack Developer', 'MERN Stack Developer', 'Software Engineer']
+                    },
+                    {
+                        name: 'Frontend Developer',
+                        matchers: ['html', 'css', 'react', 'javascript', 'typescript', 'tailwind'],
+                        required: ['HTML', 'CSS', 'JavaScript', 'React', 'TypeScript', 'Tailwind CSS', 'Responsive Design', 'Accessibility', 'Frontend Testing'],
+                        roles: ['Frontend Developer', 'React Developer', 'UI Engineer']
+                    },
+                    {
+                        name: 'Backend Developer',
+                        matchers: ['node.js', 'express', 'mongodb', 'sql', 'rest apis', 'jwt'],
+                        required: ['Node.js', 'Express.js', 'REST APIs', 'MongoDB', 'SQL', 'JWT', 'System Design', 'Docker', 'Redis'],
+                        roles: ['Backend Developer', 'Node.js Developer', 'API Engineer']
+                    },
+                    {
+                        name: 'AI/ML Engineer',
+                        matchers: ['python', 'machine learning', 'data analysis', 'tensorflow', 'pytorch'],
+                        required: ['Python', 'Machine Learning', 'Pandas', 'NumPy', 'Model Evaluation', 'SQL', 'NLP', 'MLOps'],
+                        roles: ['AI/ML Engineer', 'Machine Learning Intern', 'Data Science Intern']
+                    },
+                    {
+                        name: 'Cloud/DevOps Engineer',
+                        matchers: ['cloud', 'docker', 'kubernetes', 'aws', 'deployment'],
+                        required: ['Linux', 'Docker', 'AWS', 'CI/CD', 'Kubernetes', 'Monitoring', 'Security', 'Terraform'],
+                        roles: ['Cloud Engineer', 'DevOps Engineer', 'Platform Engineer']
+                    }
+                ];
+
+                const scoredTracks = roleTracks.map(track => ({
+                    ...track,
+                    score: track.matchers.reduce((total, skill) => total + (hasSkill(skill) ? 1 : 0), 0)
+                })).sort((a, b) => b.score - a.score);
+
+                const targetTrack = scoredTracks[0]?.score > 0 ? scoredTracks[0] : roleTracks[0];
+                const missingSkills = targetTrack.required.filter(skill => !hasSkill(skill)).slice(0, 7);
+                const skillGap = missingSkills.slice(0, 5).map((skill, index) => ({
+                    skill,
+                    priority: index < 2 || score < 65 ? 'High' : 'Medium',
+                    reason: `${skill} is expected for ${targetTrack.name} roles and improves ATS/job-match confidence.`,
+                    roadmap: index < 2
+                        ? `Build one project feature using ${skill} and add it to your resume.`
+                        : `Add ${skill} proof through a course, GitHub README or interview-ready mini project.`
+                }));
+
+                return {
+                    targetTrack: targetTrack.name,
+                    missingSkills,
+                    skillGap,
+                    recommendedRoles: targetTrack.roles
+                };
+            }
+
             async function analyzeResumeInBrowser(file) {
                 const rawText = await readResumeTextForBrowser(file);
                 const text = `${file.name} ${rawText}`.toLowerCase();
@@ -5899,12 +5960,17 @@
                     : 'Experience section not clearly detected. Add internships, freelance work, academic projects or open-source contributions.';
 
                 const topSkills = skills.length ? skills : ['JavaScript', 'React', 'Node.js', 'SQL', 'Git'].filter(skill => text.includes(skill.toLowerCase()));
+                const gapInsights = buildSkillGapInsights(topSkills, rawText, score);
 
                 return {
                     success: true,
                     score,
-                    summary: `CareerOS analyzed ${file.name} using the browser ATS engine. The resume shows ${topSkills.length || 'some'} skill signals and is currently ${score >= 75 ? 'job-ready with minor polish' : score >= 60 ? 'promising but needs stronger ATS optimization' : 'in need of clearer structure and keywords'}.`,
+                    summary: `CareerOS analyzed ${file.name} using the browser ATS engine. The resume shows ${topSkills.length || 'some'} skill signals and is currently ${score >= 75 ? 'job-ready with minor polish' : score >= 60 ? 'promising but needs stronger ATS optimization' : 'in need of clearer structure and keywords'}. The strongest inferred track is ${gapInsights.targetTrack}.`,
                     skills: topSkills,
+                    targetTrack: gapInsights.targetTrack,
+                    missingSkills: gapInsights.missingSkills,
+                    skillGap: gapInsights.skillGap,
+                    recommendedRoles: gapInsights.recommendedRoles,
                     strengths,
                     weaknesses,
                     suggestions,
@@ -6342,11 +6408,17 @@
                 const suggestions = Array.isArray(data.suggestions) ? data.suggestions : [];
                 const education = escapeHtml(data.education || 'No specific education section detected.');
                 const experience = escapeHtml(data.experience || 'No experience details available.');
+                const gapInsights = buildSkillGapInsights(skills, '', score);
+                const targetTrack = escapeHtml(data.targetTrack || gapInsights.targetTrack || 'Full Stack Developer');
+                const missingSkills = Array.isArray(data.missingSkills) && data.missingSkills.length ? data.missingSkills : gapInsights.missingSkills;
+                const skillGap = Array.isArray(data.skillGap) && data.skillGap.length ? data.skillGap : gapInsights.skillGap;
+                const recommendedRoles = Array.isArray(data.recommendedRoles) && data.recommendedRoles.length ? data.recommendedRoles : gapInsights.recommendedRoles;
 
-                const toneScore = Math.min(100, Math.max(40, score + Math.floor(Math.random() * 20) - 10));
-                const contentScore = Math.min(100, Math.max(20, score + Math.floor(Math.random() * 20) - 10));
-                const structureScore = Math.min(100, Math.max(30, score + Math.floor(Math.random() * 20) - 10));
-                const skillsScore = Math.min(100, Math.max(15, skills.length * 10 + Math.floor(Math.random() * 15)));
+                const deterministicDelta = skills.join('|').length % 11;
+                const toneScore = Math.min(100, Math.max(40, score + deterministicDelta - 5));
+                const contentScore = Math.min(100, Math.max(20, score + (strengths.length * 3) - (weaknesses.length * 2)));
+                const structureScore = Math.min(100, Math.max(30, score + (education ? 4 : 0) + (experience ? 4 : 0) - 6));
+                const skillsScore = Math.min(100, Math.max(15, (skills.length * 9) + Math.max(0, 28 - missingSkills.length * 3)));
 
                 // Helper function to get score bar class
                 function getScoreBarClass(scoreValue) {
@@ -6477,6 +6549,47 @@
                                 ${skills.length > 0
                         ? skills.map(s => `<span class="skill-chip">${escapeHtml(s)}</span>`).join('')
                         : '<p class="ats-section-content" style="color: #94a3b8; font-style: italic;">No skills detected.</p>'}
+                            </div>
+                        </div>
+
+                        <!-- Skill Gap Intelligence Section -->
+                        <div class="ats-section">
+                            <div class="ats-section-title" style="color:#2563eb;">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span>Skill Gap Intelligence</span>
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr;gap:14px;">
+                                <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:14px;">
+                                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px;">
+                                        <span style="font-size:12px;font-weight:800;text-transform:uppercase;color:#64748b;letter-spacing:.04em;">Target track</span>
+                                        <span style="background:#dbeafe;color:#1d4ed8;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;">${targetTrack}</span>
+                                    </div>
+                                    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                                        ${recommendedRoles.map(role => `<span class="skill-chip" style="background:#eef2ff;color:#3730a3;border-color:#c7d2fe;">${escapeHtml(role)}</span>`).join('')}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:800;color:#334155;margin-bottom:8px;">Missing skills to add next</div>
+                                    <div>
+                                        ${missingSkills.length
+                                            ? missingSkills.map(skill => `<span class="skill-chip" style="background:#fff7ed;color:#c2410c;border-color:#fed7aa;">${escapeHtml(skill)}</span>`).join('')
+                                            : '<p class="ats-section-content" style="color:#16a34a;font-weight:700;">No major skill gaps detected for the inferred track.</p>'}
+                                    </div>
+                                </div>
+                                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;">
+                                    ${skillGap.length
+                                        ? skillGap.map(item => `
+                                            <article style="background:white;border:1px solid #e2e8f0;border-radius:14px;padding:12px;box-shadow:0 10px 24px rgba(15,23,42,0.04);">
+                                                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+                                                    <strong style="color:#0f172a;font-size:14px;">${escapeHtml(item.skill)}</strong>
+                                                    <span style="font-size:10px;font-weight:800;text-transform:uppercase;border-radius:999px;padding:4px 7px;background:${item.priority === 'High' ? '#fee2e2;color:#b91c1c' : '#e0f2fe;color:#0369a1'};">${escapeHtml(item.priority)}</span>
+                                                </div>
+                                                <p style="font-size:12px;color:#64748b;line-height:1.55;margin-bottom:8px;">${escapeHtml(item.reason)}</p>
+                                                <p style="font-size:12px;color:#2563eb;font-weight:700;line-height:1.45;">${escapeHtml(item.roadmap)}</p>
+                                            </article>
+                                        `).join('')
+                                        : '<p class="ats-section-content" style="color:#16a34a;font-weight:700;">Your current skill coverage already aligns well. Keep adding deeper project proof.</p>'}
+                                </div>
                             </div>
                         </div>
 

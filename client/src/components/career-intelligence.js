@@ -184,6 +184,21 @@
         };
     }
 
+    function blankUrlPayload() {
+        return {
+            targetRole: "Full Stack Developer",
+            linkedinUrl: "",
+            linkedinHeadline: "",
+            linkedinSummary: "",
+            resumeText: "",
+            experienceText: "",
+            educationText: "",
+            githubText: "",
+            portfolioText: "",
+            certifications: ""
+        };
+    }
+
     function payloadFromForm() {
         return {
             targetRole: $("#careerTargetRole")?.value || "Full Stack Developer",
@@ -210,6 +225,46 @@
         if ($("#careerGithubText")) $("#careerGithubText").value = payload.githubText;
         if ($("#careerPortfolioText")) $("#careerPortfolioText").value = payload.portfolioText;
         if ($("#careerCertifications")) $("#careerCertifications").value = payload.certifications;
+    }
+
+    function applyUrlOnlyMode() {
+        const intro = document.querySelector(".career-ai-panel p");
+        if (intro) {
+            intro.textContent = "Paste your public LinkedIn profile URL. CareerOS will run URL quality, recruiter discoverability, keyword-gap and profile-optimization checks without asking you to manually paste every LinkedIn section.";
+        }
+
+        const subtitle = document.querySelector(".career-ai-subtitle");
+        if (subtitle) {
+            subtitle.textContent = "Submit one public profile URL and CareerOS converts it into recruiter-style profile strength, discoverability, keyword gaps, smart rewrites and next-step roadmap insights.";
+        }
+
+        [
+            "#careerLinkedinHeadline",
+            "#careerLinkedinSummary",
+            "#careerResumeText",
+            "#careerExperienceText",
+            "#careerGithubText",
+            "#careerPortfolioText",
+            "#careerEducationText",
+            "#careerCertifications"
+        ].forEach((selector) => {
+            const field = $(selector)?.closest(".career-ai-field");
+            if (field) field.style.display = "none";
+        });
+
+        const urlHelp = $("#careerLinkedinUrl")?.closest(".career-ai-field")?.querySelector("small");
+        if (urlHelp) urlHelp.textContent = "Only the public /in/ URL is needed for this quick profile intelligence scan.";
+
+        const analyzeProfileBtn = $("#runCareerIntelligence");
+        if (analyzeProfileBtn) {
+            analyzeProfileBtn.innerHTML = '<i class="fa-brands fa-linkedin"></i> Analyze profile URL';
+        }
+
+        const duplicateUrlBtn = $("#analyzeLinkedinUrl");
+        if (duplicateUrlBtn) duplicateUrlBtn.style.display = "none";
+
+        const sampleBtn = $("#loadCareerSample");
+        if (sampleBtn) sampleBtn.style.display = "none";
     }
 
     function renderBar(item) {
@@ -261,6 +316,10 @@
     }
 
     async function runAnalysis() {
+        return runLinkedinUrlAnalysis();
+    }
+
+    async function runDetailedAnalysis() {
         const payload = payloadFromForm();
         const loader = $("#careerIntelligenceLoading");
         loader?.classList.add("active");
@@ -323,7 +382,8 @@
         if (!section || section.dataset.ready === "true") return;
         section.dataset.ready = "true";
 
-        setPayload(samplePayload());
+        applyUrlOnlyMode();
+        setPayload(blankUrlPayload());
         const stored = localStorage.getItem("careerIntelligenceLastResult");
         if (stored) {
             try {

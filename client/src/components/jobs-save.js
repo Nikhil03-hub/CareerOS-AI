@@ -19,15 +19,71 @@
       localStorage.getItem('jwt') ||
       localStorage.getItem('authToken') ||
       localStorage.getItem('token') ||
+      sessionStorage.getItem('jc_token') ||
+      sessionStorage.getItem('jwt') ||
+      sessionStorage.getItem('authToken') ||
+      sessionStorage.getItem('token') ||
       null
     );
+  }
+
+  function getSessionUser() {
+    if (window.AuthUI?.getCurrentUser) return window.AuthUI.getCurrentUser();
+    for (const key of ['user', 'auroraUser', 'careerOSUser', 'careerosUser', 'currentUser']) {
+      try {
+        const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
+        if (!raw) continue;
+        const parsed = JSON.parse(raw);
+        const source = parsed.user || parsed.profile || parsed;
+        if (source?.email || source?.displayName || source?.name) return source;
+      } catch {
+        // Ignore malformed legacy session keys.
+      }
+    }
+    return null;
+  }
+
+  function readLocalSavedJobs() {
+    for (const key of ['careerOSSavedJobs', 'savedJobs', 'domainx_saved_jobs', 'jc_saved_jobs']) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (!raw) continue;
+        const parsed = JSON.parse(raw);
+        const jobs = Array.isArray(parsed) ? parsed : Array.isArray(parsed.jobs) ? parsed.jobs : [];
+        if (jobs.length) return jobs;
+      } catch {
+        // Try next key.
+      }
+    }
+    return [];
+  }
+
+  function writeLocalSavedJobs(jobs) {
+    localStorage.setItem('careerOSSavedJobs', JSON.stringify(jobs));
+    localStorage.setItem('savedJobs', JSON.stringify(jobs));
+  }
+
+  function saveJobLocally(jobData) {
+    const jobId = getJobId(jobData);
+    const savedJobs = readLocalSavedJobs();
+    if (!savedJobs.some((job) => getJobId(job) === jobId || job.jobId === jobId)) {
+      savedJobs.push({ ...jobData, jobId, savedAt: new Date().toISOString(), source: jobData.source || 'career-os-local' });
+      writeLocalSavedJobs(savedJobs);
+    }
+    return true;
+  }
+
+  function unsaveJobLocally(jobId) {
+    const savedJobs = readLocalSavedJobs().filter((job) => getJobId(job) !== jobId && job.jobId !== jobId);
+    writeLocalSavedJobs(savedJobs);
+    return true;
   }
 
   /**
    * Check if user is authenticated
    */
   function isAuthenticated() {
-    return !!getToken();
+    return !!getToken() || !!getSessionUser();
   }
 
   /**
@@ -46,8 +102,7 @@
     const token = getToken();
 
     if (!token) {
-      showLoginPrompt();
-      return false;
+      return getSessionUser() ? saveJobLocally(jobData) : (showLoginPrompt(), false);
     }
 
     try {
@@ -91,7 +146,7 @@
       return result.success && result.saved;
     } catch (error) {
       console.error('Error saving job:', error);
-      return false;
+      return saveJobLocally(jobData);
     }
   }
 
@@ -100,7 +155,7 @@
    */
   async function unsaveJob(jobId) {
     const token = getToken();
-    if (!token) return false;
+    if (!token) return unsaveJobLocally(jobId);
 
     try {
       const response = await fetch(`${API_BASE_URL}/saved-jobs`, {
@@ -117,7 +172,7 @@
       return result.success && !result.saved;
     } catch (error) {
       console.error('Error unsaving job:', error);
-      return false;
+      return unsaveJobLocally(jobId);
     }
   }
 
@@ -126,7 +181,7 @@
    */
   async function getSavedJobs() {
     const token = getToken();
-    if (!token) return [];
+    if (!token) return readLocalSavedJobs();
 
     try {
       const response = await fetch(`${API_BASE_URL}/saved-jobs`, {
@@ -143,7 +198,7 @@
       return result.success ? result.jobs : [];
     } catch (error) {
       console.error('Error fetching saved jobs:', error);
-      return [];
+      return readLocalSavedJobs();
     }
   }
 
@@ -310,7 +365,7 @@
       e.stopPropagation();
 
       const token = getToken();
-      if (!token) {
+      if (!token && !getSessionUser()) {
         console.warn('No token found when clicking save button');
         showLoginPrompt();
         return;

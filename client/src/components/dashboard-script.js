@@ -1272,8 +1272,88 @@ document.addEventListener('DOMContentLoaded', () => {
             window.history.replaceState({}, document.title, url.toString());
             return tokenFromUrl;
         }
-        return localStorage.getItem('authToken');
+        return (
+            localStorage.getItem('jc_token') ||
+            localStorage.getItem('jwt') ||
+            localStorage.getItem('authToken') ||
+            localStorage.getItem('token') ||
+            sessionStorage.getItem('jc_token') ||
+            sessionStorage.getItem('jwt') ||
+            sessionStorage.getItem('authToken') ||
+            sessionStorage.getItem('token')
+        );
     };
+
+    const getStoredCareerOSUser = () => {
+        if (window.AuthUI?.getCurrentUser) return window.AuthUI.getCurrentUser();
+        for (const key of ['user', 'auroraUser', 'careerOSUser', 'careerosUser', 'currentUser']) {
+            try {
+                const raw = localStorage.getItem(key) || sessionStorage.getItem(key);
+                if (!raw) continue;
+                const parsed = JSON.parse(raw);
+                const source = parsed.user || parsed.profile || parsed;
+                if (source?.email || source?.displayName || source?.name) return source;
+            } catch {
+                // Ignore malformed legacy session keys.
+            }
+        }
+        return null;
+    };
+
+    const hydrateDashboardProfile = (user = {}) => {
+        const displayName = user.displayName || user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.email || 'CareerOS User';
+        const email = user.email || '';
+        const profilePictureUrl = user.avatar || user.photoURL || user.picture || user.image || '';
+        const initials = displayName
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0, 2)
+            .map(part => part[0])
+            .join('')
+            .toUpperCase() || 'C';
+
+        const sidebarName = document.getElementById('profile-name');
+        const sidebarEmail = document.getElementById('profile-email');
+        const sidebarAvatar = document.getElementById('profile-avatar-img');
+        const sidebarAvatarContainer = document.getElementById('profile-avatar');
+        const sidebarAvatarIcon = sidebarAvatarContainer?.querySelector('i');
+
+        if (sidebarName) sidebarName.textContent = displayName;
+        if (sidebarEmail) sidebarEmail.textContent = email || 'CareerOS session active';
+
+        if (profilePictureUrl && sidebarAvatar && sidebarAvatarContainer) {
+            sidebarAvatar.referrerPolicy = 'no-referrer';
+            sidebarAvatar.src = profilePictureUrl;
+            sidebarAvatar.style.display = 'block';
+            if (sidebarAvatarIcon) sidebarAvatarIcon.style.display = 'none';
+        }
+
+        const nameParts = displayName.trim().split(/\s+/);
+        const inputFirstName = document.getElementById('input-first-name');
+        const inputLastName = document.getElementById('input-last-name');
+        const inputEmail = document.getElementById('input-email');
+        const inputLocation = document.getElementById('input-location');
+        const inputBio = document.getElementById('input-bio');
+        const viewAvatar = document.getElementById('profile-view-avatar');
+        const viewInitials = document.getElementById('profile-view-initials');
+
+        if (inputFirstName && !inputFirstName.value) inputFirstName.value = user.firstName || nameParts[0] || '';
+        if (inputLastName && !inputLastName.value) inputLastName.value = user.lastName || nameParts.slice(1).join(' ') || '';
+        if (inputEmail && !inputEmail.value) inputEmail.value = email;
+        if (inputLocation && !inputLocation.value) inputLocation.value = user.location || '';
+        if (inputBio && !inputBio.value) inputBio.value = user.bio || '';
+
+        if (profilePictureUrl && viewAvatar) {
+            viewAvatar.referrerPolicy = 'no-referrer';
+            viewAvatar.src = profilePictureUrl;
+            viewAvatar.classList.remove('hidden');
+            viewAvatar.style.display = 'block';
+            if (viewInitials) viewInitials.classList.add('hidden');
+        } else if (viewInitials) {
+            viewInitials.textContent = initials;
+        }
+    };
+    window.hydrateDashboardProfile = hydrateDashboardProfile;
 
     const loadUserProfile = async () => {
         // Check if we came from OAuth redirect before cleaning URL
@@ -1281,7 +1361,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const cameFromOAuth = params.has('token') || window.location.hash === '#view-profile';
 
         const token = getToken();
-        if (!token) return;
+        if (!token) {
+            const storedUser = getStoredCareerOSUser();
+            hydrateDashboardProfile(storedUser || { displayName: 'CareerOS User' });
+            return;
+        }
 
         // Helper function to decode JWT and get payload
         const decodeJWT = (token) => {
@@ -1346,6 +1430,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Get the profile picture URL (from user data or JWT)
                 const profilePictureUrl = user.avatar || user.photoURL || googlePicture;
+                hydrateDashboardProfile({ ...user, avatar: profilePictureUrl, photoURL: profilePictureUrl });
 
                 // Update Sidebar
                 const sidebarName = document.getElementById('profile-name');
