@@ -337,6 +337,7 @@
 
     <link rel="stylesheet" href="/client/src/styles/dashboard-styles.css">
     <link rel="stylesheet" href="/client/src/styles/career-intelligence.css">
+    <link rel="stylesheet" href="/client/src/styles/mock-interview.css">
 
     <!-- 3D Testimonial Styles -->
     <style>
@@ -1676,6 +1677,8 @@
                     <div class="hidden md:flex items-center gap-10 absolute left-1/2 transform -translate-x-1/2">
                         <a href="javascript:void(0)" id="nav-dashboard"
                             class="text-[15px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Dashboard</a>
+                        <a href="#view-mock-interview" id="top-nav-mock-interview"
+                            class="text-[15px] font-medium text-slate-500 hover:text-slate-900 transition-colors">AI Interview</a>
                         <a href="javascript:void(0)" id="nav-problems"
                             class="text-[15px] font-medium text-slate-500 hover:text-slate-900 transition-colors">Problems</a>
                         <a href="javascript:void(0)" id="nav-features"
@@ -1794,6 +1797,13 @@
                                         <i class="fa-solid fa-clock-rotate-left w-5"></i>
                                         Resume History
                                     </a>
+                                    <a href="#view-mock-interview" id="nav-mock-interview"
+                                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                                        <i class="fa-solid fa-microphone-lines w-5"></i>
+                                        AI Mock Interview
+                                        <span
+                                            class="ml-auto bg-emerald-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">LIVE</span>
+                                    </a>
                                     <a href="javascript:void(0)" id="nav-career-intelligence"
                                         class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
                                         <i class="fa-solid fa-wand-magic-sparkles w-5"></i>
@@ -1815,7 +1825,6 @@
                                         <i class="fa-solid fa-user w-5"></i>
                                         My profile
                                     </a>
-
                                 </nav>
                             </div>
                         </div>
@@ -2637,6 +2646,28 @@
                                     </div>
                                 </div>
 
+                                <div class="dashboard-liveavatar-card mb-5">
+                                    <div class="dashboard-liveavatar-copy">
+                                        <span class="dashboard-liveavatar-kicker">
+                                            <i class="fa-solid fa-microphone-lines"></i>
+                                            AI Mock Interview
+                                        </span>
+                                        <h3>Practice with your live avatar interviewer</h3>
+                                        <p>Speak naturally, answer placement-style questions, and rehearse HR, technical and project rounds without leaving your dashboard.</p>
+                                        <button type="button" class="dashboard-liveavatar-action" data-open-mock-interview
+                                            onclick="document.querySelectorAll('.dashboard-section').forEach(function(section){section.classList.remove('active')});var section=document.getElementById('section-mock-interview');if(section){section.classList.add('active');section.scrollIntoView({behavior:'smooth',block:'start'});}var frame=document.getElementById('mockInterviewFrame');if(frame&&!frame.src){frame.src='https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal';}window.location.hash='view-mock-interview';">
+                                            Open full interview room
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </button>
+                                    </div>
+                                    <div class="dashboard-liveavatar-frame">
+                                        <iframe
+                                            src="https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal"
+                                            allow="microphone; camera; autoplay; clipboard-write"
+                                            title="CareerOS AI Mock Interview Preview"></iframe>
+                                    </div>
+                                </div>
+
                                 <!-- Empty State (shown initially) -->
                                 <div id="messages-empty-state"
                                     class="flex-1 flex flex-col items-center justify-center text-center text-slate-500">
@@ -2814,6 +2845,72 @@
                                         </div>
                                         <div id="careerGenerated" class="mt-5"></div>
                                     </section>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI Mock Interview Section -->
+                        <div id="section-mock-interview" class="dashboard-section">
+                            <div id="view-mock-interview" class="mock-interview-shell rounded-3xl p-6 md:p-8">
+                                <div class="mock-interview-hero grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-8 items-start mb-8">
+                                    <div>
+                                        <span class="mock-interview-badge">
+                                            <i class="fa-solid fa-microphone-lines"></i>
+                                            Live AI interviewer
+                                        </span>
+                                        <h1 class="mock-interview-title">Practice interviews with a <span>real-time AI avatar.</span></h1>
+                                        <p class="mock-interview-subtitle">
+                                            Speak naturally with the interviewer, answer role-based questions, and use the live avatar session for voice-first practice before placements and hiring rounds.
+                                        </p>
+                                        <div class="flex flex-wrap gap-3 mt-5">
+                                            <span class="mock-interview-chip"><i class="fa-solid fa-microphone"></i> Voice input</span>
+                                            <span class="mock-interview-chip"><i class="fa-solid fa-closed-captioning"></i> Speech understanding</span>
+                                            <span class="mock-interview-chip"><i class="fa-solid fa-video"></i> Avatar feedback</span>
+                                        </div>
+                                    </div>
+                                    <div class="mock-interview-card p-5">
+                                        <h2 class="text-xl font-bold text-slate-900 mb-3">Before you start</h2>
+                                        <ul class="mock-interview-checklist">
+                                            <li><i class="fa-solid fa-circle-check"></i><span>Allow microphone permission when the browser asks.</span></li>
+                                            <li><i class="fa-solid fa-circle-check"></i><span>Use earphones for cleaner speech recognition.</span></li>
+                                            <li><i class="fa-solid fa-circle-check"></i><span>Refresh the session if the avatar is idle for too long.</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="mock-interview-grid grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-6">
+                                    <div class="mock-interview-frame-wrap">
+                                        <iframe id="mockInterviewFrame"
+                                            class="mock-interview-frame"
+                                            src="https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal"
+                                            allow="microphone; camera; autoplay; clipboard-write"
+                                            title="CareerOS AI Mock Interview"></iframe>
+                                        <div class="mock-interview-toolbar">
+                                            <div class="flex items-center gap-3">
+                                                <span class="mock-status-dot"></span>
+                                                <span class="text-sm font-semibold">LiveAvatar session ready. Voice, STT, LLM and TTS run inside the embed.</span>
+                                            </div>
+                                            <button id="mockInterviewReload" type="button" class="mock-interview-btn secondary"
+                                                onclick="var frame=document.getElementById('mockInterviewFrame');if(frame){frame.src='about:blank';setTimeout(function(){frame.src='https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal';},120);}">
+                                                <i class="fa-solid fa-rotate-right"></i>
+                                                Restart session
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <aside class="mock-interview-card p-5 md:p-6">
+                                        <p class="text-xs font-black uppercase tracking-[0.18em] text-blue-600">Interview plan</p>
+                                        <h2 class="text-2xl font-bold text-slate-900 mt-1 mb-4">How to use it</h2>
+                                        <div class="space-y-4 text-sm text-slate-600 leading-relaxed">
+                                            <p><strong class="text-slate-900">1. Start the avatar</strong><br>Give microphone access and begin speaking.</p>
+                                            <p><strong class="text-slate-900">2. Answer like a real interview</strong><br>Use STAR format for projects, internships and problem solving.</p>
+                                            <p><strong class="text-slate-900">3. Repeat weak rounds</strong><br>Restart and practice HR, technical, project and role-fit answers.</p>
+                                        </div>
+                                        <a class="mock-interview-btn mt-6 w-full" href="https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal" target="_blank" rel="noreferrer">
+                                            <i class="fa-solid fa-up-right-from-square"></i>
+                                            Open full screen
+                                        </a>
+                                    </aside>
                                 </div>
                             </div>
                         </div>
@@ -6978,6 +7075,36 @@
     <script src="/client/src/components/dashboard-overview.js"></script>
     <script src="/client/src/components/resume-history.js"></script>
     <script src="/client/src/components/career-intelligence.js"></script>
+    <script src="/client/src/components/mock-interview.js"></script>
+    <script>
+        window.CareerOSMockInterview = window.CareerOSMockInterview || {
+            show() {
+                document.querySelectorAll('.dashboard-section').forEach((section) => section.classList.remove('active'));
+                const section = document.getElementById('section-mock-interview');
+                if (section) section.classList.add('active');
+                const frame = document.getElementById('mockInterviewFrame');
+                if (frame && !frame.src) {
+                    frame.src = 'https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal';
+                }
+                window.location.hash = 'view-mock-interview';
+                if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            },
+            reload() {
+                const frame = document.getElementById('mockInterviewFrame');
+                if (!frame) return;
+                frame.src = 'about:blank';
+                window.setTimeout(() => {
+                    frame.src = 'https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal';
+                }, 120);
+            }
+        };
+        document.querySelectorAll('[data-open-mock-interview]').forEach((button) => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                window.CareerOSMockInterview.show();
+            });
+        });
+    </script>
     <!-- dashboard-script.js already loaded above at line 3637 — do NOT load again -->
 
     <!-- Resume History Navigation Handler -->
