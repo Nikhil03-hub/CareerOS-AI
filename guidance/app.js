@@ -966,14 +966,25 @@ function Results({ profile, rankedList, openStream, navigate, restart }) {
             {" "}<strong>{top.title}</strong>.
           </p>
         </div>
-        <div className="summary-card">
-          <h3>Best stream match</h3>
-          <div className="summary-score premium-score" style={{ "--score": `${top.score}%` }}>
-            <strong>{top.score}%</strong>
-            <span>{top.name}</span>
-            <em>{percentile}th percentile fit</em>
+        <div className="summary-card score-assistant-card">
+          <div className="assistant-card-head">
+            <span className="assistant-avatar"><Icon name="brain" /></span>
+            <span>
+              <strong>CareerOS Stream Assistant</strong>
+              <em>Best match analysis</em>
+            </span>
           </div>
-          <p className="score-meaning">{confidence}. This combines your interest signals, academic strengths, learning style and local college availability.</p>
+          <div className="assistant-chat-bubble">
+            <span className="assistant-score-chip">{top.score}%</span>
+            <p>
+              Your strongest path is <strong>{top.name}</strong>. {confidence.toLowerCase()} based on your interests,
+              academic strengths, learning style and {city.name} college availability.
+            </p>
+          </div>
+          <div className="assistant-context-row">
+            <span>{percentile}th percentile fit</span>
+            <span>{top.title}</span>
+          </div>
           <div className="mini-bars">
             {rankedList.slice(0, 4).map((stream) => (
               <div className="mini-bar" key={stream.id}>

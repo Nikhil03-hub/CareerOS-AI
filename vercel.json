@@ -49,7 +49,7 @@
     },
     {
       "source": "/client/src/jobs/jobs.html",
-      "destination": "/jobs",
+      "destination": "/jobs/portal",
       "permanent": false
     }
   ],
@@ -64,6 +64,10 @@
     },
     {
       "source": "/jobs",
+      "destination": "/client/src/jobs/index.html"
+    },
+    {
+      "source": "/jobs/portal",
       "destination": "/client/src/jobs/jobs.html"
     },
     {
