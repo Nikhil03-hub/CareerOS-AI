@@ -107,7 +107,7 @@ async function fetchLocalJobs(query = '', location = '') {
         if (query) params.set('role', query);
         if (location) params.set('location', location);
 
-        const res = await fetch(`http://localhost:5000/api/jobs?${params}`);
+        const res = await fetch(`/api/jobs?${params}`);
         const data = await res.json();
 
         if (data.success && Array.isArray(data.jobs)) {

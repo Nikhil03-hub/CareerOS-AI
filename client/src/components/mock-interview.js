@@ -1,5 +1,5 @@
 (function () {
-    const EMBED_URL = 'https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal';
+    const EMBED_URL = 'https://embed.liveavatar.com/v1/6bb399fb-fc3c-4e1a-893e-5c4a2de11988?orientation=horizontal';
 
     function byId(id) {
         return document.getElementById(id);

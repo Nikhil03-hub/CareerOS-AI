@@ -2655,14 +2655,14 @@
                                         <h3>Practice with your live avatar interviewer</h3>
                                         <p>Speak naturally, answer placement-style questions, and rehearse HR, technical and project rounds without leaving your dashboard.</p>
                                         <button type="button" class="dashboard-liveavatar-action" data-open-mock-interview
-                                            onclick="document.querySelectorAll('.dashboard-section').forEach(function(section){section.classList.remove('active')});var section=document.getElementById('section-mock-interview');if(section){section.classList.add('active');section.scrollIntoView({behavior:'smooth',block:'start'});}var frame=document.getElementById('mockInterviewFrame');if(frame&&!frame.src){frame.src='https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal';}window.location.hash='view-mock-interview';">
+                                            onclick="document.querySelectorAll('.dashboard-section').forEach(function(section){section.classList.remove('active')});var section=document.getElementById('section-mock-interview');if(section){section.classList.add('active');section.scrollIntoView({behavior:'smooth',block:'start'});}var frame=document.getElementById('mockInterviewFrame');if(frame&&!frame.src){frame.src='https://embed.liveavatar.com/v1/6bb399fb-fc3c-4e1a-893e-5c4a2de11988?orientation=horizontal';}window.location.hash='view-mock-interview';">
                                             Open full interview room
                                             <i class="fa-solid fa-arrow-right"></i>
                                         </button>
                                     </div>
                                     <div class="dashboard-liveavatar-frame">
                                         <iframe
-                                            src="https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal"
+                                            src="https://embed.liveavatar.com/v1/6bb399fb-fc3c-4e1a-893e-5c4a2de11988?orientation=horizontal"
                                             allow="microphone; camera; autoplay; clipboard-write"
                                             title="CareerOS AI Mock Interview Preview"></iframe>
                                     </div>
@@ -2882,7 +2882,7 @@
                                     <div class="mock-interview-frame-wrap">
                                         <iframe id="mockInterviewFrame"
                                             class="mock-interview-frame"
-                                            src="https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal"
+                                            src="https://embed.liveavatar.com/v1/6bb399fb-fc3c-4e1a-893e-5c4a2de11988?orientation=horizontal"
                                             allow="microphone; camera; autoplay; clipboard-write"
                                             title="CareerOS AI Mock Interview"></iframe>
                                         <div class="mock-interview-toolbar">
@@ -2891,7 +2891,7 @@
                                                 <span class="text-sm font-semibold">LiveAvatar session ready. Voice, STT, LLM and TTS run inside the embed.</span>
                                             </div>
                                             <button id="mockInterviewReload" type="button" class="mock-interview-btn secondary"
-                                                onclick="var frame=document.getElementById('mockInterviewFrame');if(frame){frame.src='about:blank';setTimeout(function(){frame.src='https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal';},120);}">
+                                                onclick="var frame=document.getElementById('mockInterviewFrame');if(frame){frame.src='about:blank';setTimeout(function(){frame.src='https://embed.liveavatar.com/v1/6bb399fb-fc3c-4e1a-893e-5c4a2de11988?orientation=horizontal';},120);}">
                                                 <i class="fa-solid fa-rotate-right"></i>
                                                 Restart session
                                             </button>
@@ -2906,7 +2906,7 @@
                                             <p><strong class="text-slate-900">2. Answer like a real interview</strong><br>Use STAR format for projects, internships and problem solving.</p>
                                             <p><strong class="text-slate-900">3. Repeat weak rounds</strong><br>Restart and practice HR, technical, project and role-fit answers.</p>
                                         </div>
-                                        <a class="mock-interview-btn mt-6 w-full" href="https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal" target="_blank" rel="noreferrer">
+                                        <a class="mock-interview-btn mt-6 w-full" href="https://embed.liveavatar.com/v1/6bb399fb-fc3c-4e1a-893e-5c4a2de11988?orientation=horizontal" target="_blank" rel="noreferrer">
                                             <i class="fa-solid fa-up-right-from-square"></i>
                                             Open full screen
                                         </a>
@@ -7084,7 +7084,7 @@
                 if (section) section.classList.add('active');
                 const frame = document.getElementById('mockInterviewFrame');
                 if (frame && !frame.src) {
-                    frame.src = 'https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal';
+                    frame.src = 'https://embed.liveavatar.com/v1/6bb399fb-fc3c-4e1a-893e-5c4a2de11988?orientation=horizontal';
                 }
                 window.location.hash = 'view-mock-interview';
                 if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -7094,7 +7094,7 @@
                 if (!frame) return;
                 frame.src = 'about:blank';
                 window.setTimeout(() => {
-                    frame.src = 'https://embed.liveavatar.com/v1/fec43ee2-b17b-4b8a-8166-18856531e877?orientation=horizontal';
+                    frame.src = 'https://embed.liveavatar.com/v1/6bb399fb-fc3c-4e1a-893e-5c4a2de11988?orientation=horizontal';
                 }, 120);
             }
         };
