@@ -87,6 +87,14 @@
       "destination": "/class-12/index.html"
     },
     {
+      "source": "/roadmap",
+      "destination": "/roadmap/index.html"
+    },
+    {
+      "source": "/graduate-roadmap",
+      "destination": "/roadmap/index.html"
+    },
+    {
       "source": "/undergard",
       "destination": "/undergard/index.html"
     },

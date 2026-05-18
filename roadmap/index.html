@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CareerOS AI - Graduate Roadmap Hub</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{font-family:'Inter',sans-serif;box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;background:#0F172A;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:#f1f5f9;}
+::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:9px;}
+
+/* Sidebar */
+.sidebar{width:252px;min-width:252px;background:#0F172A;height:100vh;position:fixed;left:0;top:0;display:flex;flex-direction:column;overflow-y:auto;z-index:50;}
+.sb-logo{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.07);}
+.sb-nav{padding:10px 10px;flex:1;}
+.sb-path{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all .18s;margin-bottom:3px;}
+.sb-path:hover{background:rgba(255,255,255,.07);}
+.sb-path.active{background:rgba(99,102,241,.2);}
+.sb-section{font-size:10px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.25);padding:14px 12px 6px;text-transform:uppercase;}
+.sb-icon{width:17px;height:17px;flex-shrink:0;}
+
+/* Main */
+.main-content{margin-left:252px;min-height:100vh;background:#F8FAFC;}
+.content-inner{padding:30px 32px;max-width:1100px;}
+
+/* Cards */
+.card{background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);border:1px solid #F1F5F9;}
+
+/* Progress bar */
+.prog-bar{height:8px;border-radius:4px;background:#E2E8F0;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+
+/* Skill node */
+.skill-node{border:1.5px solid #E2E8F0;border-radius:12px;padding:14px 16px;background:#fff;cursor:pointer;transition:all .18s;position:relative;}
+.skill-node:hover{border-color:#6366F1;box-shadow:0 4px 16px rgba(99,102,241,.1);transform:translateY(-1px);}
+.skill-node.done{border-color:#10B981;background:#F0FDF4;}
+.skill-node.learning{border-color:#F59E0B;background:#FFFBEB;}
+.skill-node.required-badge::before{content:"Required";position:absolute;top:-9px;left:12px;font-size:9px;font-weight:700;background:#6366F1;color:#fff;padding:2px 7px;border-radius:999px;letter-spacing:.04em;}
+.skill-node.optional-badge::before{content:"Optional";position:absolute;top:-9px;left:12px;font-size:9px;font-weight:700;background:#94A3B8;color:#fff;padding:2px 7px;border-radius:999px;letter-spacing:.04em;}
+
+/* Phase header */
+.phase-header{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;margin-bottom:16px;cursor:pointer;user-select:none;}
+
+/* Path selection cards */
+.path-card{border:2px solid #E2E8F0;border-radius:16px;padding:22px;cursor:pointer;transition:all .2s;background:#fff;}
+.path-card:hover{border-color:#6366F1;box-shadow:0 8px 24px rgba(99,102,241,.12);transform:translateY(-3px);}
+.path-card.sel{border-color:#6366F1;background:#EEF2FF;}
+
+/* Detail panel */
+.detail-panel{position:fixed;right:0;top:0;width:380px;height:100vh;background:#fff;box-shadow:-4px 0 30px rgba(0,0,0,.1);z-index:100;overflow-y:auto;transform:translateX(100%);transition:transform .3s ease;}
+.detail-panel.open{transform:translateX(0);}
+
+/* Badge */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+.fade-up{animation:fadeUp .3s ease both;}
+.slide-in{animation:slideIn .25s ease both;}
+
+/* Toggle status button */
+.status-btn{border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;}
+
+/* Top nav */
+.top-nav{background:#fff;border-bottom:1px solid #E2E8F0;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40;}
+
+/* Connector line between phases */
+.phase-connector{width:2px;height:28px;background:linear-gradient(to bottom,#6366F1,#E2E8F0);margin:0 auto 0 29px;}
+
+/* Skill grid */
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+
+/* Resource link */
+.res-link{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;text-decoration:none;transition:all .15s;}
+.res-link:hover{border-color:#6366F1;background:#EEF2FF;}
+
+/* Inp */
+.inp{border:1.5px solid #E2E8F0;border-radius:10px;padding:9px 13px;font-size:13.5px;outline:none;transition:border .18s;background:#fff;width:100%;}
+.inp:focus{border-color:#6366F1;box-shadow:0 0 0 3px rgba(99,102,241,.08);}
+.btn-primary{background:#6366F1;color:#fff;border-radius:10px;padding:10px 22px;font-size:13.5px;font-weight:600;border:none;cursor:pointer;transition:all .18s;}
+.btn-primary:hover{background:#4F46E5;box-shadow:0 4px 14px rgba(99,102,241,.35);}
+
+/* ── Companies / Interview Prep ── */
+.company-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:11px;margin-top:14px;}
+.company-card{border:1.5px solid #E2E8F0;border-radius:14px;padding:16px 10px 12px;text-align:center;cursor:pointer;transition:all .2s;background:#fff;position:relative;}
+.company-card:hover{border-color:#6366F1;box-shadow:0 4px 16px rgba(99,102,241,.13);transform:translateY(-2px);}
+.company-card.sel{border-color:#6366F1;background:#EEF2FF;box-shadow:0 4px 20px rgba(99,102,241,.15);}
+.co-logo{width:42px;height:42px;border-radius:10px;object-fit:contain;display:block;margin:0 auto 8px;}
+.co-fallback{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#fff;margin:0 auto 8px;}
+.prob-row{display:grid;grid-template-columns:22px 74px 1fr 56px;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid #F1F5F9;transition:background .12s;}
+.prob-row:hover{background:#F8FAFC;}
+.diff-E{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:#DCFCE7;color:#16A34A;text-align:center;white-space:nowrap;}
+.diff-M{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:#FEF3C7;color:#D97706;text-align:center;white-space:nowrap;}
+.diff-H{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:#FEE2E2;color:#DC2626;text-align:center;white-space:nowrap;}
+.topic-chip{font-size:10px;padding:2px 7px;border-radius:999px;background:#F1F5F9;color:#64748B;white-space:nowrap;display:inline-block;}
+.prob-solved-cb{width:15px;height:15px;cursor:pointer;accent-color:#10B981;}
+.ftab{padding:5px 12px;border-radius:8px;font-size:11.5px;font-weight:600;border:none;cursor:pointer;transition:all .15s;}
+.ftab.active{background:#6366F1;color:#fff;}
+.ftab:not(.active){background:#F1F5F9;color:#64748B;}
+.ftab:not(.active):hover{background:#E2E8F0;}
+.sb-companies-btn{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all .18s;margin-bottom:3px;width:100%;border:none;text-align:left;}
+.sb-companies-btn:hover{background:rgba(255,255,255,.07);}
+.sb-companies-btn.active{background:rgba(99,102,241,.2);}
+
+/* CareerOS premium theme override */
+:root{
+  --career-bg:#f6fbff;
+  --career-ink:#0f172a;
+  --career-muted:#64748b;
+  --career-line:rgba(15,23,42,.09);
+  --career-panel:rgba(255,255,255,.82);
+  --career-shadow:0 24px 70px rgba(15,23,42,.10);
+  --career-blue:#2563eb;
+  --career-cyan:#06b6d4;
+}
+html,body{background:var(--career-bg)!important;color:var(--career-ink);}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-2;
+  background:
+    radial-gradient(circle at 8% 8%,rgba(96,165,250,.24),transparent 32%),
+    radial-gradient(circle at 86% 3%,rgba(6,182,212,.16),transparent 30%),
+    linear-gradient(180deg,#fbfdff 0%,#eef7ff 45%,#fff 100%);
+}
+body:after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.42;
+  background-image:
+    linear-gradient(rgba(15,23,42,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(15,23,42,.045) 1px,transparent 1px);
+  background-size:54px 54px;
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent 76%);
+  mask-image:linear-gradient(180deg,#000,transparent 76%);
+}
+.sidebar{
+  left:18px;
+  top:18px;
+  bottom:18px;
+  height:calc(100vh - 36px);
+  border:1px solid var(--career-line);
+  border-radius:28px;
+  background:rgba(255,255,255,.72)!important;
+  backdrop-filter:blur(34px);
+  -webkit-backdrop-filter:blur(34px);
+  box-shadow:var(--career-shadow);
+}
+.sb-logo{border-bottom:1px solid var(--career-line);padding:22px 20px 18px;}
+.sb-logo>div:first-child{color:var(--career-ink)!important;font-size:18px!important;}
+.sb-logo>div:last-child{color:var(--career-muted)!important;}
+.sb-section{color:#94a3b8!important;}
+.sb-path,.sb-companies-btn{background:transparent!important;}
+.sb-path:hover,.sb-companies-btn:hover{background:rgba(15,23,42,.055)!important;}
+.sb-path:not(.active) .sb-icon{color:#64748b!important;}
+.sb-path:not(.active)>span:not(.sb-icon){color:#475569!important;}
+.sb-path:not(.active)>div>div:first-child,
+.sb-companies-btn:not(.active)>div>div:first-child{color:#475569!important;}
+.sb-path:not(.active)>div>div:last-child,
+.sb-companies-btn:not(.active)>div>div:last-child{color:#94a3b8!important;}
+.sb-path.active,.sb-companies-btn.active{
+  background:#0f172a!important;
+  box-shadow:0 14px 30px rgba(15,23,42,.16);
+}
+.main-content{
+  margin-left:288px;
+  background:transparent!important;
+}
+.top-nav{
+  margin:18px 24px 0 0;
+  border:1px solid var(--career-line);
+  border-radius:22px;
+  background:rgba(255,255,255,.76)!important;
+  backdrop-filter:blur(30px);
+  -webkit-backdrop-filter:blur(30px);
+  box-shadow:0 18px 50px rgba(15,23,42,.07);
+}
+.content-inner{max-width:1240px;padding:28px 28px 56px;}
+.card{
+  border:1px solid var(--career-line)!important;
+  border-radius:24px!important;
+  background:var(--career-panel)!important;
+  backdrop-filter:blur(22px);
+  -webkit-backdrop-filter:blur(22px);
+  box-shadow:var(--career-shadow)!important;
+}
+.path-card,.skill-node,.company-card{
+  border-color:rgba(15,23,42,.09)!important;
+  border-radius:20px!important;
+  background:rgba(255,255,255,.82)!important;
+  box-shadow:0 14px 34px rgba(15,23,42,.055);
+}
+.path-card:hover,.skill-node:hover,.company-card:hover{
+  border-color:rgba(37,99,235,.35)!important;
+  box-shadow:0 22px 48px rgba(37,99,235,.12)!important;
+}
+.path-card.sel,.company-card.sel{
+  border-color:rgba(37,99,235,.45)!important;
+  background:linear-gradient(180deg,rgba(239,246,255,.96),rgba(255,255,255,.9))!important;
+}
+.btn-primary{
+  background:linear-gradient(135deg,#0f172a,#2563eb)!important;
+  box-shadow:0 18px 40px rgba(37,99,235,.22);
+}
+.inp{
+  background:rgba(255,255,255,.94)!important;
+  border-color:rgba(15,23,42,.1)!important;
+  border-radius:15px!important;
+}
+.detail-panel{
+  border-left:1px solid var(--career-line);
+  background:rgba(255,255,255,.88)!important;
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
+}
+.co-logo,.co-fallback{border-radius:14px!important;box-shadow:0 10px 24px rgba(15,23,42,.10);}
+.prob-row{background:rgba(255,255,255,.82)!important;}
+.prob-row:hover{background:#f8fbff!important;}
+@media(max-width:900px){
+  .sidebar{position:relative;left:auto;top:auto;bottom:auto;width:auto;height:auto;min-width:0;margin:12px;}
+  .main-content{margin-left:0;}
+  .content-inner{padding:16px;}
+  .skills-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useRef,useCallback,useMemo}=React;
+
+/* ─────────────────────────────────────────────
+   ROADMAP DATA
+───────────────────────────────────────────── */
+const ROADMAPS=[
+  /* ══════ 1. FRONTEND ══════ */
+  {id:"frontend",title:"Frontend Developer",icon:"◈",color:"#6366F1",bg:"#EEF2FF",
+   salary:"₹4–20 LPA",demand:"Very High",growth:"22% YoY",
+   desc:"Build everything users see and interact with. Master HTML, CSS, JavaScript, and modern frameworks to create fast, beautiful web experiences.",
+   roles:["Frontend Developer","React Developer","UI Engineer","JavaScript Developer","Web Developer"],
+   companies:["Google","Meta","Amazon","Flipkart","Swiggy","Zomato"],
+   roadmapUrl:"https://roadmap.sh/frontend",
+   phases:[
+     {id:"ph1",title:"Internet & Core Fundamentals",months:"Month 1–2",color:"#10B981",icon:"1",
+      skills:[
+        {id:"f_internet",name:"How the Internet Works",desc:"HTTP/HTTPS protocol, DNS, domain names, hosting, browsers rendering pipeline.",type:"required",time:"1 week",
+         resources:[{t:"MDN: How the Web Works",u:"https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/How_the_Web_works",free:true},{t:"roadmap.sh: Internet",u:"https://roadmap.sh/guides/what-is-internet",free:true}]},
+        {id:"f_html",name:"HTML Fundamentals",desc:"Semantic HTML5, forms, tables, accessibility (ARIA), SEO basics, meta tags.",type:"required",time:"2 weeks",
+         resources:[{t:"MDN HTML Guide",u:"https://developer.mozilla.org/en-US/docs/Learn/HTML",free:true},{t:"freeCodeCamp HTML",u:"https://www.freecodecamp.org/learn/2022/responsive-web-design/",free:true}]},
+        {id:"f_css",name:"CSS Fundamentals",desc:"Box model, selectors, specificity, colours, typography, units (px, em, rem, %).",type:"required",time:"2 weeks",
+         resources:[{t:"MDN CSS Guide",u:"https://developer.mozilla.org/en-US/docs/Learn/CSS",free:true},{t:"CSS Tricks Almanac",u:"https://css-tricks.com/almanac/",free:true}]},
+        {id:"f_js_basics",name:"JavaScript Basics",desc:"Variables, functions, loops, arrays, objects, DOM, events, scope, closures.",type:"required",time:"3 weeks",
+         resources:[{t:"javascript.info",u:"https://javascript.info",free:true},{t:"Eloquent JavaScript",u:"https://eloquentjavascript.net",free:true}]},
+        {id:"f_git",name:"Git & GitHub",desc:"Commits, branches, merging, pull requests, Git workflow for teams.",type:"required",time:"1 week",
+         resources:[{t:"Pro Git Book",u:"https://git-scm.com/book/en/v2",free:true},{t:"GitHub Docs",u:"https://docs.github.com",free:true}]},
+      ]},
+     {id:"ph2",title:"Layouts, ES6+ & Tooling",months:"Month 2–4",color:"#6366F1",icon:"2",
+      skills:[
+        {id:"f_flex",name:"CSS Flexbox & Grid",desc:"Modern responsive layouts: Flexbox one-dimension, CSS Grid two-dimension, media queries.",type:"required",time:"2 weeks",
+         resources:[{t:"Flexbox Froggy (game)",u:"https://flexboxfroggy.com",free:true},{t:"Grid Garden (game)",u:"https://cssgridgarden.com",free:true}]},
+        {id:"f_es6",name:"Modern JavaScript (ES6+)",desc:"Arrow functions, destructuring, spread/rest, Promises, async/await, modules, classes.",type:"required",time:"2 weeks",
+         resources:[{t:"javascript.info Modern JS",u:"https://javascript.info/js",free:true},{t:"ES6 Features Overview",u:"https://es6-features.org",free:true}]},
+        {id:"f_dom",name:"DOM Manipulation & APIs",desc:"QuerySelector, event listeners, fetch API, localStorage, FormData, Intersection Observer.",type:"required",time:"1 week",
+         resources:[{t:"MDN DOM",u:"https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model",free:true}]},
+        {id:"f_npm",name:"Package Managers & npm",desc:"npm / yarn, package.json, node_modules, scripts, semantic versioning.",type:"required",time:"3 days",
+         resources:[{t:"npm Docs",u:"https://docs.npmjs.com",free:true}]},
+        {id:"f_vite",name:"Build Tools (Vite / Webpack)",desc:"Module bundling, hot module replacement, code splitting, tree shaking.",type:"recommended",time:"1 week",
+         resources:[{t:"Vite Guide",u:"https://vitejs.dev/guide/",free:true}]},
+        {id:"f_tailwind",name:"CSS Frameworks (Tailwind CSS)",desc:"Utility-first CSS, responsive classes, dark mode, custom config.",type:"recommended",time:"1 week",
+         resources:[{t:"Tailwind Docs",u:"https://tailwindcss.com/docs",free:true}]},
+      ]},
+     {id:"ph3",title:"Framework & State Management",months:"Month 4–7",color:"#8B5CF6",icon:"3",
+      skills:[
+        {id:"f_react",name:"React.js",desc:"Components, JSX, props, state, hooks (useState, useEffect, useContext), lifecycle.",type:"required",time:"4 weeks",
+         resources:[{t:"React Official Docs",u:"https://react.dev",free:true},{t:"Full Stack Open (React)",u:"https://fullstackopen.com/en/",free:true}]},
+        {id:"f_ts",name:"TypeScript",desc:"Static typing, interfaces, generics, type guards, tsconfig, TypeScript with React.",type:"required",time:"2 weeks",
+         resources:[{t:"TypeScript Handbook",u:"https://www.typescriptlang.org/docs/handbook/",free:true}]},
+        {id:"f_state",name:"State Management",desc:"Context API, Redux Toolkit, Zustand — when to use each, side effects, middleware.",type:"recommended",time:"2 weeks",
+         resources:[{t:"Redux Toolkit Docs",u:"https://redux-toolkit.js.org",free:true},{t:"Zustand GitHub",u:"https://github.com/pmndrs/zustand",free:true}]},
+        {id:"f_router",name:"Client-side Routing",desc:"React Router v6, nested routes, protected routes, lazy loading, navigation.",type:"required",time:"1 week",
+         resources:[{t:"React Router Docs",u:"https://reactrouter.com/en/main",free:true}]},
+        {id:"f_api",name:"REST APIs & Axios",desc:"Consuming REST APIs, axios/fetch, error handling, loading states, interceptors.",type:"required",time:"1 week",
+         resources:[{t:"Axios Docs",u:"https://axios-http.com/docs/intro",free:true},{t:"JSONPlaceholder (practice)",u:"https://jsonplaceholder.typicode.com",free:true}]},
+        {id:"f_testing",name:"Testing (Jest + RTL)",desc:"Unit tests, integration tests, React Testing Library, mocking, coverage reports.",type:"recommended",time:"2 weeks",
+         resources:[{t:"Jest Docs",u:"https://jestjs.io/docs/getting-started",free:true},{t:"Testing Library",u:"https://testing-library.com/docs/react-testing-library/intro",free:true}]},
+      ]},
+     {id:"ph4",title:"Professional & Interview Ready",months:"Month 7–12",color:"#F59E0B",icon:"4",
+      skills:[
+        {id:"f_perf",name:"Web Performance",desc:"Core Web Vitals, Lighthouse, lazy loading, code splitting, image optimisation, CDN.",type:"required",time:"1 week",
+         resources:[{t:"web.dev Performance",u:"https://web.dev/performance",free:true}]},
+        {id:"f_a11y",name:"Web Accessibility (a11y)",desc:"WCAG guidelines, ARIA roles, keyboard navigation, screen reader compatibility.",type:"recommended",time:"1 week",
+         resources:[{t:"web.dev Accessibility",u:"https://web.dev/accessibility",free:true}]},
+        {id:"f_nextjs",name:"Next.js (SSR / SSG)",desc:"Server-side rendering, static generation, API routes, App Router, image optimisation.",type:"recommended",time:"3 weeks",
+         resources:[{t:"Next.js Docs",u:"https://nextjs.org/docs",free:true}]},
+        {id:"f_dsa",name:"DSA & Interview Prep",desc:"Arrays, strings, trees, graphs, dynamic programming — 100+ LeetCode problems.",type:"required",time:"Ongoing",
+         resources:[{t:"LeetCode",u:"https://leetcode.com",free:true},{t:"NeetCode 150",u:"https://neetcode.io/roadmap",free:true}]},
+        {id:"f_projects",name:"Portfolio Projects",desc:"Build 3+ real projects: a SaaS clone, a full CRUD app, an open-source contribution.",type:"required",time:"2 months",
+         resources:[{t:"Frontend Mentor",u:"https://www.frontendmentor.io",free:true}]},
+        {id:"f_docker",name:"Docker Basics",desc:"Containers, Dockerfile, docker-compose, pushing to DockerHub — essential for jobs.",type:"optional",time:"1 week",
+         resources:[{t:"Docker Docs",u:"https://docs.docker.com/get-started/",free:true}]},
+      ]},
+   ]},
+
+  /* ══════ 2. BACKEND ══════ */
+  {id:"backend",title:"Backend Developer",icon:"◉",color:"#10B981",bg:"#ECFDF5",
+   salary:"₹5–25 LPA",demand:"Very High",growth:"18% YoY",
+   desc:"Build the server, databases, and APIs that power every application. Master scalable systems, databases, and cloud deployment.",
+   roles:["Backend Developer","Node.js Developer","Python Developer","Java Developer","API Engineer"],
+   companies:["Google","Amazon","Microsoft","Razorpay","PhonePe","Zerodha"],
+   roadmapUrl:"https://roadmap.sh/backend",
+   phases:[
+     {id:"bph1",title:"Programming & OS Fundamentals",months:"Month 1–2",color:"#10B981",icon:"1",
+      skills:[
+        {id:"b_lang",name:"Pick a Language",desc:"Python (fastest for beginners), Node.js/JavaScript, Java, or Go. Learn it deeply.",type:"required",time:"4 weeks",
+         resources:[{t:"Python: CS50P (Harvard)",u:"https://cs50.harvard.edu/python/2022/",free:true},{t:"Node.js Docs",u:"https://nodejs.org/en/docs",free:true}]},
+        {id:"b_os",name:"OS & Linux Basics",desc:"File system, processes, memory, permissions, shell scripting, cron jobs, SSH.",type:"required",time:"2 weeks",
+         resources:[{t:"Linux Command Line (free book)",u:"https://linuxcommand.org/tlcl.php",free:true}]},
+        {id:"b_net",name:"Networking Basics",desc:"TCP/IP, UDP, HTTP/HTTPS, DNS, sockets, ports, firewalls, SSL/TLS.",type:"required",time:"1 week",
+         resources:[{t:"Networking for Devs",u:"https://roadmap.sh/guides/computer-science",free:true}]},
+        {id:"b_git",name:"Git & Version Control",desc:"Branching strategies, rebase, cherry-pick, monorepos, conventional commits.",type:"required",time:"1 week",
+         resources:[{t:"Pro Git",u:"https://git-scm.com/book/en/v2",free:true}]},
+        {id:"b_sql_basics",name:"SQL Fundamentals",desc:"SELECT, JOIN, GROUP BY, indexes, ACID properties, normalisation, transactions.",type:"required",time:"2 weeks",
+         resources:[{t:"SQLBolt (interactive)",u:"https://sqlbolt.com",free:true},{t:"Mode SQL Tutorial",u:"https://mode.com/sql-tutorial/",free:true}]},
+      ]},
+     {id:"bph2",title:"Web Frameworks & Databases",months:"Month 2–5",color:"#6366F1",icon:"2",
+      skills:[
+        {id:"b_framework",name:"Web Framework",desc:"Express.js (Node), FastAPI/Django (Python), Spring Boot (Java), or Gin (Go).",type:"required",time:"4 weeks",
+         resources:[{t:"Express.js Guide",u:"https://expressjs.com/en/guide/routing.html",free:true},{t:"FastAPI Docs",u:"https://fastapi.tiangolo.com",free:true}]},
+        {id:"b_rest",name:"REST API Design",desc:"CRUD endpoints, status codes, versioning, pagination, rate limiting, OpenAPI/Swagger.",type:"required",time:"2 weeks",
+         resources:[{t:"REST API Design Best Practices",u:"https://restfulapi.net",free:true}]},
+        {id:"b_postgres",name:"PostgreSQL / MySQL",desc:"Advanced queries, stored procedures, views, indexes, query optimisation, EXPLAIN.",type:"required",time:"3 weeks",
+         resources:[{t:"PostgreSQL Tutorial",u:"https://www.postgresqltutorial.com",free:true}]},
+        {id:"b_mongo",name:"NoSQL — MongoDB",desc:"Documents, collections, aggregation pipeline, indexes, schemas, Atlas.",type:"recommended",time:"2 weeks",
+         resources:[{t:"MongoDB University",u:"https://university.mongodb.com",free:true}]},
+        {id:"b_auth",name:"Authentication & Security",desc:"JWT, sessions, OAuth 2.0, bcrypt, HTTPS, OWASP Top 10, CORS, rate limiting.",type:"required",time:"2 weeks",
+         resources:[{t:"OWASP Top Ten",u:"https://owasp.org/www-project-top-ten/",free:true}]},
+        {id:"b_redis",name:"Caching with Redis",desc:"In-memory data store, TTL, pub/sub, session caching, rate limiting with Redis.",type:"recommended",time:"1 week",
+         resources:[{t:"Redis University",u:"https://university.redis.com",free:true}]},
+      ]},
+     {id:"bph3",title:"Scalability & DevOps",months:"Month 5–8",color:"#8B5CF6",icon:"3",
+      skills:[
+        {id:"b_docker",name:"Docker & Containers",desc:"Dockerfile, images, docker-compose, networking, volumes, multi-stage builds.",type:"required",time:"2 weeks",
+         resources:[{t:"Docker Docs",u:"https://docs.docker.com",free:true},{t:"Play with Docker",u:"https://labs.play-with-docker.com",free:true}]},
+        {id:"b_queues",name:"Message Queues",desc:"RabbitMQ or Apache Kafka — async processing, event-driven architecture, consumers/producers.",type:"recommended",time:"2 weeks",
+         resources:[{t:"RabbitMQ Tutorials",u:"https://www.rabbitmq.com/tutorials",free:true}]},
+        {id:"b_cloud",name:"Cloud Platform (AWS/GCP)",desc:"EC2, S3, RDS, Lambda, API Gateway, IAM, VPC — deploy a real app to cloud.",type:"required",time:"3 weeks",
+         resources:[{t:"AWS Free Tier",u:"https://aws.amazon.com/free/",free:true},{t:"Cloud Practitioner Essentials",u:"https://explore.skillbuilder.aws",free:true}]},
+        {id:"b_test",name:"Testing — Unit & Integration",desc:"Jest/Pytest/JUnit, mocking, test-driven development, API testing with Postman.",type:"required",time:"2 weeks",
+         resources:[{t:"Testing Node Apps",u:"https://jestjs.io/docs/getting-started",free:true}]},
+        {id:"b_graphql",name:"GraphQL",desc:"Schema definition, resolvers, queries, mutations, subscriptions, Apollo Server.",type:"optional",time:"2 weeks",
+         resources:[{t:"GraphQL.org",u:"https://graphql.org/learn/",free:true},{t:"Apollo GraphQL",u:"https://www.apollographql.com/docs/apollo-server",free:true}]},
+      ]},
+     {id:"bph4",title:"Architecture & Interview Ready",months:"Month 8–12",color:"#F59E0B",icon:"4",
+      skills:[
+        {id:"b_micro",name:"Microservices Architecture",desc:"Service decomposition, API gateway, service discovery, circuit breaker pattern.",type:"recommended",time:"2 weeks",
+         resources:[{t:"Microservices.io",u:"https://microservices.io",free:true}]},
+        {id:"b_k8s",name:"Kubernetes Basics",desc:"Pods, services, deployments, ConfigMaps, scaling, Helm charts — the industry standard.",type:"recommended",time:"2 weeks",
+         resources:[{t:"Kubernetes Docs",u:"https://kubernetes.io/docs/tutorials/",free:true}]},
+        {id:"b_sys",name:"System Design",desc:"Load balancing, caching strategies, CDN, DB sharding, CAP theorem, consistent hashing.",type:"required",time:"Ongoing",
+         resources:[{t:"Grokking System Design",u:"https://roadmap.sh/system-design",free:true},{t:"System Design Primer",u:"https://github.com/donnemartin/system-design-primer",free:true}]},
+        {id:"b_dsa",name:"DSA & Interview Prep",desc:"Arrays, linked lists, trees, graphs, DP, BFS/DFS, sorting — 150+ LeetCode problems.",type:"required",time:"Ongoing",
+         resources:[{t:"LeetCode",u:"https://leetcode.com",free:true},{t:"NeetCode Roadmap",u:"https://neetcode.io/roadmap",free:true}]},
+        {id:"b_ci",name:"CI/CD Pipelines",desc:"GitHub Actions, Jenkins — automated testing, build, deployment pipelines.",type:"required",time:"1 week",
+         resources:[{t:"GitHub Actions Docs",u:"https://docs.github.com/en/actions",free:true}]},
+      ]},
+   ]},
+
+  /* ══════ 3. FULL STACK ══════ */
+  {id:"fullstack",title:"Full Stack Developer",icon:"◐",color:"#8B5CF6",bg:"#F5F3FF",
+   salary:"₹6–30 LPA",demand:"Extremely High",growth:"25% YoY",
+   desc:"Own both the frontend and backend. Build complete products end-to-end from database to user interface — the most versatile developer profile.",
+   roles:["Full Stack Developer","MERN Developer","Software Engineer","Product Engineer"],
+   companies:["Startups","Razorpay","CRED","Meesho","ShareChat","Postman"],
+   roadmapUrl:"https://roadmap.sh/full-stack",
+   phases:[
+     {id:"fph1",title:"Web Fundamentals + JavaScript",months:"Month 1–2",color:"#10B981",icon:"1",
+      skills:[
+        {id:"fs_html",name:"HTML, CSS, JavaScript",desc:"Solid grasp of all three. Semantic HTML, Flexbox/Grid, ES6+ JavaScript, async/await.",type:"required",time:"5 weeks",
+         resources:[{t:"The Odin Project",u:"https://www.theodinproject.com",free:true}]},
+        {id:"fs_git",name:"Git & Terminal",desc:"Git workflow, bash commands, SSH, dotfiles, tmux — developer productivity.",type:"required",time:"1 week",
+         resources:[{t:"Missing Semester (MIT)",u:"https://missing.csail.mit.edu",free:true}]},
+        {id:"fs_http",name:"HTTP & APIs",desc:"Request/response lifecycle, REST, status codes, JSON, authentication headers.",type:"required",time:"1 week",
+         resources:[{t:"HTTP Basics — MDN",u:"https://developer.mozilla.org/en-US/docs/Web/HTTP",free:true}]},
+      ]},
+     {id:"fph2",title:"Frontend — React + TypeScript",months:"Month 2–5",color:"#6366F1",icon:"2",
+      skills:[
+        {id:"fs_react",name:"React + TypeScript",desc:"Components, hooks, context, routing, state management, forms, performance.",type:"required",time:"5 weeks",
+         resources:[{t:"React Docs",u:"https://react.dev",free:true}]},
+        {id:"fs_nextjs",name:"Next.js",desc:"SSR, SSG, ISR, App Router, server actions, file-based routing, API routes.",type:"required",time:"3 weeks",
+         resources:[{t:"Next.js Docs",u:"https://nextjs.org/docs",free:true}]},
+        {id:"fs_styling",name:"Tailwind + UI Libraries",desc:"Tailwind CSS, shadcn/ui, Radix UI, responsive design, dark mode.",type:"recommended",time:"1 week",
+         resources:[{t:"Tailwind CSS",u:"https://tailwindcss.com",free:true}]},
+      ]},
+     {id:"fph3",title:"Backend — APIs & Databases",months:"Month 5–8",color:"#8B5CF6",icon:"3",
+      skills:[
+        {id:"fs_node",name:"Node.js + Express / Fastify",desc:"REST APIs, middleware, routing, error handling, streaming, WebSockets.",type:"required",time:"4 weeks",
+         resources:[{t:"NodeBeginner.org",u:"https://www.nodebeginner.org",free:true}]},
+        {id:"fs_db",name:"Databases (SQL + NoSQL)",desc:"PostgreSQL with Prisma/Drizzle ORM, MongoDB basics, Redis caching, connection pooling.",type:"required",time:"3 weeks",
+         resources:[{t:"Prisma Docs",u:"https://www.prisma.io/docs",free:true}]},
+        {id:"fs_auth",name:"Authentication (JWT / OAuth)",desc:"Sessions, JWTs, NextAuth, Clerk, OAuth with Google/GitHub, RBAC.",type:"required",time:"2 weeks",
+         resources:[{t:"Auth.js (NextAuth)",u:"https://authjs.dev",free:true}]},
+        {id:"fs_upload",name:"File Uploads, Email, Payments",desc:"AWS S3 / Cloudinary, Nodemailer/Resend, Stripe/Razorpay integration.",type:"recommended",time:"1 week",
+         resources:[{t:"Stripe Docs",u:"https://stripe.com/docs",free:true}]},
+      ]},
+     {id:"fph4",title:"DevOps, Projects & Interviews",months:"Month 8–12",color:"#F59E0B",icon:"4",
+      skills:[
+        {id:"fs_deploy",name:"Deployment & DevOps",desc:"Vercel, Railway, AWS EC2, Docker, GitHub Actions CI/CD, environment variables.",type:"required",time:"2 weeks",
+         resources:[{t:"Vercel Docs",u:"https://vercel.com/docs",free:true}]},
+        {id:"fs_ws",name:"WebSockets & Real-time",desc:"Socket.IO, Server-Sent Events, real-time features (chat, notifications, live updates).",type:"optional",time:"1 week",
+         resources:[{t:"Socket.IO Docs",u:"https://socket.io/docs/v4/",free:true}]},
+        {id:"fs_sys",name:"System Design (Full Stack)",desc:"Architecture diagrams, caching layers, CDN, DB design, API design patterns.",type:"required",time:"Ongoing",
+         resources:[{t:"System Design Primer",u:"https://github.com/donnemartin/system-design-primer",free:true}]},
+        {id:"fs_dsa",name:"DSA & Coding Interviews",desc:"Top interview patterns, company-specific sets, mock interviews, behavioural questions.",type:"required",time:"Ongoing",
+         resources:[{t:"NeetCode",u:"https://neetcode.io",free:true},{t:"LeetCode",u:"https://leetcode.com",free:true}]},
+      ]},
+   ]},
+
+  /* ══════ 4. DEVOPS ══════ */
+  {id:"devops",title:"DevOps Engineer",icon:"⬡",color:"#F59E0B",bg:"#FFFBEB",
+   salary:"₹6–35 LPA",demand:"High",growth:"20% YoY",
+   desc:"Bridge development and operations. Automate infrastructure, manage cloud platforms, and build the pipelines that deploy software reliably at scale.",
+   roles:["DevOps Engineer","SRE","Cloud Engineer","Platform Engineer","Infrastructure Engineer"],
+   companies:["Amazon","Google","Microsoft","Infosys","TCS","Wipro"],
+   roadmapUrl:"https://roadmap.sh/devops",
+   phases:[
+     {id:"dph1",title:"Linux, Scripting & Networking",months:"Month 1–2",color:"#10B981",icon:"1",
+      skills:[
+        {id:"d_linux",name:"Linux Fundamentals",desc:"File system hierarchy, process management, user/permissions, cron, systemd, journalctl.",type:"required",time:"3 weeks",
+         resources:[{t:"Linux Journey",u:"https://linuxjourney.com",free:true},{t:"OverTheWire (practice)",u:"https://overthewire.org/wargames/bandit/",free:true}]},
+        {id:"d_bash",name:"Shell Scripting (Bash)",desc:"Variables, loops, conditionals, functions, cron jobs, text processing (awk, sed, grep).",type:"required",time:"2 weeks",
+         resources:[{t:"Bash Scripting Guide",u:"https://tldp.org/LDP/abs/html/",free:true}]},
+        {id:"d_net",name:"Networking & Security Basics",desc:"TCP/IP, OSI model, DNS, HTTPS, SSL/TLS, firewalls, VPNs, SSH tunnelling.",type:"required",time:"1 week",
+         resources:[{t:"Computer Networking (Kurose)",u:"https://gaia.cs.umass.edu/kurose_ross/",free:true}]},
+        {id:"d_python",name:"Python / Go for DevOps",desc:"Automation scripts, API calls, boto3 (AWS SDK), YAML/JSON parsing, file operations.",type:"required",time:"2 weeks",
+         resources:[{t:"Automate the Boring Stuff",u:"https://automatetheboringstuff.com",free:true}]},
+        {id:"d_git",name:"Git & Branching Strategies",desc:"GitFlow, trunk-based development, merge vs rebase, submodules, hooks.",type:"required",time:"1 week",
+         resources:[{t:"Atlassian Git Tutorial",u:"https://www.atlassian.com/git/tutorials",free:true}]},
+      ]},
+     {id:"dph2",title:"Containers, CI/CD & Cloud",months:"Month 2–6",color:"#6366F1",icon:"2",
+      skills:[
+        {id:"d_docker",name:"Docker",desc:"Images, containers, Dockerfile, multi-stage builds, docker-compose, networking, volumes.",type:"required",time:"3 weeks",
+         resources:[{t:"Docker Getting Started",u:"https://docs.docker.com/get-started/",free:true},{t:"Play with Docker",u:"https://labs.play-with-docker.com",free:true}]},
+        {id:"d_k8s",name:"Kubernetes",desc:"Pods, deployments, services, ConfigMaps, secrets, HPA, namespaces, kubectl.",type:"required",time:"4 weeks",
+         resources:[{t:"Kubernetes.io Tutorials",u:"https://kubernetes.io/docs/tutorials/",free:true},{t:"KillerCoda (interactive)",u:"https://killercoda.com",free:true}]},
+        {id:"d_cicd",name:"CI/CD — GitHub Actions",desc:"Workflow YAML, jobs, steps, secrets, matrix builds, reusable workflows, Docker builds.",type:"required",time:"2 weeks",
+         resources:[{t:"GitHub Actions Docs",u:"https://docs.github.com/en/actions",free:true}]},
+        {id:"d_aws",name:"AWS Core Services",desc:"EC2, S3, RDS, VPC, IAM, Lambda, CloudWatch, ECS, EKS, CloudFormation.",type:"required",time:"4 weeks",
+         resources:[{t:"AWS Free Tier",u:"https://aws.amazon.com/free/",free:true},{t:"AWS Skill Builder",u:"https://skillbuilder.aws",free:true}]},
+        {id:"d_ansible",name:"Configuration Management (Ansible)",desc:"Playbooks, inventory, roles, variables, idempotency, AWX/Tower.",type:"recommended",time:"2 weeks",
+         resources:[{t:"Ansible Docs",u:"https://docs.ansible.com",free:true}]},
+      ]},
+     {id:"dph3",title:"IaC, Monitoring & Security",months:"Month 6–9",color:"#8B5CF6",icon:"3",
+      skills:[
+        {id:"d_tf",name:"Terraform (IaC)",desc:"HCL syntax, providers, state management, modules, remote state, workspaces.",type:"required",time:"3 weeks",
+         resources:[{t:"Terraform Docs",u:"https://developer.hashicorp.com/terraform",free:true},{t:"HashiCorp Learn",u:"https://developer.hashicorp.com/terraform/tutorials",free:true}]},
+        {id:"d_monitor",name:"Monitoring — Prometheus + Grafana",desc:"Metrics, alerting, dashboards, exporters, PromQL, log aggregation (Loki/ELK).",type:"required",time:"2 weeks",
+         resources:[{t:"Grafana Labs Docs",u:"https://grafana.com/docs/",free:true}]},
+        {id:"d_sec",name:"DevSecOps",desc:"Container scanning (Trivy), SAST, DAST, secrets management (Vault), RBAC, Pod Security.",type:"recommended",time:"2 weeks",
+         resources:[{t:"OWASP DevSecOps",u:"https://owasp.org/www-project-devsecops-guideline/",free:true}]},
+        {id:"d_helm",name:"Helm Charts",desc:"Package manager for Kubernetes — templates, values, chart lifecycle, Helmfile.",type:"recommended",time:"1 week",
+         resources:[{t:"Helm Docs",u:"https://helm.sh/docs/",free:true}]},
+      ]},
+     {id:"dph4",title:"SRE, Platform & Certifications",months:"Month 9–12",color:"#F59E0B",icon:"4",
+      skills:[
+        {id:"d_sre",name:"Site Reliability Engineering",desc:"SLOs, SLAs, error budgets, chaos engineering, runbooks, post-mortems, toil reduction.",type:"recommended",time:"2 weeks",
+         resources:[{t:"Google SRE Book (free)",u:"https://sre.google/sre-book/table-of-contents/",free:true}]},
+        {id:"d_service",name:"Service Mesh (Istio/Linkerd)",desc:"mTLS, traffic management, observability, canary deployments in Kubernetes.",type:"optional",time:"2 weeks",
+         resources:[{t:"Istio Docs",u:"https://istio.io/latest/docs/",free:true}]},
+        {id:"d_cert",name:"AWS/CKA Certification",desc:"AWS Cloud Practitioner or Solutions Architect, Certified Kubernetes Administrator (CKA).",type:"recommended",time:"4 weeks",
+         resources:[{t:"CKA Curriculum",u:"https://github.com/cncf/curriculum",free:true}]},
+        {id:"d_dsa",name:"DSA & System Design Interviews",desc:"Cloud-specific system design questions, infrastructure design, scalability patterns.",type:"required",time:"Ongoing",
+         resources:[{t:"LeetCode",u:"https://leetcode.com",free:true}]},
+      ]},
+   ]},
+
+  /* ══════ 5. DATA SCIENCE / AI ══════ */
+  {id:"datascience",title:"Data Scientist / AI Engineer",icon:"◈",color:"#EC4899",bg:"#FDF2F8",
+   salary:"₹6–40 LPA",demand:"Extremely High",growth:"35% YoY",
+   desc:"Extract insights from data and build intelligent systems. Master statistics, machine learning, deep learning, and build AI products that create real impact.",
+   roles:["Data Scientist","ML Engineer","AI Engineer","Data Analyst","Research Engineer"],
+   companies:["Google","Microsoft","Amazon","Flipkart","Ola","Paytm"],
+   roadmapUrl:"https://roadmap.sh/ai-data-scientist",
+   phases:[
+     {id:"aiph1",title:"Math, Python & Data Wrangling",months:"Month 1–3",color:"#10B981",icon:"1",
+      skills:[
+        {id:"ai_python",name:"Python for Data Science",desc:"Python basics, Jupyter notebooks, NumPy, Pandas — data manipulation, cleaning, EDA.",type:"required",time:"4 weeks",
+         resources:[{t:"Python Data Science Handbook",u:"https://jakevdp.github.io/PythonDataScienceHandbook/",free:true},{t:"Kaggle Python Course",u:"https://www.kaggle.com/learn/python",free:true}]},
+        {id:"ai_math",name:"Mathematics Fundamentals",desc:"Linear algebra (vectors, matrices), calculus (derivatives, chain rule), probability, statistics.",type:"required",time:"4 weeks",
+         resources:[{t:"3Blue1Brown Linear Algebra",u:"https://www.3blue1brown.com/topics/linear-algebra",free:true},{t:"StatQuest (YouTube)",u:"https://www.youtube.com/@statquest",free:true}]},
+        {id:"ai_sql",name:"SQL for Data Analysis",desc:"Complex joins, window functions, CTEs, aggregations, performance — essential for every data role.",type:"required",time:"2 weeks",
+         resources:[{t:"Mode Analytics SQL",u:"https://mode.com/sql-tutorial/",free:true}]},
+        {id:"ai_viz",name:"Data Visualisation",desc:"Matplotlib, Seaborn, Plotly — EDA visualisations, distributions, correlations, storytelling.",type:"required",time:"1 week",
+         resources:[{t:"Seaborn Tutorial",u:"https://seaborn.pydata.org/tutorial.html",free:true}]},
+      ]},
+     {id:"aiph2",title:"Machine Learning",months:"Month 3–6",color:"#6366F1",icon:"2",
+      skills:[
+        {id:"ai_ml",name:"Machine Learning (Scikit-learn)",desc:"Regression, classification, clustering, decision trees, ensemble methods (RF, XGBoost).",type:"required",time:"6 weeks",
+         resources:[{t:"Hands-On ML (Géron)",u:"https://github.com/ageron/handson-ml3",free:true},{t:"Kaggle ML Course",u:"https://www.kaggle.com/learn/intro-to-machine-learning",free:true}]},
+        {id:"ai_feat",name:"Feature Engineering",desc:"Encoding, scaling, imputation, feature selection, dimensionality reduction (PCA, UMAP).",type:"required",time:"2 weeks",
+         resources:[{t:"Kaggle Feature Engineering",u:"https://www.kaggle.com/learn/feature-engineering",free:true}]},
+        {id:"ai_eval",name:"Model Evaluation & Tuning",desc:"Cross-validation, confusion matrix, ROC-AUC, Grid/Random search, bias-variance tradeoff.",type:"required",time:"2 weeks",
+         resources:[{t:"Scikit-learn User Guide",u:"https://scikit-learn.org/stable/user_guide.html",free:true}]},
+        {id:"ai_kaggle",name:"Kaggle Competitions",desc:"Participate in tabular, NLP, and CV competitions — best portfolio signal for data roles.",type:"required",time:"Ongoing",
+         resources:[{t:"Kaggle.com",u:"https://www.kaggle.com",free:true}]},
+      ]},
+     {id:"aiph3",title:"Deep Learning & Specialisation",months:"Month 6–9",color:"#8B5CF6",icon:"3",
+      skills:[
+        {id:"ai_dl",name:"Deep Learning (PyTorch / TensorFlow)",desc:"Neural networks, CNNs, RNNs, LSTMs, backpropagation, optimisers, regularisation.",type:"required",time:"6 weeks",
+         resources:[{t:"fast.ai Practical Deep Learning",u:"https://course.fast.ai",free:true},{t:"PyTorch Tutorials",u:"https://pytorch.org/tutorials/",free:true}]},
+        {id:"ai_nlp",name:"NLP & Transformers",desc:"Text preprocessing, embeddings, BERT, GPT, HuggingFace Transformers, fine-tuning LLMs.",type:"recommended",time:"4 weeks",
+         resources:[{t:"HuggingFace NLP Course",u:"https://huggingface.co/learn/nlp-course",free:true}]},
+        {id:"ai_cv",name:"Computer Vision",desc:"Image classification, object detection (YOLO), segmentation, OpenCV, CNNs.",type:"optional",time:"3 weeks",
+         resources:[{t:"OpenCV Tutorials",u:"https://docs.opencv.org/4.x/d9/df8/tutorial_root.html",free:true}]},
+        {id:"ai_llm",name:"LLMs & AI Engineering",desc:"Prompt engineering, RAG, vector databases, LangChain, building AI products, agents.",type:"recommended",time:"3 weeks",
+         resources:[{t:"LangChain Docs",u:"https://python.langchain.com/docs/",free:true},{t:"roadmap.sh AI Engineer",u:"https://roadmap.sh/ai-engineer",free:true}]},
+      ]},
+     {id:"aiph4",title:"MLOps, Cloud & Production",months:"Month 9–12",color:"#F59E0B",icon:"4",
+      skills:[
+        {id:"ai_mlops",name:"MLOps & Model Deployment",desc:"MLflow, DVC, model serving (FastAPI, TorchServe), monitoring, drift detection.",type:"required",time:"3 weeks",
+         resources:[{t:"MLOps Zoomcamp",u:"https://github.com/DataTalksClub/mlops-zoomcamp",free:true}]},
+        {id:"ai_cloud",name:"Cloud ML Platforms",desc:"AWS SageMaker, Google Vertex AI, Azure ML — managed training, endpoints, pipelines.",type:"recommended",time:"2 weeks",
+         resources:[{t:"AWS SageMaker Workshop",u:"https://sagemaker-workshop.com",free:true}]},
+        {id:"ai_spark",name:"Big Data (Spark / Databricks)",desc:"PySpark, DataFrames, Spark SQL, Delta Lake — processing large-scale datasets.",type:"optional",time:"2 weeks",
+         resources:[{t:"Databricks Learning",u:"https://www.databricks.com/learn/training/",free:true}]},
+        {id:"ai_portfolio",name:"Projects & Research Portfolio",desc:"2+ end-to-end ML projects with deployment, Kaggle medals, GitHub with reproducible notebooks.",type:"required",time:"Ongoing",
+         resources:[{t:"Kaggle",u:"https://www.kaggle.com",free:true}]},
+      ]},
+   ]},
+
+  /* ══════ 6. ANDROID ══════ */
+  {id:"android",title:"Android Developer",icon:"◫",color:"#0EA5E9",bg:"#F0F9FF",
+   salary:"₹4–22 LPA",demand:"High",growth:"15% YoY",
+   desc:"Build apps for the world's most-used mobile OS. Master Kotlin, Jetpack Compose, and Android architecture to ship apps to billions of Android users.",
+   roles:["Android Developer","Mobile Developer","Kotlin Developer","Android Engineer"],
+   companies:["Google","Flipkart","Swiggy","Zomato","MakeMyTrip","Meesho"],
+   roadmapUrl:"https://roadmap.sh/android",
+   phases:[
+     {id:"aph1",title:"Kotlin & Android Basics",months:"Month 1–2",color:"#10B981",icon:"1",
+      skills:[
+        {id:"an_kotlin",name:"Kotlin Programming",desc:"Variables, functions, classes, coroutines, null safety, extension functions, lambdas.",type:"required",time:"3 weeks",
+         resources:[{t:"Kotlin Koans (interactive)",u:"https://play.kotlinlang.org/koans",free:true},{t:"Kotlin Docs",u:"https://kotlinlang.org/docs/home.html",free:true}]},
+        {id:"an_studio",name:"Android Studio",desc:"Project structure, Gradle build system, AVD emulator, Logcat, Layout Inspector.",type:"required",time:"1 week",
+         resources:[{t:"Android Studio Guide",u:"https://developer.android.com/studio/intro",free:true}]},
+        {id:"an_basics",name:"Android Fundamentals",desc:"Activities, Intents, App Manifest, resources (strings, drawables), permissions system.",type:"required",time:"2 weeks",
+         resources:[{t:"Android Basics (Google Codelab)",u:"https://developer.android.com/courses/android-basics-compose/course",free:true}]},
+        {id:"an_compose",name:"Jetpack Compose",desc:"Composables, state, recomposition, layouts, theming (Material 3), navigation.",type:"required",time:"3 weeks",
+         resources:[{t:"Compose Pathway",u:"https://developer.android.com/jetpack/compose/documentation",free:true}]},
+      ]},
+     {id:"aph2",title:"Core Components & Networking",months:"Month 2–5",color:"#6366F1",icon:"2",
+      skills:[
+        {id:"an_nav",name:"Navigation & Fragment",desc:"Jetpack Navigation Component, back stack, deep links, bottom navigation, drawer.",type:"required",time:"1 week",
+         resources:[{t:"Navigation Docs",u:"https://developer.android.com/guide/navigation",free:true}]},
+        {id:"an_list",name:"RecyclerView & LazyLists",desc:"RecyclerView adapter, DiffUtil, Compose LazyColumn/LazyGrid, item animations.",type:"required",time:"1 week",
+         resources:[{t:"RecyclerView Guide",u:"https://developer.android.com/develop/ui/views/layout/recyclerview",free:true}]},
+        {id:"an_network",name:"Networking (Retrofit + OkHttp)",desc:"REST API calls, Gson/Moshi, OkHttp interceptors, error handling, file upload.",type:"required",time:"2 weeks",
+         resources:[{t:"Retrofit Docs",u:"https://square.github.io/retrofit/",free:true}]},
+        {id:"an_local",name:"Local Storage (Room DB)",desc:"Room entities, DAOs, database migrations, Flow integration, TypeConverters.",type:"required",time:"2 weeks",
+         resources:[{t:"Room Codelab",u:"https://developer.android.com/codelabs/android-room-with-a-view-kotlin",free:true}]},
+        {id:"an_prefs",name:"DataStore & SharedPreferences",desc:"Jetpack DataStore (Proto + Preferences), user settings, dark mode persistence.",type:"recommended",time:"3 days",
+         resources:[{t:"DataStore Guide",u:"https://developer.android.com/topic/libraries/architecture/datastore",free:true}]},
+      ]},
+     {id:"aph3",title:"Architecture & Jetpack",months:"Month 5–8",color:"#8B5CF6",icon:"3",
+      skills:[
+        {id:"an_mvvm",name:"MVVM + Clean Architecture",desc:"ViewModel, LiveData/StateFlow, Repository pattern, Use Cases, separation of concerns.",type:"required",time:"3 weeks",
+         resources:[{t:"Android Architecture Guide",u:"https://developer.android.com/topic/architecture",free:true}]},
+        {id:"an_hilt",name:"Dependency Injection (Hilt)",desc:"Hilt modules, components, ViewModelComponent, Provides vs Binds, testing with Hilt.",type:"required",time:"2 weeks",
+         resources:[{t:"Hilt Guide",u:"https://developer.android.com/training/dependency-injection/hilt-android",free:true}]},
+        {id:"an_coroutines",name:"Coroutines & Flow",desc:"Coroutine scopes, suspend functions, StateFlow, SharedFlow, combine, collectAsState.",type:"required",time:"2 weeks",
+         resources:[{t:"Coroutines Guide",u:"https://kotlinlang.org/docs/coroutines-guide.html",free:true}]},
+        {id:"an_test",name:"Testing (Unit + UI)",desc:"JUnit, Mockito, Espresso, Compose UI testing, Turbine for Flow testing, Robolectric.",type:"recommended",time:"2 weeks",
+         resources:[{t:"Android Testing Codelab",u:"https://developer.android.com/codelabs/android-testing",free:true}]},
+        {id:"an_firebase",name:"Firebase Integration",desc:"Auth, Firestore, Realtime DB, FCM push notifications, Crashlytics, Analytics.",type:"recommended",time:"2 weeks",
+         resources:[{t:"Firebase Docs",u:"https://firebase.google.com/docs",free:true}]},
+      ]},
+     {id:"aph4",title:"Publishing & Interview Ready",months:"Month 8–12",color:"#F59E0B",icon:"4",
+      skills:[
+        {id:"an_perf",name:"Performance Optimisation",desc:"Memory management, ANR prevention, profiling (CPU, Memory, Network), baseline profiles.",type:"recommended",time:"1 week",
+         resources:[{t:"Android Performance",u:"https://developer.android.com/topic/performance",free:true}]},
+        {id:"an_publish",name:"Play Store Publishing",desc:"APK vs AAB, signing, ProGuard/R8, release tracks, app review, store listing.",type:"required",time:"1 week",
+         resources:[{t:"Play Console Help",u:"https://support.google.com/googleplay/android-developer",free:true}]},
+        {id:"an_dsa",name:"DSA & Interview Prep",desc:"Kotlin-specific interview questions, Android trivia (lifecycle, memory leaks), LeetCode.",type:"required",time:"Ongoing",
+         resources:[{t:"LeetCode",u:"https://leetcode.com",free:true},{t:"Android Interview Qs",u:"https://github.com/MindorksOpenSource/android-interview-questions",free:true}]},
+        {id:"an_proj",name:"Portfolio Apps",desc:"Build 2+ polished apps: one social/utility app, one data-driven app. Publish to Play Store.",type:"required",time:"2 months",
+         resources:[{t:"Android samples (GitHub)",u:"https://github.com/android/nowinandroid",free:true}]},
+      ]},
+   ]},
+];
+
+/* ─────────────────────────────────────────────
+   UTILITY
+───────────────────────────────────────────── */
+const STORAGE_KEY="careerosGradProgress";
+
+/* ═══════════════════════════════════════════════════
+   COMPANIES & LEETCODE DATA
+═══════════════════════════════════════════════════ */
+const COMPANIES=[
+  {id:"google",name:"Google",domain:"google.com",color:"#4285F4",problems:[
+    {n:1,slug:"two-sum",title:"Two Sum",d:"E",acc:"49.1%",topics:["Array","Hash Table"]},
+    {n:49,slug:"group-anagrams",title:"Group Anagrams",d:"M",acc:"67.2%",topics:["Array","Hash Table","Sorting"]},
+    {n:200,slug:"number-of-islands",title:"Number of Islands",d:"M",acc:"57.4%",topics:["Array","DFS","BFS","Union Find"]},
+    {n:207,slug:"course-schedule",title:"Course Schedule",d:"M",acc:"46.9%",topics:["DFS","Graph","Topological Sort"]},
+    {n:253,slug:"meeting-rooms-ii",title:"Meeting Rooms II",d:"M",acc:"50.3%",topics:["Array","Sorting","Heap"]},
+    {n:297,slug:"serialize-and-deserialize-binary-tree",title:"Serialize & Deserialize Binary Tree",d:"H",acc:"56.2%",topics:["Tree","DFS","Design"]},
+    {n:684,slug:"redundant-connection",title:"Redundant Connection",d:"M",acc:"62.5%",topics:["DFS","BFS","Union Find","Graph"]},
+    {n:843,slug:"guess-the-word",title:"Guess the Word",d:"H",acc:"45.9%",topics:["Array","Math","Game Theory"]},
+    {n:1423,slug:"maximum-points-you-can-obtain-from-cards",title:"Max Points You Can Obtain from Cards",d:"M",acc:"52.1%",topics:["Array","Sliding Window","Prefix Sum"]},
+    {n:2, slug:"add-two-numbers",title:"Add Two Numbers",d:"M",acc:"41.7%",topics:["Linked List","Math","Recursion"]},
+  ]},
+  {id:"amazon",name:"Amazon",domain:"amazon.com",color:"#FF9900",problems:[
+    {n:1,slug:"two-sum",title:"Two Sum",d:"E",acc:"49.1%",topics:["Array","Hash Table"]},
+    {n:42,slug:"trapping-rain-water",title:"Trapping Rain Water",d:"H",acc:"60.9%",topics:["Array","Two Pointers","Stack","DP"]},
+    {n:146,slug:"lru-cache",title:"LRU Cache",d:"M",acc:"42.5%",topics:["Hash Table","Linked List","Design"]},
+    {n:200,slug:"number-of-islands",title:"Number of Islands",d:"M",acc:"57.4%",topics:["Array","DFS","BFS"]},
+    {n:206,slug:"reverse-linked-list",title:"Reverse Linked List",d:"E",acc:"75.5%",topics:["Linked List","Recursion"]},
+    {n:238,slug:"product-of-array-except-self",title:"Product of Array Except Self",d:"M",acc:"65.8%",topics:["Array","Prefix Sum"]},
+    {n:347,slug:"top-k-frequent-elements",title:"Top K Frequent Elements",d:"M",acc:"64.7%",topics:["Array","Hash Table","Heap","Sorting"]},
+    {n:380,slug:"insert-delete-getrandom-o1",title:"Insert Delete GetRandom O(1)",d:"M",acc:"52.7%",topics:["Array","Hash Table","Design"]},
+    {n:560,slug:"subarray-sum-equals-k",title:"Subarray Sum Equals K",d:"M",acc:"44.7%",topics:["Array","Hash Table","Prefix Sum"]},
+    {n:987,slug:"vertical-order-traversal-of-a-binary-tree",title:"Vertical Order Traversal of Binary Tree",d:"H",acc:"46.2%",topics:["Hash Table","Tree","BFS","Sorting"]},
+  ]},
+  {id:"microsoft",name:"Microsoft",domain:"microsoft.com",color:"#00A4EF",problems:[
+    {n:2,slug:"add-two-numbers",title:"Add Two Numbers",d:"M",acc:"41.7%",topics:["Linked List","Math","Recursion"]},
+    {n:53,slug:"maximum-subarray",title:"Maximum Subarray",d:"M",acc:"50.4%",topics:["Array","DP","Divide and Conquer"]},
+    {n:98,slug:"validate-binary-search-tree",title:"Validate Binary Search Tree",d:"M",acc:"32.6%",topics:["Tree","DFS","BST"]},
+    {n:116,slug:"populating-next-right-pointers-in-each-node",title:"Populating Next Right Pointers",d:"M",acc:"60.8%",topics:["Tree","BFS","DFS"]},
+    {n:206,slug:"reverse-linked-list",title:"Reverse Linked List",d:"E",acc:"75.5%",topics:["Linked List","Recursion"]},
+    {n:236,slug:"lowest-common-ancestor-of-a-binary-tree",title:"Lowest Common Ancestor of Binary Tree",d:"M",acc:"60.8%",topics:["Tree","DFS"]},
+    {n:297,slug:"serialize-and-deserialize-binary-tree",title:"Serialize & Deserialize Binary Tree",d:"H",acc:"56.2%",topics:["Tree","Design"]},
+    {n:528,slug:"random-pick-with-weight",title:"Random Pick with Weight",d:"M",acc:"47.3%",topics:["Math","Binary Search","Prefix Sum"]},
+    {n:938,slug:"range-sum-of-bst",title:"Range Sum of BST",d:"E",acc:"87.4%",topics:["Tree","DFS","BST"]},
+  ]},
+  {id:"meta",name:"Meta",domain:"meta.com",color:"#0866FF",problems:[
+    {n:1,slug:"two-sum",title:"Two Sum",d:"E",acc:"49.1%",topics:["Array","Hash Table"]},
+    {n:56,slug:"merge-intervals",title:"Merge Intervals",d:"M",acc:"46.7%",topics:["Array","Sorting"]},
+    {n:88,slug:"merge-sorted-array",title:"Merge Sorted Array",d:"E",acc:"47.5%",topics:["Array","Two Pointers","Sorting"]},
+    {n:125,slug:"valid-palindrome",title:"Valid Palindrome",d:"E",acc:"44.8%",topics:["Two Pointers","String"]},
+    {n:236,slug:"lowest-common-ancestor-of-a-binary-tree",title:"Lowest Common Ancestor of Binary Tree",d:"M",acc:"60.8%",topics:["Tree","DFS"]},
+    {n:314,slug:"binary-tree-vertical-order-traversal",title:"Binary Tree Vertical Order Traversal",d:"M",acc:"52.4%",topics:["Hash Table","Tree","BFS","Sorting"]},
+    {n:680,slug:"valid-palindrome-ii",title:"Valid Palindrome II",d:"E",acc:"39.3%",topics:["Two Pointers","String","Greedy"]},
+    {n:1091,slug:"shortest-path-in-binary-matrix",title:"Shortest Path in Binary Matrix",d:"M",acc:"44.5%",topics:["Array","BFS","Matrix"]},
+    {n:426,slug:"convert-binary-search-tree-to-sorted-doubly-linked-list",title:"BST to Doubly Linked List",d:"M",acc:"69.8%",topics:["Linked List","Tree","DFS","BST"]},
+  ]},
+  {id:"apple",name:"Apple",domain:"apple.com",color:"#555555",problems:[
+    {n:3,slug:"longest-substring-without-repeating-characters",title:"Longest Substring Without Repeating Characters",d:"M",acc:"34.2%",topics:["Hash Table","String","Sliding Window"]},
+    {n:26,slug:"remove-duplicates-from-sorted-array",title:"Remove Duplicates from Sorted Array",d:"E",acc:"53.7%",topics:["Array","Two Pointers"]},
+    {n:937,slug:"reorder-data-in-log-files",title:"Reorder Data in Log Files",d:"M",acc:"56.5%",topics:["Array","String","Sorting"]},
+    {n:973,slug:"k-closest-points-to-origin",title:"K Closest Points to Origin",d:"M",acc:"66.6%",topics:["Array","Math","Sorting","Heap"]},
+    {n:994,slug:"rotting-oranges",title:"Rotting Oranges",d:"M",acc:"53.0%",topics:["Array","BFS","Matrix"]},
+    {n:1011,slug:"capacity-to-ship-packages-within-d-days",title:"Capacity to Ship Packages Within D Days",d:"M",acc:"68.0%",topics:["Array","Binary Search"]},
+    {n:1249,slug:"minimum-remove-to-make-valid-parentheses",title:"Minimum Remove to Make Valid Parentheses",d:"M",acc:"66.5%",topics:["String","Stack"]},
+  ]},
+  {id:"netflix",name:"Netflix",domain:"netflix.com",color:"#E50914",problems:[
+    {n:23,slug:"merge-k-sorted-lists",title:"Merge K Sorted Lists",d:"H",acc:"51.7%",topics:["Linked List","Divide and Conquer","Heap","Merge Sort"]},
+    {n:146,slug:"lru-cache",title:"LRU Cache",d:"M",acc:"42.5%",topics:["Hash Table","Linked List","Design"]},
+    {n:239,slug:"sliding-window-maximum",title:"Sliding Window Maximum",d:"H",acc:"46.5%",topics:["Array","Queue","Sliding Window","Monotonic Queue"]},
+    {n:460,slug:"lfu-cache",title:"LFU Cache",d:"H",acc:"43.3%",topics:["Hash Table","Linked List","Design"]},
+    {n:745,slug:"prefix-and-suffix-search",title:"Prefix and Suffix Search",d:"H",acc:"44.7%",topics:["Hash Table","String","Design","Trie"]},
+    {n:895,slug:"maximum-frequency-stack",title:"Maximum Frequency Stack",d:"H",acc:"67.3%",topics:["Hash Table","Stack","Design","Ordered Set"]},
+  ]},
+  {id:"uber",name:"Uber",domain:"uber.com",color:"#000000",problems:[
+    {n:15,slug:"3sum",title:"3Sum",d:"M",acc:"34.2%",topics:["Array","Two Pointers","Sorting"]},
+    {n:269,slug:"alien-dictionary",title:"Alien Dictionary",d:"H",acc:"34.4%",topics:["Array","String","DFS","BFS","Topological Sort","Trie"]},
+    {n:378,slug:"kth-smallest-element-in-a-sorted-matrix",title:"Kth Smallest Element in a Sorted Matrix",d:"M",acc:"62.1%",topics:["Array","Binary Search","Sorting","Heap","Matrix"]},
+    {n:399,slug:"evaluate-division",title:"Evaluate Division",d:"M",acc:"59.6%",topics:["Array","String","DFS","BFS","Union Find","Graph"]},
+    {n:785,slug:"is-graph-bipartite",title:"Is Graph Bipartite?",d:"M",acc:"57.4%",topics:["DFS","BFS","Union Find","Graph"]},
+    {n:1192,slug:"critical-connections-in-a-network",title:"Critical Connections in a Network",d:"H",acc:"53.4%",topics:["DFS","Graph","Biconnected Component"]},
+    {n:449,slug:"serialize-and-deserialize-bst",title:"Serialize and Deserialize BST",d:"M",acc:"57.3%",topics:["String","Tree","DFS","Design","BST"]},
+  ]},
+  {id:"linkedin",name:"LinkedIn",domain:"linkedin.com",color:"#0A66C2",problems:[
+    {n:33,slug:"search-in-rotated-sorted-array",title:"Search in Rotated Sorted Array",d:"M",acc:"40.0%",topics:["Array","Binary Search"]},
+    {n:162,slug:"find-peak-element",title:"Find Peak Element",d:"M",acc:"46.8%",topics:["Array","Binary Search"]},
+    {n:317,slug:"shortest-distance-from-all-buildings",title:"Shortest Distance from All Buildings",d:"H",acc:"47.0%",topics:["Array","BFS","Matrix"]},
+    {n:403,slug:"frog-jump",title:"Frog Jump",d:"H",acc:"44.8%",topics:["Array","DP"]},
+    {n:670,slug:"maximum-swap",title:"Maximum Swap",d:"M",acc:"50.2%",topics:["Math","Greedy"]},
+    {n:739,slug:"daily-temperatures",title:"Daily Temperatures",d:"M",acc:"66.1%",topics:["Array","Stack","Monotonic Stack"]},
+    {n:773,slug:"sliding-puzzle",title:"Sliding Puzzle",d:"H",acc:"66.8%",topics:["Array","BFS","Matrix"]},
+  ]},
+  {id:"goldman",name:"Goldman Sachs",domain:"goldmansachs.com",color:"#00A0E9",problems:[
+    {n:4,slug:"median-of-two-sorted-arrays",title:"Median of Two Sorted Arrays",d:"H",acc:"38.8%",topics:["Array","Binary Search","Divide and Conquer"]},
+    {n:42,slug:"trapping-rain-water",title:"Trapping Rain Water",d:"H",acc:"60.9%",topics:["Array","Two Pointers","DP","Stack"]},
+    {n:84,slug:"largest-rectangle-in-histogram",title:"Largest Rectangle in Histogram",d:"H",acc:"44.6%",topics:["Array","Stack","Monotonic Stack"]},
+    {n:85,slug:"maximal-rectangle",title:"Maximal Rectangle",d:"H",acc:"47.1%",topics:["Array","Stack","DP","Matrix","Monotonic Stack"]},
+    {n:218,slug:"the-skyline-problem",title:"The Skyline Problem",d:"H",acc:"42.6%",topics:["Array","Divide and Conquer","Line Sweep","Heap","Ordered Set"]},
+    {n:239,slug:"sliding-window-maximum",title:"Sliding Window Maximum",d:"H",acc:"46.5%",topics:["Array","Queue","Sliding Window","Monotonic Queue"]},
+  ]},
+  {id:"adobe",name:"Adobe",domain:"adobe.com",color:"#FF0000",problems:[
+    {n:48,slug:"rotate-image",title:"Rotate Image",d:"M",acc:"73.2%",topics:["Array","Math","Matrix"]},
+    {n:54,slug:"spiral-matrix",title:"Spiral Matrix",d:"M",acc:"47.1%",topics:["Array","Matrix","Simulation"]},
+    {n:128,slug:"longest-consecutive-sequence",title:"Longest Consecutive Sequence",d:"M",acc:"47.1%",topics:["Array","Hash Table","Union Find"]},
+    {n:146,slug:"lru-cache",title:"LRU Cache",d:"M",acc:"42.5%",topics:["Hash Table","Linked List","Design"]},
+    {n:341,slug:"flatten-nested-list-iterator",title:"Flatten Nested List Iterator",d:"M",acc:"65.0%",topics:["Stack","Tree","DFS","Design","Iterator"]},
+    {n:621,slug:"task-scheduler",title:"Task Scheduler",d:"M",acc:"58.8%",topics:["Array","Hash Table","Greedy","Sorting","Heap","Counting"]},
+  ]},
+  {id:"flipkart",name:"Flipkart",domain:"flipkart.com",color:"#F74040",problems:[
+    {n:23,slug:"merge-k-sorted-lists",title:"Merge K Sorted Lists",d:"H",acc:"51.7%",topics:["Linked List","Divide and Conquer","Heap","Merge Sort"]},
+    {n:76,slug:"minimum-window-substring",title:"Minimum Window Substring",d:"H",acc:"41.8%",topics:["Hash Table","String","Sliding Window"]},
+    {n:124,slug:"binary-tree-maximum-path-sum",title:"Binary Tree Maximum Path Sum",d:"H",acc:"39.7%",topics:["DP","Tree","DFS"]},
+    {n:322,slug:"coin-change",title:"Coin Change",d:"M",acc:"42.1%",topics:["Array","DP","BFS"]},
+    {n:416,slug:"partition-equal-subset-sum",title:"Partition Equal Subset Sum",d:"M",acc:"46.6%",topics:["Array","DP"]},
+    {n:543,slug:"diameter-of-binary-tree",title:"Diameter of Binary Tree",d:"E",acc:"58.9%",topics:["Tree","DFS"]},
+    {n:1,slug:"two-sum",title:"Two Sum",d:"E",acc:"49.1%",topics:["Array","Hash Table"]},
+  ]},
+  {id:"swiggy",name:"Swiggy",domain:"swiggy.com",color:"#FC8019",problems:[
+    {n:46,slug:"permutations",title:"Permutations",d:"M",acc:"76.7%",topics:["Array","Backtracking"]},
+    {n:78,slug:"subsets",title:"Subsets",d:"M",acc:"77.8%",topics:["Array","Backtracking","Bit Manipulation"]},
+    {n:102,slug:"binary-tree-level-order-traversal",title:"Binary Tree Level Order Traversal",d:"M",acc:"67.0%",topics:["Tree","BFS"]},
+    {n:127,slug:"word-ladder",title:"Word Ladder",d:"H",acc:"37.7%",topics:["Hash Table","String","BFS"]},
+    {n:198,slug:"house-robber",title:"House Robber",d:"M",acc:"50.4%",topics:["Array","DP"]},
+    {n:300,slug:"longest-increasing-subsequence",title:"Longest Increasing Subsequence",d:"M",acc:"53.9%",topics:["Array","Binary Search","DP"]},
+  ]},
+  {id:"zomato",name:"Zomato",domain:"zomato.com",color:"#E23744",problems:[
+    {n:11,slug:"container-with-most-water",title:"Container With Most Water",d:"M",acc:"54.5%",topics:["Array","Two Pointers","Greedy"]},
+    {n:55,slug:"jump-game",title:"Jump Game",d:"M",acc:"38.6%",topics:["Array","DP","Greedy"]},
+    {n:62,slug:"unique-paths",title:"Unique Paths",d:"M",acc:"64.2%",topics:["Math","DP","Combinatorics"]},
+    {n:96,slug:"unique-binary-search-trees",title:"Unique Binary Search Trees",d:"M",acc:"60.6%",topics:["Math","DP","Tree","BST"]},
+    {n:442,slug:"find-all-duplicates-in-an-array",title:"Find All Duplicates in an Array",d:"M",acc:"74.5%",topics:["Array","Hash Table"]},
+    {n:509,slug:"fibonacci-number",title:"Fibonacci Number",d:"E",acc:"69.6%",topics:["Math","DP","Recursion","Memoization"]},
+  ]},
+  {id:"paytm",name:"Paytm",domain:"paytm.com",color:"#00BAF2",problems:[
+    {n:1,slug:"two-sum",title:"Two Sum",d:"E",acc:"49.1%",topics:["Array","Hash Table"]},
+    {n:20,slug:"valid-parentheses",title:"Valid Parentheses",d:"E",acc:"40.7%",topics:["String","Stack"]},
+    {n:121,slug:"best-time-to-buy-and-sell-stock",title:"Best Time to Buy and Sell Stock",d:"E",acc:"54.2%",topics:["Array","DP"]},
+    {n:215,slug:"kth-largest-element-in-an-array",title:"Kth Largest Element in an Array",d:"M",acc:"66.4%",topics:["Array","Divide and Conquer","Sorting","Heap","Quickselect"]},
+    {n:437,slug:"path-sum-iii",title:"Path Sum III",d:"M",acc:"46.4%",topics:["Tree","DFS","Prefix Sum"]},
+    {n:704,slug:"binary-search",title:"Binary Search",d:"E",acc:"55.2%",topics:["Array","Binary Search"]},
+  ]},
+  {id:"infosys",name:"Infosys",domain:"infosys.com",color:"#007CC3",problems:[
+    {n:7,slug:"reverse-integer",title:"Reverse Integer",d:"M",acc:"28.8%",topics:["Math"]},
+    {n:9,slug:"palindrome-number",title:"Palindrome Number",d:"E",acc:"54.3%",topics:["Math"]},
+    {n:13,slug:"roman-to-integer",title:"Roman to Integer",d:"E",acc:"60.8%",topics:["Hash Table","Math","String"]},
+    {n:14,slug:"longest-common-prefix",title:"Longest Common Prefix",d:"E",acc:"42.6%",topics:["String","Trie"]},
+    {n:21,slug:"merge-two-sorted-lists",title:"Merge Two Sorted Lists",d:"E",acc:"63.3%",topics:["Linked List","Recursion"]},
+    {n:104,slug:"maximum-depth-of-binary-tree",title:"Maximum Depth of Binary Tree",d:"E",acc:"74.9%",topics:["Tree","DFS","BFS"]},
+    {n:226,slug:"invert-binary-tree",title:"Invert Binary Tree",d:"E",acc:"77.7%",topics:["Tree","DFS","BFS"]},
+  ]},
+];
+
+const SOLVED_KEY="careerosInterviewSolved";
+function loadSolved(){try{return JSON.parse(localStorage.getItem(SOLVED_KEY)||"{}");}catch{return{};}}
+function saveSolved(s){try{localStorage.setItem(SOLVED_KEY,JSON.stringify(s));}catch{}}
+
+function loadProgress(){
+  try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");}catch{return {};}
+}
+function saveProgress(p){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(p));}catch{}
+}
+
+function calcPathProgress(roadmap,progress){
+  const all=roadmap.phases.flatMap(ph=>ph.skills);
+  const done=all.filter(s=>progress[s.id]==="done").length;
+  const learning=all.filter(s=>progress[s.id]==="learning").length;
+  return{total:all.length,done,learning,pct:all.length?Math.round((done/all.length)*100):0};
+}
+
+/* ─────────────────────────────────────────────
+   ICONS
+───────────────────────────────────────────── */
+const Ic={
+  check:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+  x:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+  chevR:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>,
+  chevD:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>,
+  ext:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+  book:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+  star:<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+  map:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>,
+  clock:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+  search:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+  reset:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.56"/></svg>,
+  info:<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>,
+};
+
+/* ─────────────────────────────────────────────
+   SKILL DETAIL PANEL
+───────────────────────────────────────────── */
+function SkillPanel({skill,status,onStatusChange,onClose,pathColor}){
+  if(!skill) return null;
+  const statusOpts=["not-started","learning","done"];
+  const cfg={"not-started":{label:"Not Started",col:"#94A3B8",bg:"#F1F5F9"},"learning":{label:"In Progress",col:"#F59E0B",bg:"#FFFBEB"},"done":{label:"Completed",col:"#10B981",bg:"#ECFDF5"}};
+  const cur=status||"not-started";
+  return(
+    <div style={{padding:28}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20}}>
+        <div style={{flex:1,paddingRight:12}}>
+          <div style={{fontSize:10,fontWeight:700,color:pathColor,textTransform:"uppercase",letterSpacing:".08em",marginBottom:6}}>
+            {skill.type==="required"?"Required":"Optional"} · {skill.time}
+          </div>
+          <h2 style={{fontSize:20,fontWeight:800,color:"#0F172A",letterSpacing:"-.02em",lineHeight:1.3}}>{skill.name}</h2>
+        </div>
+        <button onClick={onClose} style={{width:32,height:32,borderRadius:"50%",border:"1.5px solid #E2E8F0",background:"#F8FAFC",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:"#64748B",flexShrink:0}}>
+          <div style={{width:14,height:14}}>{Ic.x}</div>
+        </button>
+      </div>
+
+      <p style={{fontSize:14,color:"#374151",lineHeight:1.75,marginBottom:22}}>{skill.desc}</p>
+
+      {/* Status toggle */}
+      <div style={{marginBottom:22}}>
+        <div style={{fontSize:12,fontWeight:700,color:"#374151",marginBottom:10}}>Your Status</div>
+        <div style={{display:"flex",gap:8}}>
+          {statusOpts.map(s=>{
+            const c=cfg[s];
+            const active=cur===s;
+            return(
+              <button key={s} onClick={()=>onStatusChange(skill.id,s)}
+                style={{flex:1,padding:"9px 8px",borderRadius:9,border:`1.5px solid ${active?c.col:"#E2E8F0"}`,background:active?c.bg:"#fff",color:active?c.col:"#64748B",fontSize:12,fontWeight:600,cursor:"pointer",transition:"all .18s"}}>
+                {c.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Resources */}
+      <div>
+        <div style={{fontSize:12,fontWeight:700,color:"#374151",marginBottom:10}}>Learning Resources</div>
+        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+          {(skill.resources||[]).map((r,i)=>(
+            <a key={i} href={r.u} target="_blank" rel="noopener noreferrer" className="res-link">
+              <div style={{width:14,height:14,color:"#6366F1",flexShrink:0}}>{Ic.ext}</div>
+              <div style={{flex:1}}>
+                <div style={{fontSize:13,fontWeight:600,color:"#0F172A",lineHeight:1.3}}>{r.t}</div>
+              </div>
+              <span style={{fontSize:10,fontWeight:700,padding:"2px 7px",borderRadius:999,background:r.free?"#ECFDF5":"#FEF2F2",color:r.free?"#065F46":"#991B1B"}}>{r.free?"FREE":"PAID"}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {/* roadmap.sh link */}
+      <div style={{marginTop:24,paddingTop:20,borderTop:"1px solid #F1F5F9",textAlign:"center"}}>
+        <div style={{fontSize:12,color:"#94A3B8",marginBottom:4}}>Full interactive roadmap on</div>
+        <a href="https://roadmap.sh/roadmaps" target="_blank" rel="noopener noreferrer" style={{fontSize:13,fontWeight:700,color:"#6366F1",textDecoration:"none"}}>roadmap.sh →</a>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SKILL NODE CARD
+───────────────────────────────────────────── */
+function SkillCard({skill,status,onSelect,phaseColor}){
+  const cfg={"not-started":{dot:"#E2E8F0",label:""},"learning":{dot:"#F59E0B",label:"In Progress"},"done":{dot:"#10B981",label:"Done"}};
+  const cur=status||"not-started";
+  const c=cfg[cur];
+  return(
+    <div className={`skill-node ${cur} ${skill.type}-badge`}
+      onClick={()=>onSelect(skill)}
+      style={{borderLeftWidth:3,borderLeftColor:cur==="done"?"#10B981":cur==="learning"?"#F59E0B":phaseColor}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:8,marginBottom:6}}>
+        <div style={{fontWeight:700,fontSize:13.5,color:"#0F172A",lineHeight:1.35}}>{skill.name}</div>
+        <div style={{display:"flex",alignItems:"center",gap:5,flexShrink:0}}>
+          {cur==="done"&&<div style={{width:16,height:16,background:"#10B981",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{width:10,height:10,color:"#fff"}}>{Ic.check}</div></div>}
+          {cur==="learning"&&<div style={{width:8,height:8,borderRadius:"50%",background:"#F59E0B",boxShadow:"0 0 0 3px rgba(245,158,11,.2)"}}/>}
+        </div>
+      </div>
+      <p style={{fontSize:12,color:"#64748B",lineHeight:1.55,marginBottom:8}}>{skill.desc.slice(0,80)}{skill.desc.length>80?"…":""}</p>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <div style={{display:"flex",alignItems:"center",gap:4,fontSize:11,color:"#94A3B8"}}>
+          <div style={{width:11,height:11}}>{Ic.clock}</div>
+          <span>{skill.time}</span>
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:4,fontSize:11,color:"#6366F1",fontWeight:600}}>
+          <span>{skill.resources?.length||0} resources</span>
+          <div style={{width:11,height:11}}>{Ic.chevR}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   PHASE SECTION
+───────────────────────────────────────────── */
+function PhaseSection({phase,progress,onSkillSelect,isLast}){
+  const [open,setOpen]=useState(true);
+  const total=phase.skills.length;
+  const done=phase.skills.filter(s=>progress[s.id]==="done").length;
+  const pct=Math.round((done/total)*100);
+  return(
+    <div>
+      {/* Phase header */}
+      <div className="phase-header" onClick={()=>setOpen(o=>!o)}
+        style={{background:`${phase.color}14`,border:`1.5px solid ${phase.color}33`}}>
+        <div style={{width:36,height:36,borderRadius:"50%",background:phase.color,color:"#fff",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:800,flexShrink:0}}>{phase.icon}</div>
+        <div style={{flex:1}}>
+          <div style={{fontWeight:800,fontSize:15,color:"#0F172A",letterSpacing:"-.01em"}}>{phase.title}</div>
+          <div style={{fontSize:12,color:"#64748B",marginTop:1}}>{phase.months} · {total} skills · {done}/{total} done</div>
+        </div>
+        <div style={{minWidth:80}}>
+          <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+            <span style={{fontSize:11,fontWeight:700,color:phase.color}}>{pct}%</span>
+          </div>
+          <div className="prog-bar" style={{width:80}}>
+            <div className="prog-fill" style={{width:`${pct}%`,background:phase.color}}/>
+          </div>
+        </div>
+        <div style={{width:20,height:20,color:"#94A3B8",transition:"transform .2s",transform:open?"rotate(180deg)":"none"}}>{Ic.chevD}</div>
+      </div>
+
+      {open&&(
+        <div className="skills-grid fade-up" style={{marginBottom:8}}>
+          {phase.skills.map(sk=>(
+            <SkillCard key={sk.id} skill={sk} status={progress[sk.id]} onSelect={onSkillSelect} phaseColor={phase.color}/>
+          ))}
+        </div>
+      )}
+
+      {/* Connector */}
+      {!isLast&&<div className="phase-connector" style={{marginBottom:12}}/>}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   ROADMAP VIEW
+───────────────────────────────────────────── */
+function RoadmapView({roadmap,progress,onProgressChange}){
+  const [selectedSkill,setSelectedSkill]=useState(null);
+  const {total,done,learning,pct}=calcPathProgress(roadmap,progress);
+  const remaining=total-done;
+  const estWeeks=remaining*1.5;
+
+  const handleStatusChange=(id,status)=>{
+    onProgressChange(id,status);
+  };
+
+  return(
+    <div style={{position:"relative"}}>
+      {/* Top bar */}
+      <div style={{marginBottom:24}}>
+        <div style={{fontSize:10,fontWeight:700,letterSpacing:".08em",color:roadmap.color,textTransform:"uppercase",marginBottom:6}}>
+          {roadmap.title} Roadmap
+        </div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",marginBottom:16}}>
+          <div>
+            <h1 style={{fontSize:28,fontWeight:800,color:"#0F172A",letterSpacing:"-.03em",marginBottom:4}}>{roadmap.title}</h1>
+            <p style={{fontSize:14,color:"#64748B",maxWidth:600}}>{roadmap.desc}</p>
+          </div>
+          <a href={roadmap.roadmapUrl} target="_blank" rel="noopener noreferrer"
+            style={{display:"flex",alignItems:"center",gap:6,padding:"9px 16px",border:`1.5px solid ${roadmap.color}`,borderRadius:10,color:roadmap.color,fontSize:13,fontWeight:600,textDecoration:"none",flexShrink:0,transition:"all .18s",background:"#fff"}}
+            onMouseOver={e=>{e.currentTarget.style.background=roadmap.bg;}}
+            onMouseOut={e=>{e.currentTarget.style.background="#fff";}}>
+            <div style={{width:14,height:14}}>{Ic.ext}</div>
+            roadmap.sh
+          </a>
+        </div>
+
+        {/* Stats row */}
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:18}}>
+          {[{label:"Total Skills",val:total,col:"#6366F1"},{label:"Completed",val:done,col:"#10B981"},{label:"In Progress",val:learning,col:"#F59E0B"},{label:"Avg Salary",val:roadmap.salary,col:"#8B5CF6"}].map(s=>(
+            <div key={s.label} style={{background:"#fff",borderRadius:12,padding:"14px 16px",border:"1px solid #F1F5F9",boxShadow:"0 1px 3px rgba(0,0,0,.05)"}}>
+              <div style={{fontSize:10,fontWeight:700,color:"#94A3B8",textTransform:"uppercase",letterSpacing:".06em",marginBottom:6}}>{s.label}</div>
+              <div style={{fontSize:22,fontWeight:800,color:s.col}}>{s.val}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Overall progress */}
+        <div style={{background:"#fff",borderRadius:12,padding:"16px 20px",border:"1px solid #F1F5F9",boxShadow:"0 1px 3px rgba(0,0,0,.05)"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:8}}>
+            <div style={{fontSize:13,fontWeight:700,color:"#0F172A"}}>Overall Progress</div>
+            <div style={{fontSize:20,fontWeight:800,color:roadmap.color}}>{pct}%</div>
+          </div>
+          <div className="prog-bar">
+            <div className="prog-fill" style={{width:`${pct}%`,background:`linear-gradient(90deg,${roadmap.color},${roadmap.color}aa)`}}/>
+          </div>
+          <div style={{display:"flex",justifyContent:"space-between",marginTop:6,fontSize:11,color:"#94A3B8"}}>
+            <span>Beginner</span>
+            {remaining>0&&<span>~{Math.round(estWeeks)} weeks remaining at 10h/week</span>}
+            {remaining===0&&<span style={{color:"#10B981",fontWeight:700}}>Roadmap Complete!</span>}
+            <span>Job Ready</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Phase sections */}
+      {roadmap.phases.map((ph,i)=>(
+        <PhaseSection key={ph.id} phase={ph} progress={progress} onSkillSelect={setSelectedSkill} isLast={i===roadmap.phases.length-1}/>
+      ))}
+
+      {/* Roles & Companies */}
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginTop:20}}>
+        <div className="card" style={{padding:20}}>
+          <div style={{fontWeight:700,fontSize:14,color:"#0F172A",marginBottom:12}}>Job Roles You Can Target</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+            {roadmap.roles.map(r=>(
+              <span key={r} style={{padding:"5px 12px",borderRadius:999,background:roadmap.bg,color:roadmap.color,fontSize:12,fontWeight:600}}>{r}</span>
+            ))}
+          </div>
+        </div>
+        <div className="card" style={{padding:20}}>
+          <div style={{fontWeight:700,fontSize:14,color:"#0F172A",marginBottom:12}}>Top Hiring Companies</div>
+          <div style={{display:"flex",flexWrap:"wrap",gap:8}}>
+            {roadmap.companies.map(c=>(
+              <span key={c} style={{padding:"5px 12px",borderRadius:999,background:"#F8FAFC",border:"1px solid #E2E8F0",color:"#374151",fontSize:12,fontWeight:600}}>{c}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Detail panel overlay */}
+      <div className={`detail-panel ${selectedSkill?"open":""}`}>
+        <SkillPanel skill={selectedSkill} status={progress[selectedSkill?.id]} onStatusChange={handleStatusChange} onClose={()=>setSelectedSkill(null)} pathColor={roadmap.color}/>
+      </div>
+      {selectedSkill&&<div onClick={()=>setSelectedSkill(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.25)",zIndex:99}}/>}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   PATH SELECTOR (Home screen)
+───────────────────────────────────────────── */
+function PathSelector({onSelect,progress}){
+  return(
+    <div>
+      <div style={{marginBottom:28}}>
+        <div style={{fontSize:10,fontWeight:700,letterSpacing:".08em",color:"#6366F1",textTransform:"uppercase",marginBottom:8}}>Graduate Roadmap Hub</div>
+        <h1 style={{fontSize:30,fontWeight:800,color:"#0F172A",letterSpacing:"-.03em",marginBottom:8,lineHeight:1.1}}>Choose your career path.</h1>
+        <p style={{color:"#64748B",fontSize:14.5,maxWidth:520}}>Curated from <strong style={{color:"#0F172A"}}>roadmap.sh</strong> — step-by-step skill maps, resource links, and progress tracking for 6 high-demand tech careers. Pick one to get started.</p>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:16,marginBottom:28}}>
+        {ROADMAPS.map(r=>{
+          const prog=calcPathProgress(r,progress);
+          return(
+            <div key={r.id} className="path-card fade-up" onClick={()=>onSelect(r.id)}
+              style={{borderColor:prog.done>0?r.color:"#E2E8F0"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
+                <div style={{width:44,height:44,borderRadius:12,background:r.bg,display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,color:r.color,fontWeight:700}}>{r.icon}</div>
+                {prog.done>0&&<span style={{fontSize:11,fontWeight:700,padding:"3px 9px",borderRadius:999,background:r.bg,color:r.color}}>{prog.pct}%</span>}
+              </div>
+              <div style={{fontWeight:800,fontSize:16,color:"#0F172A",marginBottom:5,letterSpacing:"-.01em"}}>{r.title}</div>
+              <div style={{fontSize:12,color:"#64748B",marginBottom:14,lineHeight:1.5}}>{r.desc.slice(0,80)}…</div>
+              <div style={{display:"flex",gap:12,fontSize:11,color:"#94A3B8",marginBottom:12}}>
+                <span style={{fontWeight:700,color:r.color}}>{r.salary}</span>
+                <span>·</span><span>Demand: {r.demand}</span>
+              </div>
+              {prog.done>0?(
+                <div>
+                  <div className="prog-bar" style={{height:5}}>
+                    <div className="prog-fill" style={{width:`${prog.pct}%`,background:r.color}}/>
+                  </div>
+                  <div style={{fontSize:11,color:"#94A3B8",marginTop:4}}>{prog.done}/{prog.total} skills done</div>
+                </div>
+              ):(
+                <div style={{fontSize:12,fontWeight:600,color:r.color,display:"flex",alignItems:"center",gap:4}}>
+                  Start roadmap <div style={{width:13,height:13}}>{Ic.chevR}</div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* How it works */}
+      <div className="card" style={{padding:24}}>
+        <div style={{fontWeight:700,fontSize:15,color:"#0F172A",marginBottom:16}}>How the Roadmap Works</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>
+          {[["Pick a Path","Select the career role that matches your goal — Frontend, Backend, AI, and more.","#6366F1"],["Follow the Phases","Each roadmap has 4 phases. Work through fundamentals before advanced topics.","#10B981"],["Track Progress","Mark skills as In Progress or Done. Your progress saves automatically.","#F59E0B"],["Access Resources","Every skill links to free, curated learning resources — docs, courses, books.","#8B5CF6"]].map(([t,d,c],i)=>(
+            <div key={i} style={{textAlign:"center"}}>
+              <div style={{width:36,height:36,borderRadius:"50%",background:`${c}22`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:14,fontWeight:800,color:c,margin:"0 auto 10px"}}>{i+1}</div>
+              <div style={{fontWeight:700,fontSize:13,color:"#0F172A",marginBottom:4}}>{t}</div>
+              <div style={{fontSize:12,color:"#64748B",lineHeight:1.5}}>{d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+/* ─────────────────────────────────────────────
+   COMPANIES VIEW
+───────────────────────────────────────────── */
+function CompaniesView({solved,onToggle}){
+  const [selCo,setSelCo]=useState(null);
+  const [diffFilter,setDiffFilter]=useState("all");
+  const [search,setSearch]=useState("");
+  const company=COMPANIES.find(c=>c.id===selCo);
+  const solvedCount=(co)=>co.problems.filter(p=>solved[`${co.id}_${p.n}`]).length;
+  const totalProblems=COMPANIES.reduce((a,c)=>a+c.problems.length,0);
+  const totalSolved=Object.keys(solved).length;
+  const filteredProblems=company?company.problems.filter(p=>{
+    if(diffFilter!=="all"&&p.d!==diffFilter) return false;
+    if(search&&!p.title.toLowerCase().includes(search.toLowerCase())&&!String(p.n).includes(search)) return false;
+    return true;
+  }):[];
+  return(
+    <div className="fade-up">
+      <div style={{marginBottom:20}}>
+        <div style={{fontSize:22,fontWeight:800,color:"#0F172A",marginBottom:4,letterSpacing:"-.02em"}}>Interview Prep</div>
+        <div style={{fontSize:13.5,color:"#64748B"}}>{COMPANIES.length} top companies · {totalProblems} curated LeetCode problems · <strong style={{color:"#10B981"}}>{totalSolved} solved</strong></div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
+        {[{label:"Companies",val:COMPANIES.length,color:"#6366F1",icon:"🏢"},{label:"Problems",val:totalProblems,color:"#0EA5E9",icon:"📋"},{label:"Solved",val:totalSolved,color:"#10B981",icon:"✅"},{label:"Remaining",val:totalProblems-totalSolved,color:"#F59E0B",icon:"🎯"}].map(s=>(
+          <div key={s.label} className="card" style={{padding:"14px 16px",display:"flex",alignItems:"center",gap:10}}>
+            <span style={{fontSize:20}}>{s.icon}</span>
+            <div><div style={{fontSize:20,fontWeight:800,color:s.color}}>{s.val}</div><div style={{fontSize:11,color:"#94A3B8",fontWeight:500}}>{s.label}</div></div>
+          </div>
+        ))}
+      </div>
+      <div className="card" style={{padding:"18px 18px 14px",marginBottom:selCo?16:0}}>
+        <div style={{fontSize:12,fontWeight:700,color:"#64748B",marginBottom:12,textTransform:"uppercase",letterSpacing:".06em"}}>Select a Company</div>
+        <div className="company-grid">
+          {COMPANIES.map(co=>{
+            const sc=solvedCount(co);
+            const pct=Math.round(sc/co.problems.length*100);
+            return(
+              <div key={co.id} className={`company-card ${selCo===co.id?"sel":""}`} onClick={()=>setSelCo(selCo===co.id?null:co.id)}>
+                <img className="co-logo" src={`https://logo.clearbit.com/${co.domain}`} onError={e=>{e.target.style.display="none";e.target.nextSibling.style.display="flex";}} alt={co.name}/>
+                <div className="co-fallback" style={{background:co.color,display:"none"}}>{co.name[0]}</div>
+                <div style={{fontSize:11,fontWeight:700,color:"#0F172A",lineHeight:1.3,marginBottom:5}}>{co.name}</div>
+                {sc>0?(
+                  <div><div style={{fontSize:9.5,color:"#10B981",fontWeight:600,marginBottom:3}}>{sc}/{co.problems.length} solved</div>
+                    <div className="prog-bar" style={{height:4}}><div className="prog-fill" style={{width:`${pct}%`,background:"#10B981"}}/></div></div>
+                ):<div style={{fontSize:9.5,color:"#94A3B8"}}>{co.problems.length} problems</div>}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      {company&&(
+        <div className="card slide-in" style={{overflow:"hidden"}}>
+          <div style={{padding:"16px 18px 12px",borderBottom:"1px solid #F1F5F9",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:10,background:"#FAFAFA"}}>
+            <div style={{display:"flex",alignItems:"center",gap:10}}>
+              <img style={{width:28,height:28,borderRadius:7,objectFit:"contain"}} src={`https://logo.clearbit.com/${company.domain}`} onError={e=>{e.target.style.display="none";}} alt={company.name}/>
+              <div>
+                <div style={{fontSize:14,fontWeight:800,color:"#0F172A"}}>{company.name} — Interview Problems</div>
+                <div style={{fontSize:11,color:"#64748B"}}>{solvedCount(company)}/{company.problems.length} solved · <span style={{color:"#16A34A"}}>{company.problems.filter(p=>p.d==="E").length} Easy</span> · <span style={{color:"#D97706"}}>{company.problems.filter(p=>p.d==="M").length} Medium</span> · <span style={{color:"#DC2626"}}>{company.problems.filter(p=>p.d==="H").length} Hard</span></div>
+              </div>
+            </div>
+            <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center"}}>
+              <input className="inp" placeholder="Search..." value={search} onChange={e=>setSearch(e.target.value)} style={{width:150,fontSize:12,padding:"6px 10px"}}/>
+              {["all","E","M","H"].map(f=>(
+                <button key={f} className={`ftab ${diffFilter===f?"active":""}`} onClick={()=>setDiffFilter(f)}>
+                  {f==="all"?"All":f==="E"?"Easy":f==="M"?"Medium":"Hard"}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"22px 74px 1fr 56px",gap:10,padding:"7px 18px",background:"#F1F5F9",fontSize:10,fontWeight:700,color:"#94A3B8",textTransform:"uppercase",letterSpacing:".05em"}}>
+            <div/><div>Level</div><div>Problem</div><div style={{textAlign:"right"}}>Accept</div>
+          </div>
+          {filteredProblems.length===0?(
+            <div style={{padding:"32px",textAlign:"center",color:"#94A3B8",fontSize:13}}>No problems match your filter.</div>
+          ):filteredProblems.map(p=>{
+            const key=`${company.id}_${p.n}`;
+            const isSolved=!!solved[key];
+            return(
+              <div key={p.n} className="prob-row" style={{background:isSolved?"#F0FDF4":"#fff"}}>
+                <input type="checkbox" className="prob-solved-cb" checked={isSolved} onChange={()=>onToggle(key)} title={isSolved?"Mark unsolved":"Mark solved"}/>
+                <div className={`diff-${p.d}`}>{p.d==="E"?"Easy":p.d==="M"?"Medium":"Hard"}</div>
+                <div>
+                  <a href={`https://leetcode.com/problems/${p.slug}/`} target="_blank" rel="noopener noreferrer"
+                    style={{fontSize:12.5,fontWeight:600,color:isSolved?"#10B981":"#1E293B",textDecoration:"none",display:"block",marginBottom:3}}>
+                    #{p.n} · {p.title}
+                  </a>
+                  <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{p.topics.map(t=><span key={t} className="topic-chip">{t}</span>)}</div>
+                </div>
+                <div style={{textAlign:"right",fontSize:11.5,color:"#64748B",fontWeight:500}}>{p.acc}</div>
+              </div>
+            );
+          })}
+          <div style={{padding:"10px 18px",borderTop:"1px solid #F1F5F9",display:"flex",gap:18,fontSize:11.5,color:"#64748B",background:"#FAFAFA",flexWrap:"wrap"}}>
+            {[{l:"Total",v:company.problems.length,c:"#6366F1"},{l:"Easy",v:company.problems.filter(p=>p.d==="E").length,c:"#16A34A"},{l:"Medium",v:company.problems.filter(p=>p.d==="M").length,c:"#D97706"},{l:"Hard",v:company.problems.filter(p=>p.d==="H").length,c:"#DC2626"},{l:"Solved",v:solvedCount(company),c:"#10B981"}].map(s=>(
+              <span key={s.l}><strong style={{color:s.c}}>{s.v}</strong> {s.l}</span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SIDEBAR
+───────────────────────────────────────────── */
+function Sidebar({activePath,onSelect,activeView,onViewChange,progress,solved}){
+  const totalSolved=Object.keys(solved).length;
+  return(
+    <div className="sidebar">
+      <div className="sb-logo">
+        <div style={{fontSize:15,fontWeight:800,color:"#fff",letterSpacing:"-.02em",marginBottom:1}}>CareerOS AI</div>
+        <div style={{fontSize:10.5,color:"rgba(255,255,255,.4)",fontWeight:500}}>Graduate Roadmap Hub</div>
+      </div>
+      <div className="sb-nav">
+        <button className={`sb-path ${!activePath&&activeView!=="companies"?"active":""}`} style={{width:"100%",border:"none",textAlign:"left"}}
+          onClick={()=>{onSelect(null);onViewChange(null);}}>
+          <span className="sb-icon" style={{color:"rgba(255,255,255,.55)",width:17,height:17}}>{Ic.map}</span>
+          <span style={{fontSize:13,fontWeight:600,color:(!activePath&&activeView!=="companies")?"#fff":"rgba(255,255,255,.55)"}}>All Paths</span>
+        </button>
+        <div className="sb-section">Career Paths</div>
+        {ROADMAPS.map(r=>{
+          const prog=calcPathProgress(r,progress);
+          const active=activePath===r.id&&activeView!=="companies";
+          return(
+            <button key={r.id} className={`sb-path ${active?"active":""}`} style={{width:"100%",border:"none",textAlign:"left"}}
+              onClick={()=>{onSelect(r.id);onViewChange(null);}}>
+              <span style={{fontSize:15,color:active?r.color:r.color+"99",flexShrink:0}}>{r.icon}</span>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:12.5,fontWeight:600,color:active?"#fff":"rgba(255,255,255,.55)",lineHeight:1.2}}>{r.title}</div>
+                {prog.done>0&&<div style={{fontSize:10,color:"rgba(255,255,255,.3)",marginTop:1}}>{prog.pct}% complete</div>}
+              </div>
+              {prog.done>0&&(
+                <div style={{width:24,height:24,borderRadius:"50%",background:`${r.color}33`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+                  <span style={{fontSize:9,fontWeight:800,color:r.color}}>{prog.pct}</span>
+                </div>
+              )}
+            </button>
+          );
+        })}
+        <div className="sb-section">Interview Prep</div>
+        <button className={`sb-companies-btn ${activeView==="companies"?"active":""}`}
+          onClick={()=>{onViewChange("companies");onSelect(null);}}>
+          <span style={{fontSize:16,flexShrink:0}}>&#x1F3E2;</span>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:12.5,fontWeight:600,color:activeView==="companies"?"#fff":"rgba(255,255,255,.55)",lineHeight:1.2}}>Companies</div>
+            {totalSolved>0&&<div style={{fontSize:10,color:"rgba(255,255,255,.3)",marginTop:1}}>{totalSolved} problems solved</div>}
+          </div>
+          {totalSolved>0&&(
+            <div style={{width:24,height:24,borderRadius:"50%",background:"rgba(16,185,129,.2)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
+              <span style={{fontSize:9,fontWeight:800,color:"#10B981"}}>{totalSolved}</span>
+            </div>
+          )}
+        </button>
+      </div>
+      <div style={{padding:"14px 12px",borderTop:"1px solid rgba(255,255,255,.07)"}}>
+        <div style={{fontSize:10,color:"rgba(255,255,255,.3)",marginBottom:2}}>Powered by</div>
+        <a href="https://roadmap.sh/roadmaps" target="_blank" rel="noopener noreferrer" style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,.6)",textDecoration:"none",display:"flex",alignItems:"center",gap:4}}>
+          roadmap.sh <span style={{width:11,height:11}}>{Ic.ext}</span>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   TOP NAV
+───────────────────────────────────────────── */
+function TopNav({activePath,onReset,activeView,progress}){
+  const roadmap=ROADMAPS.find(r=>r.id===activePath);
+  const allDone=Object.values(progress).filter(v=>v==="done").length;
+  return(
+    <div className="top-nav">
+      <div>
+        {activeView==="companies"?(
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <button onClick={()=>onReset(null)} style={{fontSize:12,color:"#6366F1",fontWeight:600,background:"none",border:"none",cursor:"pointer"}}>Home</button>
+            <span style={{color:"#CBD5E1"}}>/</span>
+            <span style={{fontSize:12,fontWeight:700,color:"#0F172A"}}>Interview Prep</span>
+          </div>
+        ):roadmap?(
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <button onClick={()=>onReset(null)} style={{fontSize:12,color:"#6366F1",fontWeight:600,background:"none",border:"none",cursor:"pointer"}}>All Paths</button>
+            <span style={{color:"#CBD5E1"}}>/</span>
+            <span style={{fontSize:12,fontWeight:700,color:"#0F172A"}}>{roadmap.title}</span>
+          </div>
+        ):<span style={{fontSize:13,fontWeight:700,color:"#0F172A"}}>Graduate Career Roadmap Hub</span>}
+      </div>
+      <div style={{display:"flex",alignItems:"center",gap:14}}>
+        <div style={{fontSize:12,color:"#64748B"}}>
+          <strong style={{color:"#6366F1"}}>{allDone}</strong> skills completed
+        </div>
+        <button onClick={()=>{if(window.confirm("Reset all progress?"))localStorage.removeItem(STORAGE_KEY);window.location.reload();}}
+          style={{display:"flex",alignItems:"center",gap:5,fontSize:12,color:"#94A3B8",fontWeight:600,background:"#F8FAFC",border:"1px solid #E2E8F0",borderRadius:8,padding:"6px 12px",cursor:"pointer"}}>
+          <div style={{width:13,height:13}}>{Ic.reset}</div>
+          Reset
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   APP
+───────────────────────────────────────────── */
+function App(){
+  const [activePath,setActivePath]=useState(null);
+  const [activeView,setActiveView]=useState(null);
+  const [progress,setProgress]=useState(loadProgress);
+  const [solved,setSolved]=useState(loadSolved);
+
+  const handleProgressChange=useCallback((id,status)=>{
+    setProgress(prev=>{
+      const next={...prev,[id]:status};
+      saveProgress(next);
+      return next;
+    });
+  },[]);
+
+  const handleToggleSolved=useCallback((key)=>{
+    setSolved(prev=>{
+      const next={...prev};
+      if(next[key]) delete next[key]; else next[key]=true;
+      saveSolved(next);
+      return next;
+    });
+  },[]);
+
+  const activeRoadmap=ROADMAPS.find(r=>r.id===activePath);
+
+  return(
+    <div style={{display:"flex",minHeight:"100vh"}}>
+      <Sidebar activePath={activePath} onSelect={setActivePath}
+        activeView={activeView} onViewChange={setActiveView}
+        progress={progress} solved={solved}/>
+      <div className="main-content">
+        <TopNav activePath={activePath} onReset={(p)=>{setActivePath(p);setActiveView(null);}}
+          activeView={activeView} progress={progress}/>
+        <div className="content-inner">
+          {activeView==="companies"
+            ?<CompaniesView solved={solved} onToggle={handleToggleSolved}/>
+            :activeRoadmap
+              ?<RoadmapView roadmap={activeRoadmap} progress={progress} onProgressChange={handleProgressChange}/>
+              :<PathSelector onSelect={(id)=>{setActivePath(id);setActiveView(null);}} progress={progress}/>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
