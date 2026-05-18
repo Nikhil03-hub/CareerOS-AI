@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerOS AI – Intelligent Career Intelligence Platform</title>
+    <base href="/client/src/jobs/">
+    <meta name="description"
+        content="CareerOS AI – AI-powered skill assessment, career discovery, and intelligent job matching platform.">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../styles/responsive.css">
+    <!-- GSAP for Animations -->
+    <script src="js/gsap.min.js"></script>
+    <script src="js/ScrollTrigger.min.js"></script>
+    <!-- Lenis Smooth Scroll -->
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.15/dist/lenis.css">
+    <script src="https://unpkg.com/lenis@1.3.15/dist/lenis.min.js"></script>
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Jobs Data -->
+    <script src="jobsData.js"></script>
+
+    <!-- Global Auth: Extract token from URL if present (MUST RUN FIRST) -->
+    <script src="../components/global-auth.js"></script>
+
+    <!-- Initialize Lenis with GSAP ScrollTrigger Integration -->
+    <script>
+        // Initialize Lenis after all scripts are loaded
+        (function () {
+            function initLenis() {
+                // Check if Lenis is available
+                if (typeof Lenis === 'undefined') {
+                    // Retry after a short delay if Lenis isn't loaded yet
+                    setTimeout(initLenis, 50);
+                    return;
+                }
+
+                // Initialize a new Lenis instance for smooth scrolling
+                const lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    orientation: 'vertical',
+                    gestureOrientation: 'vertical',
+                    smoothWheel: true,
+                    wheelMultiplier: 1,
+                    smoothTouch: false,
+                    touchMultiplier: 2,
+                    infinite: false,
+                });
+
+                // Synchronize Lenis scrolling with GSAP's ScrollTrigger plugin
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    // Register ScrollTrigger plugin
+                    gsap.registerPlugin(ScrollTrigger);
+
+                    // Synchronize Lenis scrolling with GSAP's ScrollTrigger plugin
+                    lenis.on('scroll', ScrollTrigger.update);
+
+                    // Add Lenis's requestAnimationFrame (raf) method to GSAP's ticker
+                    // This ensures Lenis's smooth scroll animation updates on each GSAP tick
+                    gsap.ticker.add((time) => {
+                        lenis.raf(time * 1000); // Convert time from seconds to milliseconds
+                    });
+
+                    // Disable lag smoothing in GSAP to prevent any delay in scroll animations
+                    gsap.ticker.lagSmoothing(0);
+                } else {
+                    // Fallback: Use requestAnimationFrame if GSAP is not available
+                    function raf(time) {
+                        lenis.raf(time);
+                        requestAnimationFrame(raf);
+                    }
+                    requestAnimationFrame(raf);
+                }
+
+                // Listen for the scroll event (optional, for debugging)
+                lenis.on('scroll', (e) => {
+                    // console.log(e); // Uncomment for debugging
+                });
+
+                // Make lenis available globally if needed
+                window.lenis = lenis;
+            }
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initLenis);
+            } else {
+                // DOM is already ready, but wait a bit for scripts to load
+                setTimeout(initLenis, 100);
+            }
+        })();
+    </script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#4b8fd0',
+                        'primary-hover': '#3a7bb0',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Jobs Page Specific Styles */
+
+        /* Premium Glassmorphism Filter Sidebar */
+        .filter-section {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06),
+                0 2px 8px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* Job Card Premium Styling */
+        .job-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, box-shadow;
+        }
+
+        .job-card:hover {
+            transform: scale(1.02) translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08),
+                0 8px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Job Card Scroll Reveal - Initial State */
+        .job-card-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .job-card-revealed {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .filter-checkbox:checked+label {
+            color: #4b8fd0;
+            font-weight: 600;
+        }
+
+        /* Badges */
+        .badge {
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .badge-remote {
+            background: linear-gradient(135deg, #E0F2FE, #BAE6FD);
+            color: #0369A1;
+        }
+
+        .badge-fresher {
+            background: linear-gradient(135deg, #DCFCE7, #BBF7D0);
+            color: #166534;
+        }
+
+        .badge-fast {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            color: #B45309;
+        }
+
+        /* Company Logo */
+        .company-logo {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+            border-radius: 14px;
+            background: white;
+            padding: 8px;
+            border: 1px solid #f3f4f6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .job-card:hover .company-logo {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ── Apply Now — Pill Button ─────────────────────────── */
+        .apply-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 9999px !important;
+        }
+
+        .apply-btn:hover {
+            background: #3a7bb0 !important;
+            box-shadow: 0 6px 18px rgba(75, 143, 208, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .apply-btn .arrow-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .apply-btn:hover .arrow-icon {
+            transform: translateX(3px);
+        }
+
+        /* ── Save Button — Pill Outline ──────────────────────── */
+        .save-btn,
+        .save-job-btn {
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border-radius: 9999px !important;
+        }
+
+        .save-btn:hover,
+        .save-job-btn:hover {
+            background: #f0f7ff;
+            border-color: #4b8fd0;
+            color: #4b8fd0;
+            transform: translateY(-1px);
+        }
+
+        .save-btn.saved,
+        .save-job-btn.saved {
+            background: rgba(59, 130, 246, 0.09);
+            color: #2563eb;
+            border-color: rgba(37, 99, 235, 0.7);
+        }
+
+        .save-btn.saved:hover,
+        .save-job-btn.saved:hover {
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+        }
+
+        /* ── Job Card Hover Lift ─────────────────────────────── */
+        .job-card {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.045);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, box-shadow;
+        }
+
+        .job-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 38px rgba(0, 0, 0, 0.09), 0 6px 14px rgba(0, 0, 0, 0.05);
+        }
+
+        /* ── Opportunity Score Ring ──────────────────────────── */
+        .score-ring {
+            display: block;
+        }
+
+        .score-arc {
+            transform-origin: center;
+            animation: arcDraw 1.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes arcDraw {
+            from {
+                stroke-dasharray: 0 999;
+            }
+        }
+
+        /* Pagination */
+        .pagination-btn {
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .pagination-btn:hover:not(.active):not(:disabled) {
+            background: #f3f4f6;
+            transform: translateY(-2px);
+        }
+
+        .pagination-btn.active {
+            background: #4b8fd0;
+            color: white;
+            box-shadow: 0 4px 12px rgba(75, 143, 208, 0.3);
+        }
+
+        /* Page Fade In */
+        .page-fade-in {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stagger animation delay for job cards */
+        .job-card:nth-child(1) {
+            transition-delay: 0.05s;
+        }
+
+        .job-card:nth-child(2) {
+            transition-delay: 0.1s;
+        }
+
+        .job-card:nth-child(3) {
+            transition-delay: 0.15s;
+        }
+
+        .job-card:nth-child(4) {
+            transition-delay: 0.2s;
+        }
+
+        .job-card:nth-child(5) {
+            transition-delay: 0.25s;
+        }
+
+        .job-card:nth-child(6) {
+            transition-delay: 0.3s;
+        }
+
+        /* Custom scrollbar for filter section */
+        .filter-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .filter-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .filter-scroll::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 2px;
+        }
+
+        .filter-scroll::-webkit-scrollbar-thumb:hover {
+            background: #d1d5db;
+        }
+
+        /* Skill Tags Hover */
+        .skill-tag {
+            transition: all 0.2s ease;
+        }
+
+        .skill-tag:hover {
+            background: #4b8fd0;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Search Header Glass */
+        .search-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        /* Filter section titles */
+        .filter-title {
+            position: relative;
+            padding-left: 0;
+        }
+
+        .filter-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 24px;
+            height: 2px;
+            background: linear-gradient(90deg, #4b8fd0, transparent);
+            border-radius: 1px;
+        }
+    </style>
+</head>
+
+<body
+    class="antialiased text-gray-900 bg-gradient-to-br from-gray-50 via-white to-blue-50/30 selection:bg-blue-100 selection:text-blue-600 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-2 cursor-pointer group logo-link">
+                <span class="logo-text careeros-wordmark">CareerOS AI</span>
+            </a>
+
+            <!-- Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html"
+                    class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Home</a>
+                <a href="jobs.html" class="text-sm font-medium text-primary transition-colors">Find Jobs</a>
+                <a href="jobs.html?type=companies"
+                    class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Companies</a>
+                <a href="../pages/dashboard/index.html#view-messages"
+                    class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Inbox</a>
+            </div>
+
+            <!-- CTA -->
+            <div class="flex items-center gap-4">
+                <div class="auth-ui-container" data-signup-url="/signup/"
+                    data-profile-url="/graduate/dashboard/#view-profile"
+                    data-button-class="primary-btn cta-magnet bg-gray-900 text-white px-6 py-2.5 rounded-full text-sm font-semibold">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-28 pb-16 px-4 md:px-6">
+        <div class="max-w-[1300px] mx-auto">
+
+            <!-- Search Header -->
+            <div class="mb-8 page-fade-in">
+                <div
+                    class="search-header glass-panel rounded-2xl p-4 md:p-6 flex flex-col md:flex-row gap-4 items-center shadow-lg border border-white/60">
+                    <!-- Search Input -->
+                    <div
+                        class="flex-1 flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-gray-100 w-full">
+                        <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+                        <input type="text" id="search-input" placeholder="Search jobs, companies, skills..."
+                            class="w-full bg-transparent outline-none text-sm font-medium text-gray-900 placeholder:text-gray-400">
+                    </div>
+
+                    <!-- Location Input -->
+                    <div
+                        class="flex items-center gap-3 px-4 py-3 bg-white rounded-xl border border-gray-100 w-full md:w-64">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-gray-400"></i>
+                        <input type="text" id="location-input" placeholder="Location" value="India"
+                            class="w-full bg-transparent outline-none text-sm font-medium text-gray-900 placeholder:text-gray-400">
+                    </div>
+
+                    <!-- Search Button -->
+                    <button id="searchBtn"
+                        class="bg-primary hover:bg-primary-hover text-white px-8 py-3 rounded-xl font-semibold text-sm flex items-center gap-2 w-full md:w-auto justify-center transition-all">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                        Search
+                    </button>
+                </div>
+
+                <!-- Results Count & Active Filters -->
+                <div class="mt-4 flex flex-wrap items-center gap-3">
+                    <span id="results-count" class="text-sm text-gray-600 font-medium">Loading jobs...</span>
+                    <div id="active-filters" class="flex flex-wrap gap-2"></div>
+                </div>
+            </div>
+
+            <!-- Main Grid -->
+            <div class="flex flex-col lg:flex-row gap-6">
+
+                <!-- Left Sidebar - Filters -->
+                <aside class="w-full lg:w-72 flex-shrink-0">
+                    <div
+                        class="filter-section rounded-2xl border border-white/60 shadow-lg p-6 sticky top-28 max-h-[calc(100vh-140px)] overflow-y-auto filter-scroll page-fade-in">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-bold text-gray-900">Filters</h3>
+                            <button onclick="clearAllFilters()"
+                                class="text-sm text-primary font-medium hover:underline">Clear All</button>
+                        </div>
+
+                        <!-- Experience Filter -->
+                        <div class="mb-6">
+                            <h4
+                                class="filter-title text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2 pb-1">
+                                <i class="ri-briefcase-line text-gray-500"></i>
+                                Experience
+                            </h4>
+                            <div class="space-y-2">
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="experience" value="0-1">
+                                    <span>Fresher (0-1 yrs)</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="experience" value="1-3">
+                                    <span>1-3 years</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="experience" value="3-6">
+                                    <span>3-6 years</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="experience" value="6-10">
+                                    <span>6-10 years</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="experience" value="10+">
+                                    <span>10+ years</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Salary Range Filter -->
+                        <div class="mb-6">
+                            <h4
+                                class="filter-title text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2 pb-1">
+                                <i class="ri-money-rupee-circle-line text-gray-500"></i>
+                                Salary Range
+                            </h4>
+                            <div class="space-y-2">
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="salary" value="0-5">
+                                    <span>0-5 LPA</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="salary" value="5-10">
+                                    <span>5-10 LPA</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="salary" value="10-20">
+                                    <span>10-20 LPA</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="salary" value="20-35">
+                                    <span>20-35 LPA</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="salary" value="35+">
+                                    <span>35+ LPA</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Job Type Filter -->
+                        <div class="mb-6">
+                            <h4
+                                class="filter-title text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2 pb-1">
+                                <i class="ri-time-line text-gray-500"></i>
+                                Job Type
+                            </h4>
+                            <div class="space-y-2">
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="jobType" value="Full-time">
+                                    <span>Full-time</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="jobType" value="Hybrid">
+                                    <span>Hybrid</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="jobType" value="Remote">
+                                    <span>Remote</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="jobType" value="Internship">
+                                    <span>Internship</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Company Type Filter -->
+                        <div class="mb-6">
+                            <h4
+                                class="filter-title text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2 pb-1">
+                                <i class="ri-building-2-line text-gray-500"></i>
+                                Company Type
+                            </h4>
+                            <div class="space-y-2">
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="companyType" value="MNC">
+                                    <span>MNC</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="companyType" value="Startup">
+                                    <span>Startup</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="companyType" value="Product">
+                                    <span>Product</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="companyType" value="Fintech">
+                                    <span>Fintech</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="companyType" value="Fortune 500">
+                                    <span>Fortune 500</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="companyType" value="Banking">
+                                    <span>Banking</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="companyType" value="Edtech">
+                                    <span>Edtech</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Posted Date Filter -->
+                        <div class="mb-6">
+                            <h4
+                                class="filter-title text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2 pb-1">
+                                <i class="ri-calendar-line text-gray-500"></i>
+                                Posted Date
+                            </h4>
+                            <div class="space-y-2">
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="radio" name="postedDate" class="filter-radio w-4 h-4 accent-primary"
+                                        data-filter="postedDate" value="1">
+                                    <span>Today</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="radio" name="postedDate" class="filter-radio w-4 h-4 accent-primary"
+                                        data-filter="postedDate" value="7">
+                                    <span>Last 7 days</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="radio" name="postedDate" class="filter-radio w-4 h-4 accent-primary"
+                                        data-filter="postedDate" value="14">
+                                    <span>Last 14 days</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="radio" name="postedDate" class="filter-radio w-4 h-4 accent-primary"
+                                        data-filter="postedDate" value="30">
+                                    <span>Last 30 days</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Industry Filter -->
+                        <div class="mb-2">
+                            <h4
+                                class="filter-title text-sm font-semibold text-gray-800 mb-4 flex items-center gap-2 pb-1">
+                                <i class="ri-stack-line text-gray-500"></i>
+                                Industry
+                            </h4>
+                            <div class="space-y-2">
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="industry" value="Software">
+                                    <span>Software & IT</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="industry" value="Marketing">
+                                    <span>Marketing</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="industry" value="Sales">
+                                    <span>Sales</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="industry" value="Creative">
+                                    <span>Creative & Design</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="industry" value="Finance">
+                                    <span>Finance</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-2 cursor-pointer text-sm text-gray-600 hover:text-gray-900">
+                                    <input type="checkbox" class="filter-checkbox w-4 h-4 rounded accent-primary"
+                                        data-filter="industry" value="Operations">
+                                    <span>Operations</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Right Side - Job Listings -->
+                <section class="flex-1">
+                    <!-- Job Cards Container -->
+                    <div id="jobs-container" class="space-y-4">
+                        <!-- Jobs will be rendered here by JavaScript -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="empty-state" class="hidden text-center py-16 page-fade-in">
+                        <div class="w-32 h-32 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                            <i class="ri-search-eye-line text-5xl text-gray-300"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Oops! No jobs matched your search</h3>
+                        <p class="text-gray-500 mb-6">Try adjusting your filters or search terms</p>
+                        <button onclick="clearAllFilters()"
+                            class="bg-primary hover:bg-primary-hover text-white px-6 py-3 rounded-xl font-semibold text-sm transition-all">
+                            Clear All Filters
+                        </button>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div id="pagination" class="mt-8 flex items-center justify-center gap-2">
+                        <!-- Pagination will be rendered here by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-white py-12 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h3 class="text-2xl font-bold mb-4">CareerOS AI</h3>
+            <p class="text-gray-400 mb-6">Where skills meet opportunity</p>
+            <div class="flex justify-center gap-6 text-gray-400">
+                <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms</a>
+                <a href="#" class="hover:text-white transition-colors">Contact</a>
+            </div>
+            <p class="text-gray-500 text-sm mt-8">© 2026 CareerOS AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Main JavaScript -->
+    <script src="main.js"></script>
+
+    <!-- City and Skill Filter -->
+    <script src="js/city-skill-filter.js"></script>
+
+    <!-- Save Job -->
+    <script src="js/jobs-save.js"></script>
+
+    <!-- Set Default Location to India -->
+    <script>
+            (function () {
+                // Set default location immediately when page loads
+                function setDefaultLocation() {
+                    const locationInput = document.getElementById('location-input');
+                    if (locationInput && !locationInput.value.trim()) {
+                        locationInput.value = 'India';
+                    }
+                }
+
+                // Set immediately if DOM is ready
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', setDefaultLocation);
+                } else {
+                    setDefaultLocation();
+                }
+            })();
+    </script>
+
+    <!-- Auto-Search from Resume History or Category -->
+    <script>
+        (function () {
+            // Wait for DOM and main.js to be ready
+            window.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    autoSearchFromSource();
+                }, 300);
+            });
+
+            function autoSearchFromSource() {
+                // Check URL parameters first
+                const urlParams = new URLSearchParams(window.location.search);
+                // Check for 'search' parameter first (from home page), then 'q' (legacy)
+                let keywords = urlParams.get('search') || urlParams.get('q') || '';
+                // Use location from URL if provided, otherwise default to India
+                let location = urlParams.get('location') || 'India';
+                const category = urlParams.get('category') || '';
+
+                // If category is in URL, use it for search
+                if (category) {
+                    keywords = category;
+                } else {
+                    // Check for category-based search from localStorage
+                    const categorySearch = localStorage.getItem('autoSearchFromCategory');
+                    if (categorySearch === 'true') {
+                        keywords = localStorage.getItem('categoryJobKeywords') || keywords;
+                        // Use location from URL if provided, otherwise default to India
+                        location = urlParams.get('location') || 'India';
+                    } else {
+                        // Check for resume-based search
+                        const resumeSearch = localStorage.getItem('autoSearchFromResume');
+                        if (resumeSearch === 'true') {
+                            keywords = localStorage.getItem('resumeJobKeywords') || keywords;
+                            // Use location from URL if provided, otherwise default to India
+                            location = urlParams.get('location') || 'India';
+                        }
+                    }
+                }
+
+                // Use location from URL if provided, otherwise default to India
+                // (location is already set from URL parameter at the top of function)
+                if (!urlParams.get('location') && !localStorage.getItem('autoSearchFromResume')) {
+                    location = 'India';
+                }
+
+                // Ensure location input uses the determined location
+                const locationInput = document.getElementById('location-input');
+                if (locationInput) {
+                    locationInput.value = location;
+                }
+
+                // Get input elements
+                const searchInput = document.getElementById('search-input');
+                const searchBtn = document.getElementById('searchBtn');
+
+                // If we have keywords from URL/localStorage, auto-fill and search
+                if (keywords && (urlParams.has('search') || urlParams.has('q') || categorySearch === 'true' || localStorage.getItem('autoSearchFromResume') === 'true')) {
+                    const source = category ? `category "${category}"` : 'your resume skills';
+                    console.log(`🔍 Auto-searching from ${source}:`, { keywords, location });
+
+                    // Fill in the inputs
+                    if (searchInput) {
+                        searchInput.value = keywords;
+                        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+
+                    if (locationInput) {
+                        locationInput.value = location;
+                        locationInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    }
+
+                    // Show notification
+                    showAutoSearchNotification(keywords, location, category);
+
+                    // Trigger search using searchJobsOnce function
+                    setTimeout(() => {
+                        if (typeof searchJobsOnce === 'function') {
+                            searchJobsOnce(keywords, location);
+                        } else if (searchBtn) {
+                            searchBtn.click();
+                        } else if (typeof applyFilters === 'function') {
+                            applyFilters();
+                        }
+                    }, 200);
+
+                    // Clear localStorage flags after use
+                    localStorage.removeItem('resumeJobKeywords');
+                    localStorage.removeItem('resumeJobLocation');
+                    localStorage.removeItem('autoSearchFromResume');
+                    localStorage.removeItem('categoryJobKeywords');
+                    localStorage.removeItem('categoryJobLocation');
+                    localStorage.removeItem('autoSearchFromCategory');
+                } else {
+                    // No keywords from resume/category, but still auto-search with default
+                    // This ensures page always searches on load
+                    const defaultQuery = 'developer';
+                    // Use location from URL if provided, otherwise default to India
+                    const defaultLocation = urlParams.get('location') || 'India';
+
+                    // Set default values in inputs
+                    if (searchInput) {
+                        searchInput.value = defaultQuery;
+                    }
+                    if (locationInput) {
+                        locationInput.value = defaultLocation;
+                    }
+
+                    console.log('🔍 Auto-searching with defaults:', { query: defaultQuery, location: defaultLocation });
+
+                    // Trigger search with defaults
+                    setTimeout(() => {
+                        if (typeof searchJobsOnce === 'function') {
+                            searchJobsOnce(defaultQuery, defaultLocation);
+                        } else if (searchBtn) {
+                            searchBtn.click();
+                        }
+                    }, 300);
+                }
+            }
+
+            function showAutoSearchNotification(keywords, location, category) {
+                const message = category
+                    ? `Searching jobs in <strong>${category}</strong>`
+                    : `Searching jobs matching your resume skills: <strong>${keywords.split(',').slice(0, 3).join(', ')}</strong>`;
+
+                const bgColor = category
+                    ? 'linear-gradient(135deg, #3b82f6, #2563eb)'
+                    : 'linear-gradient(135deg, #22c55e, #16a34a)';
+
+                const notification = document.createElement('div');
+                notification.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 100px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: ${bgColor};
+                        color: white;
+                        padding: 14px 24px;
+                        border-radius: 12px;
+                        font-weight: 500;
+                        font-size: 14px;
+                        box-shadow: 0 10px 40px rgba(59, 130, 246, 0.35);
+                        z-index: 100000;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        animation: slideDown 0.4s ease;
+                        font-family: 'Manrope', sans-serif;
+                    ">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <span>${message}</span>
+                    </div>
+                    <style>
+                        @keyframes slideDown {
+                            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+                            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+                        }
+                    </style>
+                `;
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transition = 'opacity 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }, 4000);
+            }
+        })();
+    </script>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+    <script src="../components/auth-ui.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.AuthUI) {
+                const container = document.querySelector('.auth-ui-container');
+                if (container) {
+                    window.AuthUI.renderAuthUI(container, {
+                        signupUrl: container.getAttribute('data-signup-url') || '/signup/',
+                        profileUrl: container.getAttribute('data-profile-url') || '/graduate/dashboard/#view-profile',
+                        buttonClass: 'primary-btn cta-magnet bg-gray-900 text-white px-6 py-2.5 rounded-full text-sm font-semibold',
+                        avatarSize: 40
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

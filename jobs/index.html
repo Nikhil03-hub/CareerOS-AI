@@ -1,13 +1,1991 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Opening CareerOS Jobs</title>
-  <meta http-equiv="refresh" content="0; url=/client/src/jobs/jobs.html" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareerOS AI – Intelligent Career Intelligence Platform</title>
+    <base href="/client/src/jobs/">
+    <meta name="description"
+        content="CareerOS AI – AI-powered skill assessment, career discovery, and intelligent job matching platform.">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../styles/responsive.css">
+
+    <!-- Orbit Rotation Animation -->
+    <style>
+        @keyframes orbit-rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .profile-orbit-ring {
+            animation: orbit-rotate 32s linear infinite;
+            transform-origin: center center;
+        }
+
+        /* Ensure icons maintain their position during rotation */
+        .profile-orbit-icon {
+            transform-origin: center center;
+        }
+    </style>
+
+    <!-- Search Bar Smooth Animations -->
+    <style>
+        /* Search Bar Container Animation */
+        #hero-search-form {
+            animation: searchBarEaseOut 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+
+        @keyframes searchBarEaseOut {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Search Input Fields Animation */
+        #hero-search-form>div {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #hero-search-form>div:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Search Input Focus Animation */
+        .search-input {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .search-input:focus {
+            transform: scale(1.02);
+            outline: none;
+        }
+
+        /* Search Button Animation */
+        #hero-search-form button[type="submit"] {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: scale(1);
+        }
+
+        #hero-search-form button[type="submit"]:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 10px 30px rgba(75, 143, 208, 0.4);
+        }
+
+        #hero-search-form button[type="submit"]:active {
+            transform: scale(0.98) translateY(0);
+        }
+
+        /* Input Icons Animation */
+        #hero-search-form i[data-lucide] {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #hero-search-form>div:hover i[data-lucide] {
+            transform: scale(1.1);
+        }
+
+        /* Label Animation */
+        #hero-search-form label {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #hero-search-form>div:focus-within label {
+            color: #4b8fd0;
+            transform: translateY(-1px);
+        }
+    </style>
+
+    <!-- 3D Cascade Carousel Styles -->
+    <style>
+        /* --- Cascade Slider Styles --- */
+        .cascade-slider_container {
+            position: relative;
+            max-width: 1100px;
+            margin: 0 auto;
+            height: 320px;
+            z-index: 20;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: pan-y;
+        }
+
+        .cascade-slider_slides {
+            position: relative;
+            height: 100%;
+        }
+
+        .cascade-slider_item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%) scale(0.3);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0;
+            z-index: 1;
+            cursor: grab;
+            pointer-events: none;
+        }
+
+        .cascade-slider_item.now {
+            cursor: default;
+            pointer-events: auto;
+        }
+
+        .cascade-slider_item:active {
+            cursor: grabbing;
+        }
+
+        /* Slide Positioning Classes */
+        .cascade-slider_item.next {
+            left: 50%;
+            transform: translateY(-50%) translateX(-130%) scale(0.75);
+            opacity: 0.7;
+            z-index: 4;
+            pointer-events: auto;
+        }
+
+        .cascade-slider_item.prev {
+            left: 50%;
+            transform: translateY(-50%) translateX(30%) scale(0.75);
+            opacity: 0.7;
+            z-index: 4;
+            pointer-events: auto;
+        }
+
+        .cascade-slider_item.now {
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%) scale(1);
+            opacity: 1;
+            z-index: 5;
+        }
+
+        .cascade-slider_item.next2 {
+            left: 50%;
+            transform: translateY(-50%) translateX(-190%) scale(0.55);
+            opacity: 0.4;
+            z-index: 2;
+            pointer-events: auto;
+        }
+
+        .cascade-slider_item.prev2 {
+            left: 50%;
+            transform: translateY(-50%) translateX(90%) scale(0.55);
+            opacity: 0.4;
+            z-index: 2;
+            pointer-events: auto;
+        }
+
+        /* Arrows */
+        .cascade-slider_arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transform: translate(0, -50%);
+            width: 48px;
+            height: 48px;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .cascade-slider_arrow:hover {
+            background: white;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+            transform: translate(0, -50%) scale(1.1);
+        }
+
+        .cascade-slider_arrow-left {
+            left: 0;
+        }
+
+        .cascade-slider_arrow-right {
+            right: 0;
+        }
+
+        /* Cards inside carousel */
+        .cascade-slider_item .company-card-3d {
+            min-width: 320px;
+            max-width: 320px;
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .cascade-slider_item.now .company-card-3d {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .cascade-slider_item:not(.now) .company-card-3d {
+            filter: grayscale(0.3);
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 768px) {
+            .cascade-slider_container {
+                height: 300px;
+            }
+
+            .cascade-slider_item .company-card-3d {
+                min-width: 280px;
+                max-width: 280px;
+                padding: 20px;
+            }
+
+            .cascade-slider_item.next {
+                transform: translateY(-50%) translateX(-115%) scale(0.7);
+            }
+
+            .cascade-slider_item.prev {
+                transform: translateY(-50%) translateX(15%) scale(0.7);
+            }
+
+            .cascade-slider_item.next2,
+            .cascade-slider_item.prev2 {
+                opacity: 0;
+            }
+
+            .cascade-slider_arrow-left {
+                left: 5px;
+            }
+
+            .cascade-slider_arrow-right {
+                right: 5px;
+            }
+        }
+
+        @media screen and (min-width: 1100px) {
+            .cascade-slider_item.next {
+                transform: translateY(-50%) translateX(-145%) scale(0.75);
+            }
+
+            .cascade-slider_item.prev {
+                transform: translateY(-50%) translateX(45%) scale(0.75);
+            }
+
+            .cascade-slider_item.next2 {
+                transform: translateY(-50%) translateX(-210%) scale(0.55);
+            }
+
+            .cascade-slider_item.prev2 {
+                transform: translateY(-50%) translateX(110%) scale(0.55);
+            }
+        }
+    </style>
+    <!-- GSAP for Animations (Local Files) -->
+    <script src="js/gsap.min.js"></script>
+    <script src="js/ScrollTrigger.min.js"></script>
+    <!-- SplitText for Character Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <!-- Lenis Smooth Scroll -->
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.15/dist/lenis.css">
+    <script src="https://unpkg.com/lenis@1.3.15/dist/lenis.min.js"></script>
+
+    <!-- Initialize Lenis with GSAP ScrollTrigger Integration -->
+    <script>
+        // Initialize Lenis after all scripts are loaded
+        (function () {
+            function initLenis() {
+                // Check if Lenis is available
+                if (typeof Lenis === 'undefined') {
+                    // Retry after a short delay if Lenis isn't loaded yet
+                    setTimeout(initLenis, 100);
+                    return;
+                }
+
+                // Initialize a new Lenis instance for smooth scrolling
+                const lenis = new Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    orientation: 'vertical',
+                    gestureOrientation: 'vertical',
+                    smoothWheel: true,
+                    wheelMultiplier: 1,
+                    smoothTouch: false,
+                    touchMultiplier: 2,
+                    infinite: false,
+                });
+
+                // Synchronize Lenis scrolling with GSAP's ScrollTrigger plugin
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    // Register ScrollTrigger plugin
+                    gsap.registerPlugin(ScrollTrigger);
+
+                    // Synchronize Lenis scrolling with GSAP's ScrollTrigger plugin
+                    lenis.on('scroll', ScrollTrigger.update);
+
+                    // Add Lenis's requestAnimationFrame (raf) method to GSAP's ticker
+                    // This ensures Lenis's smooth scroll animation updates on each GSAP tick
+                    gsap.ticker.add((time) => {
+                        lenis.raf(time * 1000); // Convert time from seconds to milliseconds
+                    });
+
+                    // Disable lag smoothing in GSAP to prevent any delay in scroll animations
+                    gsap.ticker.lagSmoothing(0);
+                } else {
+                    // Fallback: Use requestAnimationFrame if GSAP is not available
+                    function raf(time) {
+                        lenis.raf(time);
+                        requestAnimationFrame(raf);
+                    }
+                    requestAnimationFrame(raf);
+                }
+
+                // Listen for the scroll event (optional, for debugging)
+                lenis.on('scroll', (e) => {
+                    // console.log(e); // Uncomment for debugging
+                });
+
+                // Make lenis available globally if needed
+                window.lenis = lenis;
+            }
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initLenis);
+            } else {
+                // DOM is already ready, but wait a bit for scripts to load
+                setTimeout(initLenis, 100);
+            }
+        })();
+    </script>
+
+    <!-- Search Container Page-Load Animation -->
+    <script>
+        (function () {
+            // Wait for GSAP to be loaded
+            function initSearchAnimation() {
+                if (typeof gsap === 'undefined') {
+                    setTimeout(initSearchAnimation, 50);
+                    return;
+                }
+
+                const searchContainer = document.querySelector('.search-container');
+                if (!searchContainer) return;
+
+                // Set initial state - invisible and positioned 30px below
+                gsap.set(searchContainer, {
+                    opacity: 0,
+                    y: 30
+                });
+
+                // Animate: fade in, move up, with smooth premium easing
+                gsap.to(searchContainer, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.3,
+                    ease: 'power3.out' // Smooth and premium easing
+                });
+            }
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initSearchAnimation);
+            } else {
+                // DOM is already ready
+                initSearchAnimation();
+            }
+        })();
+    </script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#4b8fd0',
+                        'primary-hover': '#3a7bb0',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 </head>
-<body>
-  <p>Opening <a href="/client/src/jobs/jobs.html">CareerOS jobs</a>...</p>
-  <script>location.replace("/client/src/jobs/jobs.html");</script>
+
+<body class="antialiased text-gray-900 bg-white selection:bg-blue-100 selection:text-blue-600">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="../pages/index.html" class="flex items-center gap-2 cursor-pointer group logo-link">
+                <span class="logo-text careeros-wordmark">CareerOS AI</span>
+            </a>
+
+            <!-- Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="../pages/index.html" class="text-sm font-medium text-primary transition-colors">Home</a>
+                <a href="jobs.html" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Find
+                    Jobs</a>
+                <a href="jobs.html?type=companies"
+                    class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Companies</a>
+                <a href="../pages/dashboard/index.html#view-messages"
+                    class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Inbox</a>
+            </div>
+
+            <!-- CTA -->
+            <div class="flex items-center gap-4">
+                <div class="auth-ui-container" data-signup-url="/signup/"
+                    data-profile-url="/graduate/dashboard/#view-profile"
+                    data-button-class="primary-btn cta-magnet bg-gray-900 text-white px-6 py-2.5 rounded-full text-sm font-semibold">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <main
+        class="section-hero relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden pb-20">
+
+        <!-- Cursor Spotlight Effect -->
+        <div class="cursor-spotlight"></div>
+
+        <!-- Video Background -->
+        <div class="video-bg-container">
+            <video autoplay loop muted playsinline id="bg-video">
+                <source src="videos/g29iLMJGXRrifOWNoX4YAah8jE.mp4" type="video/mp4">
+            </video>
+            <!-- Soft White Overlay for Glossy Effect -->
+            <div class="absolute inset-0 bg-gradient-to-b from-white/40 via-white/20 to-white/90"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative z-10 w-full max-w-5xl mx-auto px-6 text-center flex flex-col items-center">
+
+            <!-- Badge -->
+            <div class="hero-anim mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-gray-200 shadow-sm"
+                data-fade-in data-duration="0.6" data-delay="0.1">
+                <i data-lucide="sparkles" class="w-4 h-4 text-primary"></i>
+                <span class="text-xs font-semibold text-gray-600 uppercase tracking-wide">Welcome to CareerOS AI</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="hero-anim hero-title text-5xl md:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight mb-6"
+                data-scroll-reveal data-stagger="0.03" data-duration="0.8">
+                Find your perfect job,<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600">faster and
+                    smarter.</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="hero-anim hero-subtitle text-lg md:text-xl text-gray-500 max-w-2xl leading-relaxed mb-12"
+                data-text-reveal data-duration="0.8" data-delay="0.2">
+                Discover AI-powered job search that understands your skills, finds the right opportunities, and helps
+                you get hired—without the struggle.
+            </p>
+
+            <!-- Search Bar (Premium Glassmorphism) -->
+            <div class="search-container w-full max-w-4xl">
+                <form id="hero-search-form"
+                    class="hero-anim hero-search w-full glass-panel rounded-[40px] p-2 flex flex-col md:flex-row items-center gap-2 transition-all duration-300">
+
+                    <!-- Input 1: Skills -->
+                    <div
+                        class="flex-1 flex items-center gap-3 px-6 py-4 border-b md:border-b-0 md:border-r border-gray-100 w-full">
+                        <i data-lucide="search" class="w-5 h-5 text-gray-400"></i>
+                        <div class="flex flex-col items-start w-full">
+                            <label
+                                class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">What</label>
+                            <input type="text" id="hero-search-keyword" placeholder="Job title, skills, or company"
+                                class="search-input text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Input 2: Experience -->
+                    <div
+                        class="flex-1 flex items-center gap-3 px-6 py-4 border-b md:border-b-0 md:border-r border-gray-100 w-full cursor-pointer group">
+                        <i data-lucide="briefcase"
+                            class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                        <div class="flex flex-col items-start w-full">
+                            <label
+                                class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Experience</label>
+                            <select id="hero-search-experience"
+                                class="search-input text-sm font-medium text-gray-900 bg-transparent cursor-pointer w-full">
+                                <option value="">Any Experience</option>
+                                <option value="0-1">0-1 Years</option>
+                                <option value="1-3">1-3 Years</option>
+                                <option value="3-6">3-6 Years</option>
+                                <option value="6-10">6-10 Years</option>
+                                <option value="10+">10+ Years</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Input 3: Location -->
+                    <div class="flex-1 flex items-center gap-3 px-6 py-4 w-full">
+                        <i data-lucide="map-pin" class="w-5 h-5 text-gray-400"></i>
+                        <div class="flex flex-col items-start w-full">
+                            <label
+                                class="text-[10px] uppercase font-bold text-gray-400 tracking-wider mb-0.5">Where</label>
+                            <input type="text" id="hero-search-location" placeholder="City, state, or remote"
+                                class="search-input text-sm">
+                        </div>
+                    </div>
+
+                    <!-- Search Button -->
+                    <button type="submit"
+                        class="primary-btn cta-magnet bg-primary hover:bg-primary-hover text-white px-8 py-4 rounded-full font-bold text-base flex items-center gap-2 w-full md:w-auto justify-center shadow-lg">
+                        <span class="cta-inner flex items-center gap-2">
+                            Search
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Trust / Social Proof -->
+            <div
+                class="hero-anim hero-trust mt-16 flex items-center justify-center gap-6 bg-transparent text-gray-900 py-4 px-4">
+                <!-- Avatar Stack -->
+                <div class="flex -space-x-4">
+                    <div
+                        class="w-10 h-10 rounded-full overflow-hidden ring-1 ring-offset-2 ring-offset-white ring-blue-900">
+                        <img src="images/avatar-1.jpg" alt="Avatar 1" class="w-full h-full object-cover" loading="lazy"
+                            decoding="async">
+                    </div>
+                    <div
+                        class="w-10 h-10 rounded-full overflow-hidden ring-1 ring-offset-2 ring-offset-white ring-yellow-500">
+                        <img src="images/avatar-2.jpg" alt="Avatar 2" class="w-full h-full object-cover" loading="lazy"
+                            decoding="async">
+                    </div>
+                    <div
+                        class="w-10 h-10 rounded-full overflow-hidden ring-1 ring-offset-2 ring-offset-white ring-blue-500">
+                        <img src="images/avatar-3.jpg" alt="Avatar 3" class="w-full h-full object-cover" loading="lazy"
+                            decoding="async">
+                    </div>
+                    <div
+                        class="w-10 h-10 rounded-full overflow-hidden ring-1 ring-offset-2 ring-offset-white ring-red-500">
+                        <img src="images/avatar-4.jpg" alt="Avatar 4" class="w-full h-full object-cover" loading="lazy"
+                            decoding="async">
+                    </div>
+                    <div
+                        class="w-10 h-10 rounded-full overflow-hidden ring-1 ring-offset-2 ring-offset-white ring-green-500">
+                        <img src="images/avatar-1.jpg" alt="Avatar 5" class="w-full h-full object-cover" loading="lazy"
+                            decoding="async">
+                    </div>
+                </div>
+
+                <!-- Rating and Text -->
+                <div class="flex flex-col items-start gap-1">
+                    <!-- Star Rating -->
+                    <div class="flex gap-1 text-yellow-400">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <!-- Text with CountUp -->
+                    <span class="text-gray-900 text-xs md:text-sm font-medium">
+                        Trusted by
+                        <span id="countup-number"
+                            class="ml-1 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">0</span>+
+                        <a class="underline text-primary hover:text-primary-hover ml-1" href="/pricing">Pro users</a>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Premium Opportunities Section -->
+    <section class="relative w-full px-6 pt-10 md:pt-12 pb-24 overflow-hidden">
+
+        <div class="section-video-wrapper" aria-hidden="true">
+            <video autoplay loop muted playsinline>
+                <source src="videos/uPAhBrvT4TotZDInIkbkptDcuqI.mp4" type="video/mp4">
+            </video>
+            <div class="section-video-overlay"></div>
+        </div>
+
+        <div
+            class="glass-premium premium-card mx-auto max-w-[1250px] p-10 md:p-14 rounded-[36px] shadow-lg backdrop-saturate-150 relative z-10 space-y-16">
+            <div id="categories-section" class="section-categories">
+                <div class="section-header text-center mb-8">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900" data-scroll-reveal data-stagger="0.05"
+                        data-duration="0.8">Explore Categories</h2>
+                    <p class="text-gray-500 mt-2" data-text-reveal data-duration="0.8" data-delay="0.2">12 curated
+                        tracks to match your talent & ambition</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-7" data-stagger-children
+                    data-stagger="0.05" data-duration="0.6">
+                    <a href="jobs.html?jobType=Remote"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-600"><i class="ri-earth-fill text-xl"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800 text-base">Remote</span>
+                    </a>
+
+                    <a href="jobs.html?companyType=MNC"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-purple-100 text-purple-600"><i
+                                class="ri-building-2-fill text-xl"></i></div>
+                        <span class="font-semibold text-gray-800 text-base">MNC</span>
+                    </a>
+
+                    <a href="jobs.html?industry=Software"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-indigo-100 text-indigo-600"><i
+                                class="ri-code-s-slash-fill text-xl"></i></div>
+                        <span class="font-semibold text-gray-800 text-base">Software & IT</span>
+                    </a>
+
+                    <a href="jobs.html?industry=Engineering"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-slate-200 text-slate-600"><i class="ri-cpu-fill text-xl"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800 text-base">Engineering</span>
+                    </a>
+
+                    <a href="jobs.html?companyType=Startup"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-600"><i class="ri-rocket-fill text-xl"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800 text-base">Startup</span>
+                    </a>
+
+                    <a href="jobs.html?experience=0-1"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-green-100 text-green-600"><i
+                                class="ri-graduation-cap-fill text-xl"></i></div>
+                        <span class="font-semibold text-gray-800 text-base">Internship</span>
+                    </a>
+
+                    <a href="jobs.html?industry=Supply Chain"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-600"><i
+                                class="ri-truck-fill text-xl"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800 text-base">Supply Chain</span>
+                    </a>
+
+                    <a href="jobs.html?companyType=Fortune 500"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-red-100 text-red-600"><i class="ri-line-chart-fill text-xl"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800 text-base">Fortune 500</span>
+                    </a>
+
+                    <a href="jobs.html?industry=Sales"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-emerald-100 text-emerald-600"><i
+                                class="ri-money-dollar-circle-fill text-xl"></i></div>
+                        <span class="font-semibold text-gray-800 text-base">Sales</span>
+                    </a>
+
+                    <a href="jobs.html?industry=Project Management"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-teal-100 text-teal-600"><i class="ri-task-fill text-xl"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800 text-base">Project Mgmt</span>
+                    </a>
+
+                    <a href="jobs.html?industry=Marketing"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-pink-100 text-pink-600"><i
+                                class="ri-megaphone-fill text-xl"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800 text-base">Marketing</span>
+                    </a>
+
+                    <a href="jobs.html?industry=Creative"
+                        class="cat-card cat-anim flex items-center gap-4 p-5 w-full rounded-2xl bg-white/80 shadow-sm border border-white/70 backdrop-blur-md
+                    cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                        <div class="p-3 rounded-full bg-rose-100 text-rose-600"><i
+                                class="ri-bubble-chart-fill text-xl"></i>
+                        </div>
+                        <span class="font-semibold text-gray-800 text-base">Creative</span>
+                    </a>
+                </div>
+            </div>
+
+            <div id="companies-section" class="section-companies space-y-8">
+                <div class="section-header flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900" data-scroll-reveal
+                            data-stagger="0.04" data-duration="0.8">Top companies hiring now</h2>
+                        <p class="text-gray-500 mt-2" data-text-reveal data-duration="0.8" data-delay="0.2">Curated
+                            cohorts with real-time openings across industries</p>
+                    </div>
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <span>Swipe to explore</span>
+                        <div class="flex gap-1">
+                            <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+                            <span class="w-2 h-2 rounded-full bg-gray-400"></span>
+                            <span class="w-2 h-2 rounded-full bg-gray-300"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3D Cascade Carousel -->
+                <div class="cascade-slider_container" id="companies-carousel">
+                    <div class="cascade-slider_slides">
+                        <!-- 1. MNCs -->
+                        <div class="cascade-slider_item" data-filter="companyType=MNC">
+                            <div class="company-card-3d group">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        MNCs</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">2.2K+ are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img src="images/TCS.png" alt="TCS"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/accenture-logo-png_seeklogo-369971.png" alt="Accenture"></div>
+                                    <div class="company-logo-box"><img src="images/IBM.png" alt="IBM"></div>
+                                    <div class="company-logo-box"><img src="images/INFOSYS.jpg" alt="Infosys"></div>
+                                    <div class="company-logo-box"><img src="images/DELOITEE.png" alt="Deloitte"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Product -->
+                        <div class="cascade-slider_item" data-filter="companyType=Product">
+                            <div class="company-card-3d group">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Product</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">1.2K+ are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img src="images/GOOGLE.webp" alt="Google"></div>
+                                    <div class="company-logo-box"><img src="images/MICORSOFT.png" alt="Microsoft"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/zoho-corporation-logo-png_seeklogo-506148.png" alt="Zoho"></div>
+                                    <div class="company-logo-box"><img src="images/MICORSOFT.png" alt="Atlassian"></div>
+                                    <div class="company-logo-box"><img src="images/GOOGLE.webp" alt="Adobe"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Banking & Finance -->
+                        <div class="cascade-slider_item" data-filter="companyType=Banking">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Banking & Finance</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">422 are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img
+                                            src="images/hdfc-bank-logo-png_seeklogo-184652.png" alt="HDFC"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/icici-bank-logo-png_seeklogo-304214.png" alt="ICICI"></div>
+                                    <div class="company-logo-box"><img src="images/sbi-new-logo-png_seeklogo-304943.png"
+                                            alt="SBI"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/axis-bank-logo-png_seeklogo-14775.png" alt="Axis"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/jp-morgan-logo-png_seeklogo-504411.png" alt="JPMorgan"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Hospitality -->
+                        <div class="cascade-slider_item" data-filter="industry=Hospitality">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Hospitality</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">93 are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img
+                                            src="images/taj-palace-hotel-logo-png_seeklogo-135401.png" alt="Taj"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/oyo-rooms-logo-png_seeklogo-443633.png" alt="OYO"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/itc-limited-logo-png_seeklogo-74137.png" alt="ITC"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/hyatt-regency-logo-png_seeklogo-201326.png" alt="Hyatt"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/taj-palace-hotel-logo-png_seeklogo-135401.png" alt="Marriott">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 5. Fintech -->
+                        <div class="cascade-slider_item" data-filter="companyType=Fintech">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Fintech</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">136 are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img
+                                            src="images/razorpay-logo-png_seeklogo-409477.png" alt="Razorpay"></div>
+                                    <div class="company-logo-box"><img src="images/paytm-logo-png_seeklogo-305549.png"
+                                            alt="Paytm"></div>
+                                    <div class="company-logo-box"><img src="images/phonepe-logo-png_seeklogo-339867.png"
+                                            alt="PhonePe"></div>
+                                    <div class="company-logo-box"><img src="images/cred-logo-png_seeklogo-454844.png"
+                                            alt="CRED"></div>
+                                    <div class="company-logo-box"><img src="images/groww-logo-png_seeklogo-430536.png"
+                                            alt="Groww"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6. FMCG & Retail -->
+                        <div class="cascade-slider_item" data-filter="industry=Retail">
+                            <div class="company-card-3d group">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        FMCG & Retail</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">161 are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img
+                                            src="images/unilever-logo-png_seeklogo-145123.png" alt="HUL"></div>
+                                    <div class="company-logo-box"><img src="images/nestle-logo-png_seeklogo-98336.png"
+                                            alt="Nestle"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/itc-limited-logo-png_seeklogo-74137.png" alt="ITC"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/reliance-industries-limited-logo-png_seeklogo-200610.png"
+                                            alt="Reliance"></div>
+                                    <div class="company-logo-box"><img src="images/tata-logo-png_seeklogo-135878.png"
+                                            alt="Tata"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 7. Startups -->
+                        <div class="cascade-slider_item" data-filter="companyType=Startup">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Startups</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">764 are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img src="images/zomato-logo-png_seeklogo-354338.png"
+                                            alt="Zomato"></div>
+                                    <div class="company-logo-box"><img src="images/swiggy-logo-png_seeklogo-348257.png"
+                                            alt="Swiggy"></div>
+                                    <div class="company-logo-box"><img src="images/meesho-logo-png_seeklogo-507117.png"
+                                            alt="Meesho"></div>
+                                    <div class="company-logo-box"><img src="images/dunzo-logo-png_seeklogo-411264.png"
+                                            alt="Dunzo"></div>
+                                    <div class="company-logo-box"><img src="images/zepto-logo-png_seeklogo-622950.png"
+                                            alt="Nykaa"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 8. Edtech -->
+                        <div class="cascade-slider_item" data-filter="companyType=Edtech">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Edtech</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">162 are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img src="images/byjus-logo-png_seeklogo-364776.png"
+                                            alt="BYJUS"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/unacademy-logo-png_seeklogo-400820.png" alt="Unacademy"></div>
+                                    <div class="company-logo-box"><img src="images/vedantu-logo-png_seeklogo-487973.png"
+                                            alt="Vedantu"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/physics-wallah-logo-png_seeklogo-474856.png" alt="PW"></div>
+                                    <div class="company-logo-box"><img src="images/upgrad-logo-png_seeklogo-487687.png"
+                                            alt="UpGrad"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 9. Healthcare -->
+                        <div class="cascade-slider_item" data-filter="industry=Healthcare">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Healthcare</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">657 are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img
+                                            src="images/apollo-hospitals-logo-png_seeklogo-264932.png" alt="Apollo">
+                                    </div>
+                                    <div class="company-logo-box"><img
+                                            src="images/apollo-hospitals-logo-png_seeklogo-264932.png" alt="Manipal">
+                                    </div>
+                                    <div class="company-logo-box"><img src="images/practo-logo-png_seeklogo-347987.png"
+                                            alt="Practo"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/fortis-hospitals-logo-png_seeklogo-214982.png" alt="Fortis">
+                                    </div>
+                                    <div class="company-logo-box"><img
+                                            src="images/medanta-the-medicity-logo-png_seeklogo-304894.png"
+                                            alt="Medanta"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 10. Unicorns -->
+                        <div class="cascade-slider_item" data-filter="companyType=Startup">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Unicorns</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">92 are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img src="images/zepto-logo-png_seeklogo-622950.png"
+                                            alt="Zepto"></div>
+                                    <div class="company-logo-box"><img src="images/cred-logo-png_seeklogo-454844.png"
+                                            alt="CRED"></div>
+                                    <div class="company-logo-box"><img src="images/ola-logo-png_seeklogo-306525.png"
+                                            alt="Ola"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/lenskart-logo-png_seeklogo-640601.png" alt="Lenskart"></div>
+                                    <div class="company-logo-box"><img src="images/meesho-logo-png_seeklogo-507117.png"
+                                            alt="Meesho"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 11. Internet -->
+                        <div class="cascade-slider_item" data-filter="industry=Software">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Internet</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">241 are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img src="images/amazon-logo-png_seeklogo-286206.png"
+                                            alt="Amazon"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/flipkart-logo-png_seeklogo-318406.png" alt="Flipkart"></div>
+                                    <div class="company-logo-box"><img src="images/jio-logo-png_seeklogo-305444.png"
+                                            alt="Jio"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/youtube-icon-logo-png_seeklogo-270054.png" alt="YouTube"></div>
+                                    <div class="company-logo-box"><img src="images/amazon-logo-png_seeklogo-286206.png"
+                                            alt="RedBus"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 12. Manufacturing -->
+                        <div class="cascade-slider_item" data-filter="industry=Manufacturing">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Manufacturing</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">1K+ are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img src="images/tata-logo-png_seeklogo-135878.png"
+                                            alt="LT"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/tata-motors-limited-logo-png_seeklogo-289637.png"
+                                            alt="Tata Motors"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/mahindra-logo-png_seeklogo-247894.png" alt="Mahindra"></div>
+                                    <div class="company-logo-box"><img src="images/bosch-logo-png_seeklogo-21523.png"
+                                            alt="Bosch"></div>
+                                    <div class="company-logo-box"><img src="images/samsung-logo-png_seeklogo-122017.png"
+                                            alt="Samsung"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 13. Fortune 500 -->
+                        <div class="cascade-slider_item" data-filter="companyType=Fortune 500">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        Fortune 500</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">116 are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img src="images/apple-logo-png_seeklogo-272825.png"
+                                            alt="Apple"></div>
+                                    <div class="company-logo-box"><img src="images/amazon-logo-png_seeklogo-286206.png"
+                                            alt="Amazon"></div>
+                                    <div class="company-logo-box"><img src="images/MICORSOFT.png" alt="Microsoft"></div>
+                                    <div class="company-logo-box"><img src="images/walmart-logo-png_seeklogo-151324.png"
+                                            alt="Walmart"></div>
+                                    <div class="company-logo-box"><img src="images/GOOGLE.webp" alt="Alphabet"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 14. B2C -->
+                        <div class="cascade-slider_item" data-filter="industry=Software">
+                            <div class="company-card-3d group">
+
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3
+                                        class="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                        B2C</h3>
+                                    <i data-lucide="chevron-right"
+                                        class="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"></i>
+                                </div>
+                                <p class="text-sm text-gray-500 mb-6">2.4K+ are actively hiring</p>
+                                <div class="flex gap-3">
+                                    <div class="company-logo-box"><img src="images/amazon-logo-png_seeklogo-286206.png"
+                                            alt="Amazon"></div>
+                                    <div class="company-logo-box"><img
+                                            src="images/flipkart-logo-png_seeklogo-318406.png" alt="Flipkart"></div>
+                                    <div class="company-logo-box"><img src="images/swiggy-logo-png_seeklogo-348257.png"
+                                            alt="Swiggy"></div>
+                                    <div class="company-logo-box"><img src="images/zomato-logo-png_seeklogo-354338.png"
+                                            alt="Zomato"></div>
+                                    <div class="company-logo-box"><img src="images/zepto-logo-png_seeklogo-622950.png"
+                                            alt="BigBasket"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Arrows -->
+                    <span class="cascade-slider_arrow cascade-slider_arrow-left" id="carousel-prev">
+                        <i data-lucide="chevron-left" class="w-6 h-6 text-gray-700"></i>
+                    </span>
+                    <span class="cascade-slider_arrow cascade-slider_arrow-right" id="carousel-next">
+                        <i data-lucide="chevron-right" class="w-6 h-6 text-gray-700"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Smart Career Profile Hero -->
+            <div id="profile-hero" class="flex flex-col items-center text-center gap-10 md:gap-12 pt-8">
+                <!-- Logo Orbit -->
+                <div class="relative w-full flex items-center justify-center">
+                    <div class="profile-orbit relative flex items-center justify-center">
+                        <!-- Glow -->
+                        <div
+                            class="absolute inset-[-35%] bg-gradient-to-b from-white/85 via-white/40 to-white/10 rounded-full blur-3xl opacity-90 pointer-events-none">
+                        </div>
+
+                        <!-- Orbit ring with icons -->
+                        <div class="profile-orbit-ring">
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-stack-fill text-[16px] text-blue-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-briefcase-4-fill text-[16px] text-sky-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-code-s-slash-fill text-[16px] text-indigo-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-pie-chart-2-fill text-[16px] text-emerald-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-bubble-chart-fill text-[16px] text-rose-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-brain-fill text-[16px] text-violet-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-global-fill text-[16px] text-teal-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-user-star-fill text-[16px] text-amber-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-lightbulb-flash-fill text-[16px] text-fuchsia-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-team-fill text-[16px] text-cyan-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-rocket-2-fill text-[16px] text-blue-500"></i>
+                            </div>
+                            <div
+                                class="profile-orbit-icon bg-white/70 shadow-sm border border-white/70 rounded-2xl p-2">
+                                <i class="ri-line-chart-fill text-[16px] text-sky-500"></i>
+                            </div>
+                        </div>
+
+                        <!-- Main Logo -->
+                        <div id="mainLogo"
+                            class="relative w-[141px] h-[141px] md:w-[169px] md:h-[169px] rounded-full bg-white/80 border border-white/70 shadow-[0_18px_60px_rgba(0,0,0,0.08)] flex items-center justify-center overflow-hidden">
+                            <!-- Blue glow ring -->
+                            <div
+                                class="absolute inset-[-8%] rounded-full bg-[radial-gradient(circle,_rgba(75,143,208,0.15)_0%,_rgba(75,143,208,0.05)_50%,_transparent_70%)] pointer-events-none">
+                            </div>
+                            <div
+                                class="absolute inset-[18%] rounded-full border border-white/80 shadow-inner shadow-white/80 opacity-80">
+                            </div>
+                            <div
+                                class="relative w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-gradient-to-br from-sky-500 via-blue-600 to-slate-900 flex items-center justify-center">
+                                <span class="text-white font-extrabold text-3xl tracking-tight select-none">DX</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Badge + Text + CTA -->
+                <div class="max-w-3xl mx-auto flex flex-col items-center gap-5">
+                    <!-- Badge above heading -->
+                    <div class="profile-text inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/85 border border-white/80 shadow-sm text-xs md:text-sm text-[#4B5563] font-medium"
+                        data-fade-in data-duration="0.6" data-delay="0.1">
+                        <span class="inline-flex w-5 h-5 items-center justify-center rounded-full bg-blue-100">
+                            <i class="ri-sparkling-2-fill text-[13px] text-blue-500"></i>
+                        </span>
+                        <span>No Complexity. Just Opportunities.</span>
+                    </div>
+
+                    <h2 class="profile-text text-3xl md:text-5xl font-extrabold tracking-tight text-gray-900 leading-tight"
+                        data-scroll-reveal data-stagger="0.03" data-duration="0.8">
+                        Build Your <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-slate-800 to-gray-700">Smart
+                            Career Profile</span>
+                    </h2>
+                    <p class="profile-text text-base md:text-lg text-gray-500 leading-relaxed" data-text-reveal
+                        data-duration="0.8" data-delay="0.2">
+                        Stand out with a beautifully crafted profile that highlights your skills, experience and
+                        ambitions —
+                        and unlocks the best opportunities instantly.
+                    </p>
+                    <div class="pt-2" data-scale-in data-duration="0.6" data-delay="0.3" data-scale="0.9">
+                        <a href="/graduate/dashboard/#view-upload-resume"
+                            class="profile-cta cta-magnet inline-flex items-center justify-center px-8 md:px-10 py-3.5 md:py-4 rounded-full bg-[#4b8fd0] text-white font-semibold text-sm md:text-base shadow-lg shadow-blue-200 hover:bg-[#3a7bb0] transition-all duration-300">
+                            <span class="cta-inner inline-flex items-center gap-2">
+                                Create Profile
+                                <span class="text-lg">→</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer id="contact" class="footer-section bg-gray-900 text-white py-16 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold mb-4">CareerOS AI</h3>
+                <p class="text-gray-400 text-lg mb-6">Where skills meet opportunity</p>
+                <div class="flex justify-center gap-8 text-gray-400">
+                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms</a>
+                    <a href="#" class="hover:text-white transition-colors">Contact</a>
+                </div>
+            </div>
+            <p class="text-gray-500 text-sm text-center">© 2026 CareerOS AI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="click-spark.js"></script>
+    <script src="script.js"></script>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        // Initialize icons on page load
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
+        // Re-initialize icons after DOM updates
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+
+    <!-- CountUp Animation Script -->
+    <script>
+        (function () {
+            // CountUp function with gradient animation
+            function countUp(element, target, duration = 2000, separator = ',', suffix = '+') {
+                const start = 0;
+                const increment = target / (duration / 16); // 60fps
+                let current = start;
+                const elementEl = typeof element === 'string' ? document.getElementById(element) : element;
+
+                if (!elementEl) return;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+
+                    // Format number with separator
+                    const formatted = Math.floor(current).toLocaleString('en-US');
+                    elementEl.textContent = formatted + suffix;
+                }, 16); // ~60fps
+            }
+
+            // Intersection Observer to trigger animation when element is visible
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const countupElement = document.getElementById('countup-number');
+                        if (countupElement && !countupElement.dataset.animated) {
+                            countupElement.dataset.animated = 'true';
+                            countUp('countup-number', 2500, 2000, ',', '+');
+                            observer.unobserve(entry.target);
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            // Observe the trusted section
+            const trustedSection = document.querySelector('.hero-trust');
+            if (trustedSection) {
+                observer.observe(trustedSection);
+            }
+        })();
+    </script>
+
+    <!-- Scroll Reveal & Text Reveal Animations -->
+    <script>
+        (function () {
+            // Register ScrollTrigger plugin
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Helper function to split text into words
+            function splitTextIntoWords(element) {
+                const text = element.textContent;
+                const words = text.split(/(\s+)/);
+                element.innerHTML = '';
+
+                words.forEach((word, index) => {
+                    if (word.trim()) {
+                        const span = document.createElement('span');
+                        span.className = 'word-reveal';
+                        span.style.display = 'inline-block';
+                        span.style.opacity = '0';
+                        span.style.filter = 'blur(4px)';
+                        span.style.transform = 'translateY(20px)';
+                        span.textContent = word;
+                        element.appendChild(span);
+                    } else {
+                        element.appendChild(document.createTextNode(word));
+                    }
+                });
+            }
+
+            // Helper function to split text into characters
+            function splitTextIntoChars(element) {
+                const text = element.textContent;
+                const chars = text.split('').map(char => char === ' ' ? '\u00A0' : char);
+                element.innerHTML = '';
+
+                chars.forEach((char, index) => {
+                    const span = document.createElement('span');
+                    span.className = 'char-reveal';
+                    span.style.display = 'inline-block';
+                    span.style.opacity = '0';
+                    span.style.transform = 'scale(0.95)';
+                    span.textContent = char;
+                    element.appendChild(span);
+                });
+            }
+
+            // Scroll Reveal Animation - Word by Word
+            function initScrollReveal() {
+                // Find all elements with data-scroll-reveal attribute
+                document.querySelectorAll('[data-scroll-reveal]').forEach((el) => {
+                    splitTextIntoWords(el);
+
+                    const words = el.querySelectorAll('.word-reveal');
+                    const stagger = parseFloat(el.dataset.stagger) || 0.05;
+                    const duration = parseFloat(el.dataset.duration) || 0.8;
+
+                    gsap.fromTo(words,
+                        {
+                            opacity: 0.1,
+                            filter: 'blur(4px)',
+                            y: 20
+                        },
+                        {
+                            opacity: 1,
+                            filter: 'blur(0px)',
+                            y: 0,
+                            duration: duration,
+                            stagger: stagger,
+                            ease: 'power2.out',
+                            scrollTrigger: {
+                                trigger: el,
+                                start: 'top 80%',
+                                end: 'bottom 20%',
+                                toggleActions: 'play none none reverse'
+                            }
+                        }
+                    );
+                });
+            }
+
+            // Text Reveal Animation - Fade in with blur
+            function initTextReveal() {
+                document.querySelectorAll('[data-text-reveal]').forEach((el) => {
+                    const duration = parseFloat(el.dataset.duration) || 0.8;
+                    const delay = parseFloat(el.dataset.delay) || 0;
+
+                    gsap.fromTo(el,
+                        {
+                            opacity: 0,
+                            filter: 'blur(4px)',
+                            y: 20
+                        },
+                        {
+                            opacity: 1,
+                            filter: 'blur(0px)',
+                            y: 0,
+                            duration: duration,
+                            delay: delay,
+                            ease: 'power2.out',
+                            scrollTrigger: {
+                                trigger: el,
+                                start: 'top 80%',
+                                end: 'bottom 20%',
+                                toggleActions: 'play none none reverse'
+                            }
+                        }
+                    );
+                });
+            }
+
+            // Typing Text Animation - Character by Character
+            function initTypingText() {
+                document.querySelectorAll('[data-typing-text]').forEach((el) => {
+                    splitTextIntoChars(el);
+
+                    const chars = el.querySelectorAll('.char-reveal');
+                    const duration = parseFloat(el.dataset.duration) || 2;
+                    const delay = parseFloat(el.dataset.delay) || 0;
+                    const charDelay = duration / chars.length;
+
+                    chars.forEach((char, index) => {
+                        gsap.to(char, {
+                            opacity: 1,
+                            scale: 1,
+                            duration: 0.3,
+                            delay: delay + (index * charDelay),
+                            ease: 'easeInOut'
+                        });
+                    });
+                });
+            }
+
+            // Fade In Animation
+            function initFadeIn() {
+                document.querySelectorAll('[data-fade-in]').forEach((el) => {
+                    const duration = parseFloat(el.dataset.duration) || 0.8;
+                    const delay = parseFloat(el.dataset.delay) || 0;
+
+                    gsap.fromTo(el,
+                        { opacity: 0 },
+                        {
+                            opacity: 1,
+                            duration: duration,
+                            delay: delay,
+                            ease: 'power2.out',
+                            scrollTrigger: {
+                                trigger: el,
+                                start: 'top 85%',
+                                toggleActions: 'play none none reverse'
+                            }
+                        }
+                    );
+                });
+            }
+
+            // Scale In Animation
+            function initScaleIn() {
+                document.querySelectorAll('[data-scale-in]').forEach((el) => {
+                    const duration = parseFloat(el.dataset.duration) || 0.8;
+                    const delay = parseFloat(el.dataset.delay) || 0;
+                    const scale = parseFloat(el.dataset.scale) || 0.8;
+
+                    gsap.fromTo(el,
+                        {
+                            opacity: 0,
+                            scale: scale,
+                            filter: 'blur(10px)'
+                        },
+                        {
+                            opacity: 1,
+                            scale: 1,
+                            filter: 'blur(0px)',
+                            duration: duration,
+                            delay: delay,
+                            ease: 'power2.out',
+                            scrollTrigger: {
+                                trigger: el,
+                                start: 'top 80%',
+                                toggleActions: 'play none none reverse'
+                            }
+                        }
+                    );
+                });
+            }
+
+            // Slide In Animation
+            function initSlideIn() {
+                document.querySelectorAll('[data-slide-in]').forEach((el) => {
+                    const direction = el.dataset.direction || 'left';
+                    const duration = parseFloat(el.dataset.duration) || 0.8;
+                    const delay = parseFloat(el.dataset.delay) || 0;
+
+                    let fromX = 0, fromY = 0;
+                    if (direction === 'left') fromX = -50;
+                    else if (direction === 'right') fromX = 50;
+                    else if (direction === 'up') fromY = 50;
+                    else if (direction === 'down') fromY = -50;
+
+                    gsap.fromTo(el,
+                        {
+                            opacity: 0,
+                            x: fromX,
+                            y: fromY
+                        },
+                        {
+                            opacity: 1,
+                            x: 0,
+                            y: 0,
+                            duration: duration,
+                            delay: delay,
+                            ease: 'power2.out',
+                            scrollTrigger: {
+                                trigger: el,
+                                start: 'top 80%',
+                                toggleActions: 'play none none reverse'
+                            }
+                        }
+                    );
+                });
+            }
+
+            // Stagger Children Animation
+            function initStaggerChildren() {
+                document.querySelectorAll('[data-stagger-children]').forEach((container) => {
+                    const children = container.querySelectorAll(':scope > *');
+                    const stagger = parseFloat(container.dataset.stagger) || 0.1;
+                    const duration = parseFloat(container.dataset.duration) || 0.6;
+
+                    gsap.fromTo(children,
+                        {
+                            opacity: 0,
+                            y: 30,
+                            filter: 'blur(4px)'
+                        },
+                        {
+                            opacity: 1,
+                            y: 0,
+                            filter: 'blur(0px)',
+                            duration: duration,
+                            stagger: stagger,
+                            ease: 'power2.out',
+                            scrollTrigger: {
+                                trigger: container,
+                                start: 'top 80%',
+                                toggleActions: 'play none none reverse'
+                            }
+                        }
+                    );
+                });
+            }
+
+            // Initialize all animations when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    initScrollReveal();
+                    initTextReveal();
+                    initTypingText();
+                    initFadeIn();
+                    initScaleIn();
+                    initSlideIn();
+                    initStaggerChildren();
+                });
+            } else {
+                initScrollReveal();
+                initTextReveal();
+                initTypingText();
+                initFadeIn();
+                initScaleIn();
+                initSlideIn();
+                initStaggerChildren();
+            }
+
+            // Refresh ScrollTrigger on window resize
+            let resizeTimer;
+            window.addEventListener('resize', function () {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function () {
+                    ScrollTrigger.refresh();
+                }, 250);
+            });
+        })();
+    </script>
+
+    <!-- Search Bar Smooth Ease-Out Animation -->
+    <script>
+        (function () {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const searchForm = document.getElementById('hero-search-form');
+            if (!searchForm) return;
+
+            // Main search bar animation
+            gsap.fromTo(searchForm,
+                {
+                    opacity: 0,
+                    y: 40,
+                    scale: 0.95
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1.2,
+                    ease: 'power3.out',
+                    delay: 0.3
+                }
+            );
+
+            // Animate input fields with stagger
+            const inputFields = searchForm.querySelectorAll(':scope > div');
+            gsap.fromTo(inputFields,
+                {
+                    opacity: 0,
+                    x: -20,
+                    scale: 0.98
+                },
+                {
+                    opacity: 1,
+                    x: 0,
+                    scale: 1,
+                    duration: 0.8,
+                    ease: 'power2.out',
+                    stagger: 0.1,
+                    delay: 0.5
+                }
+            );
+
+            // Animate search button
+            const searchButton = searchForm.querySelector('button[type="submit"]');
+            if (searchButton) {
+                gsap.fromTo(searchButton,
+                    {
+                        opacity: 0,
+                        scale: 0.9,
+                        x: 20
+                    },
+                    {
+                        opacity: 1,
+                        scale: 1,
+                        x: 0,
+                        duration: 0.8,
+                        ease: 'back.out(1.7)',
+                        delay: 0.8
+                    }
+                );
+            }
+
+            // Smooth hover animations for input fields
+            inputFields.forEach((field, index) => {
+                field.addEventListener('mouseenter', function () {
+                    gsap.to(this, {
+                        y: -3,
+                        scale: 1.01,
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    });
+                });
+
+                field.addEventListener('mouseleave', function () {
+                    gsap.to(this, {
+                        y: 0,
+                        scale: 1,
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    });
+                });
+
+                // Focus animation
+                const input = field.querySelector('input, select');
+                if (input) {
+                    input.addEventListener('focus', function () {
+                        gsap.to(field, {
+                            scale: 1.02,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                        gsap.to(field.querySelector('i[data-lucide]'), {
+                            scale: 1.15,
+                            rotation: 5,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                    });
+
+                    input.addEventListener('blur', function () {
+                        gsap.to(field, {
+                            scale: 1,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                        gsap.to(field.querySelector('i[data-lucide]'), {
+                            scale: 1,
+                            rotation: 0,
+                            duration: 0.3,
+                            ease: 'power2.out'
+                        });
+                    });
+                }
+            });
+
+            // Search button hover animation
+            if (searchButton) {
+                searchButton.addEventListener('mouseenter', function () {
+                    gsap.to(this, {
+                        scale: 1.05,
+                        y: -3,
+                        boxShadow: '0 15px 40px rgba(75, 143, 208, 0.4)',
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    });
+                    gsap.to(this.querySelector('i[data-lucide]'), {
+                        x: 5,
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    });
+                });
+
+                searchButton.addEventListener('mouseleave', function () {
+                    gsap.to(this, {
+                        scale: 1,
+                        y: 0,
+                        boxShadow: '0 4px 15px rgba(75, 143, 208, 0.2)',
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    });
+                    gsap.to(this.querySelector('i[data-lucide]'), {
+                        x: 0,
+                        duration: 0.4,
+                        ease: 'power2.out'
+                    });
+                });
+
+                searchButton.addEventListener('mousedown', function () {
+                    gsap.to(this, {
+                        scale: 0.95,
+                        duration: 0.1,
+                        ease: 'power2.out'
+                    });
+                });
+
+                searchButton.addEventListener('mouseup', function () {
+                    gsap.to(this, {
+                        scale: 1.05,
+                        duration: 0.2,
+                        ease: 'back.out(1.7)'
+                    });
+                });
+            }
+        })();
+    </script>
+
+    <!-- Homepage Navigation Script -->
+    <script>
+        // Hero Search Form Handler
+        document.getElementById('hero-search-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const keyword = document.getElementById('hero-search-keyword').value.trim();
+            const experience = document.getElementById('hero-search-experience').value;
+            const location = document.getElementById('hero-search-location').value.trim();
+
+            // Build URL params
+            const params = new URLSearchParams();
+            // Default to "developer" if no keyword provided
+            params.set('search', keyword || 'developer');
+            if (experience) params.set('experience', experience);
+            // Default to "India" if no location provided
+            params.set('location', location || 'India');
+
+            // Navigate to jobs page
+            window.location.href = 'jobs.html?' + params.toString();
+        });
+
+        // Company Cards Click Handler (for 3D carousel - handled in carousel script)
+        // The click handler is now integrated into the 3D cascade carousel script above
+
+        // 3D Cascade Carousel
+        (function () {
+            const container = document.getElementById('companies-carousel');
+            if (!container) return;
+
+            const slides = container.querySelectorAll('.cascade-slider_item');
+            const total = slides.length;
+            let activeIndex = 0;
+            let autoplayInterval = null;
+            let isDragging = false;
+            let startX = 0;
+            const swipeThreshold = 50;
+            const autoplay = false; // Set to true to enable autoplay
+            const delay = 3; // seconds
+
+            // Get slide classes based on position
+            function getSlideClass(index) {
+                const diff = index - activeIndex;
+                if (diff === 0) return 'now';
+                if (diff === 1 || diff === -total + 1) return 'next';
+                if (diff === 2 || diff === -total + 2) return 'next2';
+                if (diff === -1 || diff === total - 1) return 'prev';
+                if (diff === -2 || diff === total - 2) return 'prev2';
+                return '';
+            }
+
+            // Update slide positions
+            function updateSlides() {
+                slides.forEach((slide, index) => {
+                    slide.classList.remove('now', 'next', 'prev', 'next2', 'prev2');
+                    const cls = getSlideClass(index);
+                    if (cls) slide.classList.add(cls);
+                });
+            }
+
+            // Navigate carousel
+            function navigate(direction) {
+                if (direction === 'next') {
+                    activeIndex = (activeIndex + 1) % total;
+                } else {
+                    activeIndex = (activeIndex - 1 + total) % total;
+                }
+                updateSlides();
+            }
+
+            // Start autoplay
+            function startAutoplay() {
+                stopAutoplay();
+                if (autoplay && total > 1) {
+                    autoplayInterval = setInterval(() => navigate('next'), delay * 1000);
+                }
+            }
+
+            // Stop autoplay
+            function stopAutoplay() {
+                if (autoplayInterval) {
+                    clearInterval(autoplayInterval);
+                    autoplayInterval = null;
+                }
+            }
+
+            // Arrow click handlers
+            document.getElementById('carousel-prev').addEventListener('click', (e) => {
+                e.stopPropagation();
+                navigate('prev');
+                startAutoplay();
+            });
+
+            document.getElementById('carousel-next').addEventListener('click', (e) => {
+                e.stopPropagation();
+                navigate('next');
+                startAutoplay();
+            });
+
+            // Touch/Mouse drag
+            container.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                stopAutoplay();
+            });
+
+            container.addEventListener('mouseup', (e) => {
+                if (!isDragging) return;
+                const distance = e.clientX - startX;
+                if (Math.abs(distance) > swipeThreshold) {
+                    navigate(distance < 0 ? 'next' : 'prev');
+                }
+                isDragging = false;
+                startAutoplay();
+            });
+
+            container.addEventListener('mouseleave', (e) => {
+                if (isDragging) {
+                    const distance = e.clientX - startX;
+                    if (Math.abs(distance) > swipeThreshold) {
+                        navigate(distance < 0 ? 'next' : 'prev');
+                    }
+                    isDragging = false;
+                }
+                startAutoplay();
+            });
+
+            container.addEventListener('mouseenter', () => {
+                if (autoplay) stopAutoplay();
+            });
+
+            // Touch support
+            container.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                startX = e.touches[0].clientX;
+                stopAutoplay();
+            });
+
+            container.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                const distance = e.changedTouches[0].clientX - startX;
+                if (Math.abs(distance) > swipeThreshold) {
+                    navigate(distance < 0 ? 'next' : 'prev');
+                }
+                isDragging = false;
+                startAutoplay();
+            });
+
+            // Click on slide to navigate or go to jobs
+            slides.forEach((slide) => {
+                slide.addEventListener('click', (e) => {
+                    if (slide.classList.contains('now')) {
+                        // Navigate to jobs page
+                        const filter = slide.dataset.filter;
+                        window.location.href = 'jobs.html' + (filter ? '?' + filter : '');
+                    } else if (slide.classList.contains('next') || slide.classList.contains('next2')) {
+                        navigate('next');
+                    } else if (slide.classList.contains('prev') || slide.classList.contains('prev2')) {
+                        navigate('prev');
+                    }
+                });
+            });
+
+            // Initialize
+            updateSlides();
+            startAutoplay();
+        })();
+    </script>
+    <script src="../components/auth-ui.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.AuthUI) {
+                const container = document.querySelector('.auth-ui-container');
+                if (container) {
+                    window.AuthUI.renderAuthUI(container, {
+                        signupUrl: container.getAttribute('data-signup-url') || '/signup/',
+                        profileUrl: container.getAttribute('data-profile-url') || '/graduate/dashboard/#view-profile',
+                        buttonClass: 'primary-btn cta-magnet bg-gray-900 text-white px-6 py-2.5 rounded-full text-sm font-semibold',
+                        avatarSize: 40
+                    });
+                }
+            }
+        });
+    </script>
+
 </body>
+
 </html>
