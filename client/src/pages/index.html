@@ -739,7 +739,7 @@
             height: min(58vh, 560px);
             object-fit: cover;
             opacity: 0;
-            filter: saturate(120%) contrast(0.92) brightness(1.12);
+            filter: saturate(138%) contrast(1.08) brightness(0.72);
             mix-blend-mode: normal;
             transform: scale(1.01);
             mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.92) 34%, rgba(0, 0, 0, 0.38) 66%, transparent 100%);
@@ -2269,7 +2269,7 @@
             const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             if (heroVideo && !reduceMotion) {
-                const maxOpacity = 0.86;
+                    const maxOpacity = 0.96;
                 const fadeMs = 500;
 
                 const updateVideoOpacity = () => {
